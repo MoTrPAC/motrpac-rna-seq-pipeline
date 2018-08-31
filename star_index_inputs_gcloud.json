@@ -1,0 +1,10 @@
+{
+  "star_index_workflow.star_index.reference_fasta": "gs://my-bucket/hg38/Homo_sapiens.GRCh38.dna.primary_assembly/Homo_sapiens.GRCh38.dna.primary_assembly.fa",
+  "star_index_workflow.star_index.num_preempt": "25",
+  "star_index_workflow.star_index.prefix": "GRCh38_star_index",
+  "star_index_workflow.star_index.num_threads": "10",
+  "star_index_workflow.star_index.disk_space": "120",
+  "star_index_workflow.star_index.annotation_gtf": "gs://my-bucket/hg38/gencode.v28.chr_patch_hapl_scaff.annotation.gtf",
+  "star_index_workflow.star_index.memory": "60",
+  "star_index_workflow.star_index.overhang": "150"
+}
