@@ -12,7 +12,6 @@ task star_index {
 
     command {
         mkdir ${prefix}
-	module load biology star        
 	STAR \
             --runMode genomeGenerate \
             --genomeDir ${prefix} \
@@ -28,7 +27,7 @@ task star_index {
     }
 
     runtime {
-        #docker: ""
+        docker: "broadinstitute/gtex_rnaseq"
         memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${num_threads}"
