@@ -1,0 +1,63 @@
+{
+  "rnaseq_pipeline_fastq_workflow.star.outFilterIntronMotifs": "(optional) String?",
+  "rnaseq_pipeline_fastq_workflow.star.num_preempt": "Int",
+  
+  "rnaseq_pipeline_fastq_workflow.rnaseqc_counts.gatk_flags": "(optional) String?",
+  
+  "rnaseq_pipeline_fastq_workflow.star.outSAMstrandField": "(optional) String?",
+  "rnaseq_pipeline_fastq_workflow.star.outSAMattrRGline": "(optional) String?",
+  "rnaseq_pipeline_fastq_workflow.star.chimOutType": "(optional) String?",
+  
+  "rnaseq_pipeline_fastq_workflow.markduplicates.num_preempt": "Int",
+  
+  "rnaseq_pipeline_fastq_workflow.star.outFilterScoreMinOverLread": "(optional) Float?",
+  
+  "rnaseq_pipeline_fastq_workflow.rsem.estimate_rspd": "(optional) String?",
+  "rnaseq_pipeline_fastq_workflow.rsem.paired_end": "(optional) String?",
+  "rnaseq_pipeline_fastq_workflow.star.chimSegmentMin": "(optional) Int?",
+ 
+ "rnaseq_pipeline_fastq_workflow.markduplicates.disk_space": "Int",
+  "rnaseq_pipeline_fastq_workflow.rsem.memory": "Int",
+
+  "rnaseq_pipeline_fastq_workflow.star.alignIntronMax": "(optional) Int?",
+
+  "rnaseq_pipeline_fastq_workflow.rnaseqc_counts.disk_space": "Int",
+  "rnaseq_pipeline_fastq_workflow.markduplicates.num_threads": "Int",
+
+  "rnaseq_pipeline_fastq_workflow.star.alignMatesGapMax": "(optional) Int?",
+  "rnaseq_pipeline_fastq_workflow.prefix": "String",
+  "rnaseq_pipeline_fastq_workflow.star.num_threads": "Int",
+  "rnaseq_pipeline_fastq_workflow.star.outFilterType": "(optional) String?",
+  "rnaseq_pipeline_fastq_workflow.star.outFilterMismatchNmax": "(optional) Int?",
+  "rnaseq_pipeline_fastq_workflow.markduplicates.memory": "Int",
+  "rnaseq_pipeline_fastq_workflow.rsem.num_preempt": "Int",
+  "rnaseq_pipeline_fastq_workflow.rsem.rsem_reference": "File",
+  "rnaseq_pipeline_fastq_workflow.rnaseqc_counts.genome_fasta": "File",
+  "rnaseq_pipeline_fastq_workflow.star.chimMainSegmentMultNmax": "(optional) Int?",
+  "rnaseq_pipeline_fastq_workflow.star.outFilterMismatchNoverLmax": "(optional) Float?",
+  "rnaseq_pipeline_fastq_workflow.fastq2": "(optional) File?",
+  "rnaseq_pipeline_fastq_workflow.star.outFilterMultimapNmax": "(optional) Int?",
+  "rnaseq_pipeline_fastq_workflow.star.memory": "Int",
+  "rnaseq_pipeline_fastq_workflow.rnaseqc_counts.genes_gtf": "File",
+  "rnaseq_pipeline_fastq_workflow.rsem.disk_space": "Int",
+  "rnaseq_pipeline_fastq_workflow.rnaseqc_counts.num_preempt": "Int",
+  "rnaseq_pipeline_fastq_workflow.star.alignSJoverhangMin": "(optional) Int?",
+  "rnaseq_pipeline_fastq_workflow.star.disk_space": "Int",
+  "rnaseq_pipeline_fastq_workflow.rnaseqc_counts.genome_fasta_index": "File",
+  "rnaseq_pipeline_fastq_workflow.star.sjdbFileChrStartEnd": "(optional) File?",
+  "rnaseq_pipeline_fastq_workflow.rsem.num_threads": "Int",
+  "rnaseq_pipeline_fastq_workflow.star.outSAMattributes": "(optional) String?",
+  "rnaseq_pipeline_fastq_workflow.fastq1": "File",
+  "rnaseq_pipeline_fastq_workflow.rnaseqc_counts.memory": "Int",
+  "rnaseq_pipeline_fastq_workflow.star.outFilterMatchNminOverLread": "(optional) Float?",
+  "rnaseq_pipeline_fastq_workflow.rsem.max_frag_len": "(optional) Int?",
+  "rnaseq_pipeline_fastq_workflow.star.alignSJDBoverhangMin": "(optional) Int?",
+  "rnaseq_pipeline_fastq_workflow.star.alignIntronMin": "(optional) Int?",
+  "rnaseq_pipeline_fastq_workflow.rsem.is_stranded": "(optional) String?",
+  "rnaseq_pipeline_fastq_workflow.star_index": "File",
+  "rnaseq_pipeline_fastq_workflow.star.chimJunctionOverhangMin": "(optional) Int?",
+  "rnaseq_pipeline_fastq_workflow.star.limitSjdbInsertNsj": "(optional) Int?",
+  "rnaseq_pipeline_fastq_workflow.star.alignSoftClipAtReferenceEnds": "(optional) String?",
+  "rnaseq_pipeline_fastq_workflow.star.quantMode": "(optional) String?",
+  "rnaseq_pipeline_fastq_workflow.rnaseqc_counts.num_threads": "Int"
+}
