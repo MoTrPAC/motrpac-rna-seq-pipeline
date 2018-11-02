@@ -22,9 +22,9 @@ workflow rnaseq_pipeline_fastq_workflow {
         input: transcriptome_bam=star.transcriptome_bam, prefix=prefix
     }
 
-#     call rnaseqc_wdl.rnaseqc_counts {
-#         input: bam_file=markduplicates.bam_file, bam_index=markduplicates.bam_index, prefix=prefix
-#     }
+    call rnaseqc_wdl.rnaseqc_counts {
+        input: bam_file=markduplicates.bam_file, bam_index=markduplicates.bam_index, prefix=prefix
+    }
 
     meta {
         author: "Shruti Marwaha"
