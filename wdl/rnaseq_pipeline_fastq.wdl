@@ -1,7 +1,7 @@
-import "/Users/mshruti/GIT/AshleyLab/RNAseq/wdl/star.wdl" as star_wdl
-import "/Users/mshruti/GIT/AshleyLab/RNAseq/wdl/markduplicates.wdl" as markduplicates_wdl
-import "/Users/mshruti/GIT/AshleyLab/RNAseq/wdl/rsem.wdl" as rsem_wdl
-import "/Users/mshruti/GIT/AshleyLab/RNAseq/wdl/rnaseqc_counts.wdl" as rnaseqc_wdl
+import "wdl/star.wdl" as star_wdl
+import "wdl/markduplicates.wdl" as markduplicates_wdl
+import "wdl/rsem.wdl" as rsem_wdl
+import "wdl/rnaseqc_counts.wdl" as rnaseqc_wdl
  
 workflow rnaseq_pipeline_fastq_workflow {
 
@@ -22,9 +22,9 @@ workflow rnaseq_pipeline_fastq_workflow {
         input: transcriptome_bam=star.transcriptome_bam, prefix=prefix
     }
 
-    call rnaseqc_wdl.rnaseqc_counts {
-        input: bam_file=markduplicates.bam_file, bam_index=markduplicates.bam_index, prefix=prefix
-    }
+#     call rnaseqc_wdl.rnaseqc_counts {
+#         input: bam_file=markduplicates.bam_file, bam_index=markduplicates.bam_index, prefix=prefix
+#     }
 
     meta {
         author: "Shruti Marwaha"
