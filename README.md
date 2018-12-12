@@ -1,5 +1,6 @@
 # RNAseq
 repository to store code related to RNAseq preprocessing pipeline and analysis.
+
 Usage: java -Dconfig.file=google.conf -jar /Users/archanaraja/work/tools/cromwell/cromwell-36.jar run wdl/rnaseq_pipeline_fastq.wdl -i input_json/rat/rnaseq_pipeline_fastq_rat.json
 
 Monitoring jobs
