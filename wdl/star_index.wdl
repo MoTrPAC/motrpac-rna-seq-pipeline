@@ -19,7 +19,7 @@ task star_index {
             --sjdbGTFfile ${annotation_gtf} \
             --sjdbOverhang ${overhang} \
             --runThreadN ${num_threads}
-        tar -cvzf ${prefix}.tar.gz ${prefix}
+	    tar -cvzf ${prefix}.tar.gz ${prefix}
     }
 
     output {
