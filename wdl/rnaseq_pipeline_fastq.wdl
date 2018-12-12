@@ -1,7 +1,7 @@
-import "wdl/star.wdl" as star_wdl
-import "wdl/markduplicates.wdl" as markduplicates_wdl
-import "wdl/rsem.wdl" as rsem_wdl
-import "wdl/rnaseqc_counts.wdl" as rnaseqc_wdl
+import "/Users/archanaraja/work/repo/RNAseq/wdl/star.wdl" as star_wdl
+import "/Users/archanaraja/work/repo/RNAseq/wdl/markduplicates.wdl" as markduplicates_wdl
+import "/Users/archanaraja/work/repo/RNAseq/wdl/rsem.wdl" as rsem_wdl
+import "/Users/archanaraja/work/repo/RNAseq/wdl/rnaseqc_counts.wdl" as rnaseqc_wdl
  
 workflow rnaseq_pipeline_fastq_workflow {
 
