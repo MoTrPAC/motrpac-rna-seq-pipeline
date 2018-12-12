@@ -1,4 +1,6 @@
 task star {
+ #TODO: include --outSAMtype BAM SortedByCoordinate option
+
 
     File fastq1
     File? fastq2
@@ -109,7 +111,8 @@ task star {
     }
 
     runtime {
-        memory: "${memory}GB"
+        docker: "gcr.io/broad-cga-francois-gtex/gtex_rnaseq:V8"	
+	memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${num_threads}"
         preemptible: "${num_preempt}"
