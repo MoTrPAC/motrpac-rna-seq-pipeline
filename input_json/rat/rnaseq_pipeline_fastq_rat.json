@@ -21,7 +21,7 @@
 
   "rnaseq_pipeline_fastq_workflow.rnaseqc_counts.disk_space": "100",
   "rnaseq_pipeline_fastq_workflow.rnaseqc_counts.genome_fasta": "gs://my-bucket/rat/Rattus_norvegicus.Rnor_6.0.dna.toplevel.fa",
-  "rnaseq_pipeline_fastq_workflow.rnaseqc_counts.genes_gtf": "gs://my-bucket/rat/Rattus_norvegicus.Rnor_6.0.94.gtf",
+  "rnaseq_pipeline_fastq_workflow.rnaseqc_counts.genes_gtf": "gs://archanaraja/rnaseq/references/rat/genes/Rattus_norvegicus.Rnor_6.0.94_only_transcripts.gtf",
   "rnaseq_pipeline_fastq_workflow.rnaseqc_counts.num_preempt": "25",
   "rnaseq_pipeline_fastq_workflow.rnaseqc_counts.genome_fasta_index": "gs://my-bucket/rat/Rattus_norvegicus.Rnor_6.0.dna.toplevel.fa.fai",
   "rnaseq_pipeline_fastq_workflow.rnaseqc_counts.memory": "60",
