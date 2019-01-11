@@ -2,8 +2,7 @@ task star {
  #TODO: include --outSAMtype BAM SortedByCoordinate option
 
 
-    File fastq1
-    File? fastq2
+    Array[File] fastq
     String prefix
     File star_index
 
@@ -39,24 +38,8 @@ task star {
 
     command {
         set -euo pipefail
-
-        if [[ ${fastq1} == *".tar" || ${fastq1} == *".tar.gz" ]]; then
-            tar -xvvf ${fastq1}
-            fastq1_abs=$(for f in *_1.fastq*; do echo "$(pwd)/$f"; done | paste -s -d ',')
-            fastq2_abs=$(for f in *_2.fastq*; do echo "$(pwd)/$f"; done | paste -s -d ',')
-            if [[ $fastq1_abs == *"*_1.fastq*" ]]; then  # no paired-end FASTQs found; check for single-end FASTQ
-                fastq1_abs=$(for f in *.fastq*; do echo "$(pwd)/$f"; done | paste -s -d ',')
-                fastq2_abs=''
-            fi
-        else
-            # make sure paths are absolute
-            fastq1_abs=${fastq1}
-            fastq2_abs=${fastq2}
-            if [[ $fastq1_abs != /* ]]; then
-                fastq1_abs=$PWD/$fastq1_abs
-                fastq2_abs=$PWD/$fastq2_abs
-            fi
-        fi
+        #if the length of fastq list is 1 then it is single end , if the length is 2 then it's paired end , removed the newline character
+        ${if length(fastq)<2 then "fastq1_abs=" + fastq[0] else "fastq1_abs=" + fastq[0] +"\n"+ "fastq2_abs="+fastq[1]}
 
         echo "FASTQs:"
         echo $fastq1_abs
@@ -119,7 +102,7 @@ task star {
     }
 
     meta {
-        author: "Shruti Marwaha"
+        author: "Archana Raja"
     }
 }
 
