@@ -1,0 +1,16 @@
+{
+  "Cutadapt_workflow.Cutadapt.cores": "1",
+  "Cutadapt_workflow.Cutadapt.adapter": ["AGATCGGAAGAGC"],
+  "Cutadapt_workflow.Cutadapt.tooShortOutputPath":"/Users/archanaraja/work/repo/RNAseq_v1/test_data/fastq_trim/Lung_Powder_S10_R1_001.head_trimmed_too_short",
+  "Cutadapt_workflow.Cutadapt.tooShortPairedOutputPath": "/Users/archanaraja/work/repo/RNAseq_v1/test_data/fastq_trim/Lung_Powder_S10_R2_001.head_trimmed_too_short",
+  "Cutadapt_workflow.Cutadapt.read1output": "/Users/archanaraja/work/repo/RNAseq_v1/test_data/fastq_trim/Lung_Powder_S10_R1_001.head_trimmed.fastq.gz",
+  "Cutadapt_workflow.Cutadapt.adapterRead2": ["AGATCGGAAGAGC"],
+  "Cutadapt_workflow.Cutadapt.read2output": "/Users/archanaraja/work/repo/RNAseq_v1/test_data/fastq_trim/Lung_Powder_S10_R2_001.head_trimmed.fastq.gz",
+  "Cutadapt_workflow.Cutadapt.inputFastq": {
+    "R1": "/Users/archanaraja/work/repo/RNAseq_v1/test_data/Lung_Powder_S10_R1_001.head.fastq.gz",
+    "R2": "/Users/archanaraja/work/repo/RNAseq_v1/test_data/Lung_Powder_S10_R2_001.head.fastq.gz"},
+  "Cutadapt_workflow.Cutadapt.minimumLength": "20",
+  "Cutadapt_workflow.Cutadapt.memory": "8",
+  "Cutadapt_workflow.Cutadapt.reportPath":"/Users/archanaraja/work/repo/RNAseq_v1/test_data/fastq_trim/Lung_Powder_S10_cutadapt_report"
+}
+

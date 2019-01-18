@@ -1,0 +1,7 @@
+{
+  "FastQC_workflow.Fastqc.threads": "1",
+  "FastQC_workflow.Fastqc.format": "fastq",
+  "FastQC_workflow.Fastqc.extract": "false",
+  "FastQC_workflow.Fastqc.outdirPath": "/Users/archanaraja/work/repo/RNAseq_v1/test_data",
+  "FastQC_workflow.Fastqc.seqFile": "/Users/archanaraja/work/repo/RNAseq_v1/test_data/A1k_R1_S16_R1_001.trimmed.fastq.gz"
+}
