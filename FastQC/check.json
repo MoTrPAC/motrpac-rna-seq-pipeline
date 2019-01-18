@@ -1,0 +1,19 @@
+{
+  "FastQC_workflow.Fastqc.threads": "Int (optional, default = 1)",
+  "FastQC_workflow.Fastqc.extract": "Boolean (optional, default = true)",
+  "FastQC_workflow.Fastqc.preCommand": "String? (optional)",
+  "FastQC_workflow.Fastqc.outdirPath": "String",
+  "FastQC_workflow.Fastqc.contaminants": "File? (optional)",
+  "FastQC_workflow.Fastqc.seqFile": "File",
+  "FastQC_workflow.Fastqc.nano": "Boolean? (optional)",
+  "FastQC_workflow.Fastqc.nogroup": "Boolean? (optional)",
+  "FastQC_workflow.Fastqc.format": "String? (optional)",
+  "FastQC_workflow.Fastqc.dir": "String? (optional)",
+  "FastQC_workflow.Fastqc.noFilter": "Boolean? (optional)",
+  "FastQC_workflow.Fastqc.kmers": "Int? (optional)",
+  "FastQC_workflow.Fastqc.limits": "File? (optional)",
+  "FastQC_workflow.Fastqc.casava": "Boolean? (optional)",
+  "FastQC_workflow.Fastqc.adapters": "File? (optional)",
+  "FastQC_workflow.Fastqc.minLength": "Int? (optional)"
+}
+
