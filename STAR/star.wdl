@@ -70,7 +70,7 @@ task star {
         File chimeric_junctions = "star_out/${prefix}.Chimeric.out.junction"
         File chimeric_bam_file = "star_out/${prefix}.Chimeric.out.sorted.bam"
         File chimeric_bam_index = "star_out/${prefix}.Chimeric.out.sorted.bam.bai"
-        File read_counts = "star_out/${prefix}.ReadsPerGene.out.tab"
+        #File read_counts = "star_out/${prefix}.ReadsPerGene.out.tab"
         File junctions = "star_out/${prefix}.SJ.out.tab"
         File junctions_pass1 = "star_out/${prefix}._STARpass1/SJ.out.tab"
         Array[File] logs = ["star_out/${prefix}.Log.final.out", "star_out/${prefix}.Log.out", "star_out/${prefix}.Log.progress.out"]
