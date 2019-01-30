@@ -116,9 +116,9 @@ with cd(args.output_dir):
     print('['+datetime.now().strftime("%b %d %H:%M:%S")+'] Finished indexing BAM', flush=True)
 
     # sort and index chimeric BAM
-#    if int(args.chimSegmentMin)>0:
-#        cmd = 'samtools sort --threads '+args.threads+' -o '+args.prefix+'.Chimeric.out.sorted.bam '+args.prefix+'.Chimeric.out.sam'
-#        subprocess.check_call(cmd, shell=True, executable='/bin/bash')
-#        cmd = 'samtools index '+args.prefix+'.Chimeric.out.sorted.bam'
-#        subprocess.check_call(cmd, shell=True, executable='/bin/bash')
-#        os.remove(args.prefix+'.Chimeric.out.sam')
+    if int(args.chimSegmentMin)>0:
+        cmd = 'samtools sort --threads '+args.threads+' -o '+args.prefix+'.Chimeric.out.sorted.bam '+args.prefix+'.Chimeric.out.sam'
+        subprocess.check_call(cmd, shell=True, executable='/bin/bash')
+        cmd = 'samtools index '+args.prefix+'.Chimeric.out.sorted.bam'
+        subprocess.check_call(cmd, shell=True, executable='/bin/bash')
+        os.remove(args.prefix+'.Chimeric.out.sam')
