@@ -1,0 +1,20 @@
+{
+  "AlignStar.readgroups": ["A1K"],
+  "AlignStar.readFilesCommand": "zcat",
+  "AlignStar.memory": "60",
+  "AlignStar.num_preempt": "25",
+  "AlignStar.outFilterType": "BySJout",
+  "AlignStar.platform": "illumina",
+  "AlignStar.runThreadN": "10",
+  "AlignStar.sample": "A1k_R1_S16",
+  "AlignStar.inputR2": ["gs://archanaraja/rnaseq/test_data/A1k_R1_S16_R2_001.trimmed.fastq.gz"],
+  "AlignStar.outSAMattributes": ["NH","HI","AS","NM","MD","nM"],
+  "AlignStar.library": "lib1",
+  "AlignStar.quantMode": "TranscriptomeSAM",
+  "AlignStar.outSAMtype": "BAM SortedByCoordinate",
+  "AlignStar.disk_space": "120",
+  "AlignStar.outputDir": "star_out",
+  "AlignStar.inputR1": ["gs://archanaraja/rnaseq/test_data/A1k_R1_S16_R1_001.trimmed.fastq.gz"],
+  "AlignStar.starIndexDir": "gs://archanaraja/rnaseq/references/rat/STAR_reference/Rnor_6.0_star_index.tar.gz",
+  "AlignStar.star_index": "gs://archanaraja/rnaseq/references/rat/STAR_reference/Rnor_6.0_star_index.tar.gz"
+}
