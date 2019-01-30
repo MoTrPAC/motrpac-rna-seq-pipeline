@@ -14,14 +14,14 @@ task star {
     Int? alignIntronMax
     Int? alignMatesGapMax
     String outFilterType = "BySJout"
-    String? outSAMtype
+    String outSAMtype = "BAM SortedByCoordinate"
     Float? outFilterScoreMinOverLread
     Float? outFilterMatchNminOverLread
     Int? limitSjdbInsertNsj
     String? outSAMstrandField
     String? outFilterIntronMotifs
     String? alignSoftClipAtReferenceEnds
-    String? quantMode
+    String? quantMode = "TranscriptomeSAM"
     String? outSAMattrRGline
     String? outSAMattributes
     Int? chimSegmentMin
@@ -54,7 +54,7 @@ task star {
             --output_dir star_out \
             --outFilterType ${outFilterType} \
             --quantMode ${quantMode} \
-            --outSAMattributes ${outSAMattributes} \
+            ${"--outSAMattributes " + outSAMattributes} \
             --outSAMtype ${outSAMtype} \
             ${"--chimSegmentMin " + chimSegmentMin} \
             ${"--chimJunctionOverhangMin " + chimJunctionOverhangMin} \
