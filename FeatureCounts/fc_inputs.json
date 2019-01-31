@@ -1,0 +1,9 @@
+{
+  "featurecounts_workflow.featurecounts.gtf_file": "/Users/archanaraja/work/repo/RNAseq/test_data/Rattus_norvegicus.Rnor_6.0.94_only_transcripts.gtf",
+  "featurecounts_workflow.featurecounts.num_threads": "1",
+  "featurecounts_workflow.featurecounts.prefix": "A1k_R1_S16",
+  "featurecounts_workflow.featurecounts.input_bam": "/Users/archanaraja/work/repo/RNAseq/test_data/A1k_R1_S16.Aligned.sortedByCoord.out.bam",
+  "featurecounts_workflow.featurecounts.memory": "30",
+  "featurecounts_workflow.featurecounts.disk_space": "30"
+}
+
