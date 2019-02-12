@@ -1,0 +1,11 @@
+{
+  "collectrnaseqmetrics_workflow.collectrnaseqmetrics.prefix": "A1k_R1_S16",
+  "collectrnaseqmetrics_workflow.collectrnaseqmetrics.memory": "20",
+  "collectrnaseqmetrics_workflow.collectrnaseqmetrics.num_preempt": "15",
+  "collectrnaseqmetrics_workflow.collectrnaseqmetrics.input_bam": "gs://archanaraja/rnaseq/test/cromwell-execution/rnaseq_pipeline_fastq_workflow/fe3162f2-a727-494f-a737-46c2bc279098/call-star/shard-0/star_out/A1k_R1_S16.Aligned.sortedByCoord.out.bam",
+  "collectrnaseqmetrics_workflow.collectrnaseqmetrics.script": "gs://archanaraja/rnaseq/scripts/run_CollectRNASeqMetrics.py",
+  "collectrnaseqmetrics_workflow.collectrnaseqmetrics.ref_flat": "gs://archanaraja/rnaseq/references/rat/genes/Rattus_norvegicus.Rnor_6.0.94.refFlat",
+  "collectrnaseqmetrics_workflow.collectrnaseqmetrics.disk_space": "100",
+  "collectrnaseqmetrics_workflow.collectrnaseqmetrics.num_threads": "10"
+}
+
