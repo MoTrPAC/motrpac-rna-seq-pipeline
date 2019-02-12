@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # Author: Archana Raja
 
-# check the path for picard
-
 import argparse
 import os
 import struct
