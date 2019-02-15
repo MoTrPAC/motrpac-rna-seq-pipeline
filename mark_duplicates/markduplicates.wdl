@@ -13,7 +13,15 @@ task markduplicates {
 
     command {
         set -euo pipefail
-        python3 -u /src/run_MarkDuplicates.py ${input_bam} ${prefix} --memory ${memory}
+        java -Xmx10g -jar src/picard/picard.jar  MarkDuplicates \
+            I=${input_bam} \
+            O= ${output_bam} \
+            CREATE_INDEX=true \
+            VALIDATION_STRINGENCY=SILENT \
+            ASSUME_SORT_ORDER=coordinate \
+            M=${prefix}.marked_dup_metrics.txt \
+            REMOVE_DUPLICATES=false
+
         samtools index ${output_bam}
     }
 
