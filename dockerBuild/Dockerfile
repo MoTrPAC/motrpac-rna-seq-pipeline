@@ -133,5 +133,5 @@ RUN cd /src && \
 
 # Download nudup.py from January 2018
 RUN cd /src && \
-wget https://raw.githubusercontent.com/nugentechnologies/nudup/555756bbbdc5c83c4d4b00cda9f51758393583ca/nudup.py && \
-ln -s /src/nudup.py /usr/local/bin
+    wget https://raw.githubusercontent.com/nugentechnologies/nudup/555756bbbdc5c83c4d4b00cda9f51758393583ca/nudup.py && \
+    ln -s /src/nudup.py /usr/local/bin

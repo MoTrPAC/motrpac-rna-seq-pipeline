@@ -18,9 +18,15 @@ task rsem {
     command {
         set -euo pipefail
         mkdir rsem_reference
+        echo "--- tar -xzvf of rsem_reference --- "
         tar -xzvf ${rsem_reference} -C rsem_reference --strip-components=1
+        echo "--- Done tar --- "
+
         cd rsem_reference
+        echo "--- Running: ls --- "
         ls
+        echo "--- Done: ls--- "
+        echo "--- Running: rsem-calculate-expression --- "
         rsem-calculate-expression \
             -p ${num_threads} \
             --bam \
@@ -31,16 +37,19 @@ task rsem {
             ${transcriptome_bam}\
             rsem_reference \
             ${prefix}
+        echo "--- Done: rsem-calculate-expression --- "
+        echo "--- Running: ls --- "
         ls
+        echo "--- Done: ls --- "
     }
 
     output {
-        File genes="${prefix}.rsem.genes.results"
-        File isoforms="${prefix}.rsem.isoforms.results"
+        File genes="rsem_reference/${prefix}.rsem.genes.results"
+        File isoforms="rsem_reference/${prefix}.rsem.isoforms.results"
     }
 
     runtime {
-        docker: "gcr.io/broad-cga-francois-gtex/gtex_rnaseq:V8"
+        docker: "akre96/motrpac_rnaseq:v0.1"
         memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${num_threads}"
