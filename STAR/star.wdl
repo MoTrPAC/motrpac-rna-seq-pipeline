@@ -28,7 +28,6 @@ task star {
     Int? chimJunctionOverhangMin
     String? chimOutType
     Int? chimMainSegmentMultNmax
-    File script
     Int memory
     Int disk_space
     Int num_threads
@@ -49,18 +48,15 @@ task star {
         tar -xvvf ${star_index} -C star_index --strip-components=1
 
         mkdir star_out
-        python3 ${script} \
-            star_index $fastq1_abs $fastq2_abs ${prefix} \
-            --output_dir star_out \
-            --outFilterType ${outFilterType} \
-            --quantMode ${quantMode} \
-            ${"--outSAMattributes " + outSAMattributes} \
+        STAR  --genomeDir $INDEX_DIRECTORY \
+            --readFilesIn $fastq1_abs $fastq2_abs \
+            --outFileNamePrefix star_out/${prefix}. \
+            --readFilesCommand zcat \
+            --outSAMattributes NH HI AS NM MD nM \
+            --outFilterType ${outFilterType}\
+            --runThreadN ${num_threads} \
             --outSAMtype ${outSAMtype} \
-            ${"--chimSegmentMin " + chimSegmentMin} \
-            ${"--chimJunctionOverhangMin " + chimJunctionOverhangMin} \
-            ${"--chimOutType " + chimOutType} \
-            ${"--chimMainSegmentMultNmax " + chimMainSegmentMultNmax} \
-            --threads ${num_threads}
+            --quantMode ${quantMode}
     }
 
     output {
