@@ -7,6 +7,5 @@
   "rsem_workflow.rsem.paired_end": "true",
   "rsem_workflow.rsem.rsem_reference": "gs://user-mshruti/wdl/cromwell-execution/rsem_reference_workflow/b8fc6741-f136-4152-93dc-00626a99f2fc/call-rsem_reference/Rnor_6.0_rsem_reference.tar.gz",
   "rsem_workflow.rsem.num_preempt": "25",
-  "rsem_workflow.rsem.num_threads": "10",
-  "rsem_workflow.rsem.script": "gs://archanaraja/rnaseq/scripts/run_RSEM.py"
+  "rsem_workflow.rsem.num_threads": "10"
 }

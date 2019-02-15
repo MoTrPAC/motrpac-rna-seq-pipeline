@@ -13,7 +13,8 @@ task markduplicates {
 
     command {
         set -euo pipefail
-        java -Xmx10g -jar src/picard/picard.jar  MarkDuplicates \
+        ulimit -c unlimited
+        java -Xmx${memory}g -jar /src/picard/picard.jar  MarkDuplicates \
             I=${input_bam} \
             O= ${output_bam} \
             CREATE_INDEX=true \
@@ -32,8 +33,8 @@ task markduplicates {
     }
 
     runtime {
-        docker: "gcr.io/broad-cga-francois-gtex/gtex_rnaseq:V8"
-	memory: "${memory}GB"
+        docker: "akre96/motrpac_rnaseq:v0.1"
+	    memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${num_threads}"
         preemptible: "${num_preempt}"
