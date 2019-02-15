@@ -10,6 +10,5 @@
   "rnaseq_pipeline_fastq_workflow.fastq1": ["gs://archanaraja/rnaseq/test_data/A1k_R1_S16_R1_001.trimmed.fastq.gz"],
   "rnaseq_pipeline_fastq_workflow.star.outSAMtype": "BAM SortedByCoordinate",
   "rnaseq_pipeline_fastq_workflow.star_index": "gs://archanaraja/rnaseq/references/rat/STAR_reference/Rnor_6.0_star_index.tar.gz",
-  "rnaseq_pipeline_fastq_workflow.star.quantMode": "TranscriptomeSAM",
-  "rnaseq_pipeline_fastq_workflow.star.script": "gs://archanaraja/rnaseq/scripts/run_STAR.py"
+  "rnaseq_pipeline_fastq_workflow.star.quantMode": "TranscriptomeSAM"
 }
