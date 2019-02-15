@@ -48,33 +48,42 @@ task star {
         tar -xvvf ${star_index} -C star_index --strip-components=1
 
         mkdir star_out
-        STAR  --genomeDir $INDEX_DIRECTORY \
+        STAR  --genomeDir star_index \
             --readFilesIn $fastq1_abs $fastq2_abs \
             --outFileNamePrefix star_out/${prefix}. \
             --readFilesCommand zcat \
             --outSAMattributes NH HI AS NM MD nM \
-            --outFilterType ${outFilterType}\
+            --outFilterType ${outFilterType} \
             --runThreadN ${num_threads} \
             --outSAMtype ${outSAMtype} \
             --quantMode ${quantMode}
+        
+        cd star_out
+        ls
+
+        samtools index ${prefix}.Aligned.sortedByCoord.out.bam
+
+        ls
+
+
     }
 
     output {
         File bam_file = "star_out/${prefix}.Aligned.sortedByCoord.out.bam"
         File bam_index = "star_out/${prefix}.Aligned.sortedByCoord.out.bam.bai"
         File transcriptome_bam = "star_out/${prefix}.Aligned.toTranscriptome.out.bam"
-        File chimeric_junctions = "star_out/${prefix}.Chimeric.out.junction"
-        File chimeric_bam_file = "star_out/${prefix}.Chimeric.out.sorted.bam"
-        File chimeric_bam_index = "star_out/${prefix}.Chimeric.out.sorted.bam.bai"
+        #File chimeric_junctions = "star_out/${prefix}.Chimeric.out.junction"
+        #File chimeric_bam_file = "star_out/${prefix}.Chimeric.out.sorted.bam"
+        #File chimeric_bam_index = "star_out/${prefix}.Chimeric.out.sorted.bam.bai"
         #File read_counts = "star_out/${prefix}.ReadsPerGene.out.tab"
         File junctions = "star_out/${prefix}.SJ.out.tab"
-        File junctions_pass1 = "star_out/${prefix}._STARpass1/SJ.out.tab"
+        #File junctions_pass1 = "star_out/${prefix}._STARpass1/SJ.out.tab"
         Array[File] logs = ["star_out/${prefix}.Log.final.out", "star_out/${prefix}.Log.out", "star_out/${prefix}.Log.progress.out"]
     }
 
     runtime {
-        docker: "gcr.io/broad-cga-francois-gtex/gtex_rnaseq:V8"	
-	memory: "${memory}GB"
+        docker: "akre96/motrpac_rnaseq:v0.1"	
+	    memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${num_threads}"
         preemptible: "${num_preempt}"

@@ -1,14 +1,14 @@
 {
   "rnaseq_pipeline_fastq_workflow.star.num_preempt": "25",
   "rnaseq_pipeline_fastq_workflow.prefix": "A1k_R1_S16",
-  "rnaseq_pipeline_fastq_workflow.star.num_threads": "10",
+  "rnaseq_pipeline_fastq_workflow.star.num_threads": "2",
   "rnaseq_pipeline_fastq_workflow.star.outFilterType": "BySJout",
-  "rnaseq_pipeline_fastq_workflow.fastq2":  ["gs://archanaraja/rnaseq/test_data/A1k_R1_S16_R2_001.trimmed.fastq.gz"],
+  "rnaseq_pipeline_fastq_workflow.fastq2":  ["/Users/akre96/Documents/github/RNAseq/sampleData/A1k_R1_S16_R2_001.trimmed.fastq.gz"],
   "rnaseq_pipeline_fastq_workflow.star.memory": "60",
   "rnaseq_pipeline_fastq_workflow.star.disk_space": "120",
   "rnaseq_pipeline_fastq_workflow.star.outSAMattributes": "NH HI AS NM MD nM",
-  "rnaseq_pipeline_fastq_workflow.fastq1": ["gs://archanaraja/rnaseq/test_data/A1k_R1_S16_R1_001.trimmed.fastq.gz"],
+  "rnaseq_pipeline_fastq_workflow.fastq1": ["/Users/akre96/Documents/github/RNAseq/sampleData/A1k_R1_S16_R1_001.trimmed.fastq.gz"],
   "rnaseq_pipeline_fastq_workflow.star.outSAMtype": "BAM SortedByCoordinate",
-  "rnaseq_pipeline_fastq_workflow.star_index": "gs://archanaraja/rnaseq/references/rat/STAR_reference/Rnor_6.0_star_index.tar.gz",
+  "rnaseq_pipeline_fastq_workflow.star_index": "/Users/akre96/Documents/github/RNAseq/sampleData/Rnor_6.0_chr12_v95_star_index.gz",
   "rnaseq_pipeline_fastq_workflow.star.quantMode": "TranscriptomeSAM"
 }
