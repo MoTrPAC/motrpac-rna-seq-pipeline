@@ -14,21 +14,24 @@ task rsem {
     String? is_stranded
     String? paired_end
     String? seed
-    File script
 
     command {
         set -euo pipefail
         mkdir rsem_reference
-        tar -xvvf ${rsem_reference} -C rsem_reference --strip-components=1
-
-        python3 ${script} \
-            ${"--max_frag_len " + max_frag_len} \
-            ${"--estimate_rspd " + estimate_rspd} \
-            ${"--is_stranded " + is_stranded} \
-            ${"--paired_end " + paired_end} \
-            ${"--seed " + seed} \
-            --threads ${num_threads} \
-            rsem_reference ${transcriptome_bam} ${prefix}
+        tar -xzvf ${rsem_reference} -C rsem_reference --strip-components=1
+        cd rsem_reference
+        ls
+        rsem-calculate-expression \
+            -p ${num_threads} \
+            --bam \
+            --paired-end \
+            --no-bam-output \
+            --forward-prob 0.5 \
+            --seed 12345 \
+            ${transcriptome_bam}\
+            rsem_reference \
+            ${prefix}
+        ls
     }
 
     output {
