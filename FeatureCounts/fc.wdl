@@ -7,22 +7,25 @@ task featurecounts {
     Int memory
     Int disk_space
     Int num_threads
-
+    Int num_preempt
 
     command {
         set -euo pipefail
-        /Users/archanaraja/work/tools/subread-1.6.3-MacOSX-x86_64/bin/featureCounts -a ${gtf_file} -o /Users/archanaraja/work/repo/RNAseq/test_data/${prefix}.out -p -M --fraction ${input_bam}
+        featureCounts -a ${gtf_file} -o ${prefix}.out -p -M --fraction ${input_bam}
         ls -ltr
     }
 
     output {
-        File fc_out = "/Users/archanaraja/work/repo/RNAseq/test_data/A1k_R1_S16.out"
-        File fc_summary = "/Users/archanaraja/work/repo/RNAseq/test_data/${prefix}.out.summary"
+        File fc_out = "${prefix}.out"
+        File fc_summary = "${prefix}.out.summary"
     }
 
     runtime {
+        docker: "akre96/motrpac_rnaseq:v0.1"
+        memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${num_threads}"
+        preemptible: "${num_preempt}"
     }
 
     meta {
