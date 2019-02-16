@@ -1,6 +1,11 @@
 # Test Data
-sampleData
 
 # Cromwell execution logs
 cromwell-executions
 cromwell-workflow-logs
+
+#old codes
+old_implementation
+RSEM_expression_needs_work
+rn_rRNA
+
