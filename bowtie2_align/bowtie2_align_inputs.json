@@ -1,0 +1,13 @@
+{
+  "bowtie2_align_workflow.bowtie2_align.disk_space": "50",
+  "bowtie2_align_workflow.bowtie2_align.fastq_r2": "gs://archanaraja/rnaseq/test_data/A1k_R1_S16_R2_001.trimmed.fastq.gz",
+  "bowtie2_align_workflow.bowtie2_align.num_threads": "10",
+  "bowtie2_align_workflow.bowtie2_align.memory": "40",
+  "bowtie2_align_workflow.bowtie2_align.num_preempt": "0",
+  "bowtie2_align_workflow.bowtie2_align.fastq_r1": "gs://archanaraja/rnaseq/test_data/A1k_R1_S16_R1_001.trimmed.fastq.gz",
+  "bowtie2_align_workflow.bowtie2_align.sample_prefix": "A1k_R1_S1",
+  "bowtie2_align_workflow.bowtie2_align.genome_dir_tar": "gs://archanaraja/rnaseq/test/cromwell-execution/bowtie2_index_workflow/463d7168-df81-4d99-b1b1-05d99f52195d/call-bowtie2_index/rn_globin.tar.gz",
+  "bowtie2_align_workflow.bowtie2_align.index_prefix": "bowtie2_index",
+  "bowtie2_align_workflow.bowtie2_align.genome_dir": "rn_globin"
+}
+
