@@ -44,8 +44,8 @@ task rsem {
     }
 
     output {
-        File genes="rsem_reference/${prefix}.rsem.genes.results"
-        File isoforms="rsem_reference/${prefix}.rsem.isoforms.results"
+        File genes="rsem_reference/${prefix}.genes.results"
+        File isoforms="rsem_reference/${prefix}.isoforms.results"
     }
 
     runtime {
