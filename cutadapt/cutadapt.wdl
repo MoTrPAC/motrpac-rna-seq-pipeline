@@ -1,60 +1,54 @@
-version 1.0
-
-import "common.wdl" as common_wdl
-
 task Cutadapt {
-    input {
-        FastqPair inputFastq
-        String read1output
-        String? read2output
-        String? format
-        Int cores = 1
-        Int memory = 8
-        Array[String]+? adapter
-        Array[String]+? adapterRead2
-        Int? minimumLength # Necessary to prevent creation of empty reads
-        String? reportPath
-        String? tooShortOutputPath
-        String? tooShortPairedOutputPath
-    }
-
-    String read2outputArg = if (defined(read2output)) then "mkdir -p $(dirname " + read2output + ")" else ""
+        String index_adapter
+        String univ_adapter
+        File fastqr1
+        File fastqr2
+#        String read1output
+#        String read2output
+#        String? reportPath
+#        String? tooShortOutput
+#        String? tooShortPairedOutput
+        String sample_prefix
+        Int? minimumLength
+        Int cores
+        Int disk_space
+        Int memory
+        Int num_preempt
 
     command {
         set -e -o pipefail
-        ~{"mkdir -p $(dirname " + read1output + ")"}
-        ~{read2outputArg}
-        ~{"mkdir -p $(dirname " + reportPath + ")"}
+        mkdir -p fastq_trim
+        mkdir -p fastq_trim/tooshort
         cutadapt \
-        ~{"--cores=" + cores} \
-        ~{true="-a" false="" defined(adapter)} ~{sep=" -a " adapter} \
-        ~{true="-A" false="" defined(adapterRead2)} ~{sep=" -A " adapterRead2} \
-        --output ~{read1output} ~{"--paired-output " + read2output} \
-        ~{"--too-short-output " + tooShortOutputPath} \
-        ~{"--too-short-paired-output " + tooShortPairedOutputPath} \
-        ~{"--minimum-length " + minimumLength} \
-        ~{inputFastq.R1} \
-        ~{inputFastq.R2} \
-        ~{"> " + reportPath}
+        -a ${index_adapter} \
+        -A ${univ_adapter} \
+        -j ${cores} \
+        -o fastq_trim/${sample_prefix}_R1.fastq \
+        -p fastq_trim/${sample_prefix}_R2.fastq \
+        -m ${minimumLength} \
+        --too-short-output fastq_trim/tooshort/${sample_prefix}_R1.fastq \
+        --too-short-paired-output fastq_trim/tooshort/${sample_prefix}_R2.fastq \
+        ${fastqr1} \ 
+        ${fastqr2} > "${sample_prefix}_report.log"
     }
 
     output{
-        FastqPair cutOutput = object {
-          R1: read1output,
-          R2: read2output
-        }
-        File report = if defined(reportPath) then select_first([reportPath]) else stdout()
-        File? tooShortOutput=tooShortOutputPath
-        File? tooShortPairedOutput=tooShortPairedOutputPath
+        File fastq_trimmed_R1="fastq_trim/${sample_prefix}_R1.fastq"
+        File fastq_trimmed_R2="fastq_trim/${sample_prefix}_R2.fastq"
+#        File report = "${sample_prefix}.log"
+        File tooShortOutput="fastq_trim/tooshort/${sample_prefix}_R1.fastq"
+        File tooShortPairedOutput="fastq_trim/tooshort/${sample_prefix}_R2.fastq"
     }
 
     runtime {
-        cpu: cores
-        memory: memory
+        docker: "akre96/motrpac_rnaseq:v0.1"
+        memory: "${memory}GB"
+        disks: "local-disk ${disk_space} HDD"
+        cpu: "${cores}"
+        preemptible: "${num_preempt}"
+
     }
 }
 workflow Cutadapt_workflow {
     call Cutadapt
 }
-
-

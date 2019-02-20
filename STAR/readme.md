@@ -1,5 +1,2 @@
 java -jar ../../../tools/womtool-36.jar inputs rnaseq_fastq_star_scatter.wdl >star_inputs.json
-java -Dconfig.file=google.conf -jar /Users/archanaraja/work/tools/cromwell/cromwell-36.jar run STAR/rnaseq_fastq_star_scatter.wdl -i STAR/star_inputs.json
-
-# if in STAR directory:
-java -jar ~/cromwell/cromwell-36.jar run rnaseq_fastq_star_scatter.wdl -i star_inputs.json
+java -Dconfig.file=google.conf -jar /Users/archanaraja/work/tools/cromwell/cromwell-36.jar run STAR/star.wdl -i STAR/star_inputs.json
