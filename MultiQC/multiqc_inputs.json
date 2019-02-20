@@ -1,8 +1,0 @@
-{
-  "MultiQC_workflow.MultiQC.fileName": "MultiQC",
-  "MultiQC_workflow.MultiQC.analysisDirectory": "/Users/archanaraja/work/repo/RNAseq_v1/test_data",
-  "MultiQC_workflow.MultiQC.outDir": "/Users/archanaraja/work/repo/RNAseq_v1/test_data",
-  "MultiQC_workflow.MultiQC.dirs": "true",
-  "MultiQC_workflow.MultiQC.force": "true"
-}
-
