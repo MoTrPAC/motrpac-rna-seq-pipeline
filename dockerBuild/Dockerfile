@@ -30,9 +30,6 @@ RUN apt-get -y install gawk
 # Install procps (to get free and top)
 RUN apt-get install -y procps
 
-# Install cutadapt-1.18 (for Trimgalore)
-RUN pip install cutadapt==1.18
-
 # Install openjdk-8
 RUN apt-get -y install openjdk-8-jdk openjdk-8-jre
 
@@ -135,3 +132,9 @@ RUN cd /src && \
 RUN cd /src && \
     wget https://raw.githubusercontent.com/nugentechnologies/nudup/555756bbbdc5c83c4d4b00cda9f51758393583ca/nudup.py && \
     ln -s /src/nudup.py /usr/local/bin
+
+# Install python 3
+RUN apt-get install -y python3-dev python3-pip
+
+# Install cutadapt-1.18 (for Trimgalore)
+RUN pip3 install cutadapt==1.18
