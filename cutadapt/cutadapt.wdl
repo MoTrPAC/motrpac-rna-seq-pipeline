@@ -22,14 +22,12 @@ task Cutadapt {
         cutadapt \
         -a ${index_adapter} \
         -A ${univ_adapter} \
-        -j ${cores} \
         -o fastq_trim/${sample_prefix}_R1.fastq \
         -p fastq_trim/${sample_prefix}_R2.fastq \
         -m ${minimumLength} \
         --too-short-output fastq_trim/tooshort/${sample_prefix}_R1.fastq \
         --too-short-paired-output fastq_trim/tooshort/${sample_prefix}_R2.fastq \
-        ${fastqr1} \ 
-        ${fastqr2} > "${sample_prefix}_report.log"
+        ${fastqr1} ${fastqr2} > "${sample_prefix}_report.log"
     }
 
     output{
