@@ -1,9 +1,10 @@
 task star {
 
-    Array[File] fastq
+#    Array[File] fastq
     String prefix
     File star_index
-
+    File fastq1
+    File fastq2
     # STAR options
     Int? outFilterMultimapNmax
     Int? alignSJoverhangMin
@@ -35,8 +36,7 @@ task star {
 
     command {
         set -euo pipefail
-        #if the length of fastq list is 1 then it is single end , if the length is 2 then it's paired end , removed the newline character
-        ${if length(fastq)<2 then "fastq1_abs=" + fastq[0] else "fastq1_abs=" + fastq[0] +"\n"+ "fastq2_abs="+fastq[1]}
+        ${"fastq1_abs=" + fastq1 +"\n"+ "fastq2_abs="+fastq2}
 
         echo "FASTQs:"
         echo $fastq1_abs
@@ -46,6 +46,7 @@ task star {
         echo $(date +"[%b %d %H:%M:%S] Extracting STAR index")
         mkdir star_index
         tar -xvvf ${star_index} -C star_index --strip-components=1
+        echo "Done extracting index"
 
         mkdir star_out
         STAR  --genomeDir star_index \
@@ -83,7 +84,7 @@ task star {
 
     runtime {
         docker: "akre96/motrpac_rnaseq:v0.1"	
-	    memory: "${memory}GB"
+	memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${num_threads}"
         preemptible: "${num_preempt}"
