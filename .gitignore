@@ -8,4 +8,6 @@ cromwell-workflow-logs
 old_implementation
 RSEM_expression_needs_work
 rn_rRNA
-
+FeatureCounts/fc_local.wdl
+FeatureCounts/fc_inputs_local.json
+test_data
