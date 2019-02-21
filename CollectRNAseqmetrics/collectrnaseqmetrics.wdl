@@ -2,7 +2,6 @@ task collectrnaseqmetrics {
 
     File input_bam
     File ref_flat
-    File script
     String prefix
 
     Int memory
@@ -12,7 +11,14 @@ task collectrnaseqmetrics {
 
     command {
         set -euo pipefail
-        python3 -u ${script} ${input_bam} ${prefix} ${ref_flat} --memory ${memory}
+        filename="$(basename -s .bam ${input_bam})"
+
+        java -Xmx10g -jar /src/picard/picard.jar CollectRnaSeqMetrics \
+            I=${input_bam} \
+            O=$filename.RNA_Metrics \
+            REF_FLAT=${ref_flat}\
+            STRAND=FIRST_READ_TRANSCRIPTION_STRAND
+
         ls -ltr
     }
 
@@ -22,7 +28,7 @@ task collectrnaseqmetrics {
     }
 
     runtime {
-        docker: "gcr.io/broad-cga-francois-gtex/gtex_rnaseq:V8"
+        docker: "akre96/motrpac_rnaseq:v0.1"
         memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${num_threads}"
