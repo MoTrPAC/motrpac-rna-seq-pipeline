@@ -13,7 +13,7 @@ task collectrnaseqmetrics {
         set -euo pipefail
         filename="$(basename -s .bam ${input_bam})"
 
-        java -Xmx10g -jar /src/picard/picard.jar CollectRnaSeqMetrics \
+        java -Xmx${memory}g -jar /src/picard/picard.jar CollectRnaSeqMetrics \
             I=${input_bam} \
             O=$filename.RNA_Metrics \
             REF_FLAT=${ref_flat}\
