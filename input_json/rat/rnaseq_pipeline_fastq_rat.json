@@ -1,6 +1,6 @@
 {
-  "rnaseq_pipeline_fastq_workflow.fastq1": "gs://user-mshruti/rat/rat_pilot_data/A_R1_S16_R1_001.trimmed.fastq.gz",
-  "rnaseq_pipeline_fastq_workflow.fastq2": "gs://user-mshruti/rat/rat_pilot_data/A_R1_S16_R2_001.trimmed.fastq.gz",
+  "rnaseq_pipeline_fastq_workflow.fastq1": ["gs://archanaraja/rnaseq/test_data/A1k_R1_S16_R1_001.trimmed.fastq.gz"],
+  "rnaseq_pipeline_fastq_workflow.fastq2": ["gs://archanaraja/rnaseq/test_data/A1k_R1_S16_R2_001.trimmed.fastq.gz"],
   "rnaseq_pipeline_fastq_workflow.prefix": "Rnor_6.0",
   "rnaseq_pipeline_fastq_workflow.star.num_preempt": "25",
   "rnaseq_pipeline_fastq_workflow.star_index": "gs://user-mshruti/wdl/cromwell-execution/star_index_workflow/336611e0-6875-48e6-979e-1bae66acb685/call-star_index/Rnor_6.0_star_index.tar.gz",
