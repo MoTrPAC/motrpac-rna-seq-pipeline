@@ -1,7 +1,10 @@
 task multiQC{
 #  Array[File] fastQCReports
 #  Array[File] cutadaptReports
-  Array[File] fastQCReports_trim
+#  Array[File] fastQCReports_trim
+#  String fastQC_raw_path
+  String fastQC_trim_path
+  String cutadapt_dir_path
   Int memory
   Int disk_space
   Int num_threads
@@ -9,21 +12,13 @@ task multiQC{
   String docker
 
   command {
-    mkdir reports
-    cd reports
-    for file in ${sep=' ' fastQCReports}  ; do
-        tar -zxvf $file
-        rm $file
-    done
-
-    cd ..
-
     mkdir multiQC_report
     multiqc \
       -d \
       -f \
+      -n multiQC_consolidated \
       -o multiQC_report \
-      reports/*
+      ${fastQC_trim_path} ${cutadapt_dir_path}
     tar -czvf multiqc_report.tar.gz ./multiQC_report
   }
   output {
