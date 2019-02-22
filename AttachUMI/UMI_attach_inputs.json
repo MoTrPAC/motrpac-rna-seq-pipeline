@@ -1,0 +1,13 @@
+{
+  "attach_umi.memory": "50",
+  "attach_umi.num_threads": "8",
+  "attach_umi.attachUMI.fastqi1": "",
+  "attach_umi.num_preempt": "",
+  "attach_umi.docker": "",
+  "attach_umi.attachUMI.script": "",
+  "attach_umi.disk_space": "100",
+  "attach_umi.attachUMI.fastqr2": "",
+  "attach_umi.attachUMI.SID": "",
+  "attach_umi.attachUMI.fastqr1": ""
+}
+
