@@ -22,7 +22,6 @@ task star_index {
             --sjdbOverhang ${overhang} \
             --runThreadN ${num_threads}
             tar -cvzf ${prefix}.tar.gz ${prefix}
-#            touch ${prefix}
     }
 
     output {
@@ -31,7 +30,7 @@ task star_index {
     }
 
     runtime {
-        docker: "gcr.io/broad-cga-francois-gtex/gtex_rnaseq:V8"
+        docker: "akre96/motrpac_rnaseq:v0.1"
         memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${num_threads}"
