@@ -1,8 +1,8 @@
 task bowtie2_align {
 
 #    Array[File] fastq
-    File fastq_r1
-    File fastq_r2
+    File fastqr1
+    File fastqr2
     File genome_dir_tar
     String genome_dir # name of the directory when uncompressed
     String index_prefix="bowtie2_index"
@@ -11,13 +11,12 @@ task bowtie2_align {
     Int disk_space
     Int num_threads
     Int num_preempt
-#    File samfile
-#    File log_file
+    String docker
 
     command {
         mkdir genome
         tar -zxvf ${genome_dir_tar} -C ./genome
-        bowtie2 -p ${num_threads} -1 ${fastq_r1} -2 ${fastq_r2} -x genome/${genome_dir}/${index_prefix} --local -S ${sample_prefix}.sam > ${sample_prefix}.log
+        bowtie2 -p ${num_threads} -1 ${fastqr1} -2 ${fastqr2} -x genome/${genome_dir}/${index_prefix} --local -S ${sample_prefix}.sam > ${sample_prefix}.log
     }
 
     output {
@@ -27,7 +26,7 @@ task bowtie2_align {
     }
 
     runtime {
-        docker: "akre96/motrpac_rrbs:v0.1"
+        docker: "${docker}"
 	memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${num_threads}"
