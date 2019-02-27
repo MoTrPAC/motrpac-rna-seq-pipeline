@@ -8,6 +8,7 @@ task rsem {
     Int disk_space
     Int num_threads
     Int num_preempt
+    String docker
 
 #    Int? max_frag_len
 #    String? estimate_rspd
@@ -49,7 +50,7 @@ task rsem {
     }
 
     runtime {
-        docker: "akre96/motrpac_rnaseq:v0.1"
+        docker: "${docker}"
         memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${num_threads}"

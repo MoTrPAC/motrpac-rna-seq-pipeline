@@ -6,34 +6,34 @@ task star {
     File fastq1
     File fastq2
     # STAR options
-    Int? outFilterMultimapNmax
-    Int? alignSJoverhangMin
-    Int? alignSJDBoverhangMin
-    Int? outFilterMismatchNmax
-    Float? outFilterMismatchNoverLmax
-    Int? alignIntronMin
-    Int? alignIntronMax
-    Int? alignMatesGapMax
+#    Int? outFilterMultimapNmax
+#    Int? alignSJoverhangMin
+#    Int? alignSJDBoverhangMin
+#    Int? outFilterMismatchNmax
+#    Float? outFilterMismatchNoverLmax
+#    Int? alignIntronMin
+#    Int? alignIntronMax
+#    Int? alignMatesGapMax
     String outFilterType = "BySJout"
     String outSAMtype = "BAM SortedByCoordinate"
-    Float? outFilterScoreMinOverLread
-    Float? outFilterMatchNminOverLread
-    Int? limitSjdbInsertNsj
-    String? outSAMstrandField
-    String? outFilterIntronMotifs
-    String? alignSoftClipAtReferenceEnds
+#    Float? outFilterScoreMinOverLread
+#    Float? outFilterMatchNminOverLread
+#    Int? limitSjdbInsertNsj
+#    String? outSAMstrandField
+#    String? outFilterIntronMotifs
+#    String? alignSoftClipAtReferenceEnds
     String? quantMode = "TranscriptomeSAM"
     String? outSAMattrRGline
     String? outSAMattributes
-    Int? chimSegmentMin
-    Int? chimJunctionOverhangMin
-    String? chimOutType
-    Int? chimMainSegmentMultNmax
+#    Int? chimSegmentMin
+#    Int? chimJunctionOverhangMin
+#    String? chimOutType
+#    Int? chimMainSegmentMultNmax
     Int memory
     Int disk_space
     Int num_threads
     Int num_preempt
-
+    String docker
     command {
         set -euo pipefail
         ${"fastq1_abs=" + fastq1 +"\n"+ "fastq2_abs="+fastq2}
@@ -83,7 +83,7 @@ task star {
     }
 
     runtime {
-        docker: "akre96/motrpac_rnaseq:v0.1"	
+        docker: "${docker}"	
 	memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${num_threads}"
