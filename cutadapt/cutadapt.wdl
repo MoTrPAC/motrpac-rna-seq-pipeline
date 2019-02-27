@@ -9,6 +9,7 @@ task Cutadapt {
         Int disk_space
         Int memory
         Int num_preempt
+        String docker
 
     command {
         set -e -o pipefail
@@ -34,7 +35,7 @@ task Cutadapt {
     }
 
     runtime {
-        docker: "akre96/motrpac_rnaseq:v0.1"
+        docker: "${docker}"
         memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${cpus}"
