@@ -12,3 +12,6 @@ rn_rRNA
 FeatureCounts/fc_local.wdl
 FeatureCounts/fc_inputs_local.json
 test_data
+
+# MacOS Files
+.DS_Store

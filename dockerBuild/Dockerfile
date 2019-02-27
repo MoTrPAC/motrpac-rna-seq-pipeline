@@ -11,6 +11,9 @@ RUN apt-get clean && \
 # Install essential packages
 RUN apt-get install  -y build-essential zlib1g-dev libncurses5-dev libncursesw5-dev wget unzip python-pip python-dev
 
+# Install python3 and pip3
+RUN apt-get install -y python3-dev python3-pip
+
 
 # Install essential packages for building picard tools
 RUN export DEBIAN_FRONTEND=noninteractive && \
@@ -19,10 +22,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
   git r-base ant && \
   apt-get clean autoclean && \
   apt-get autoremove -y
-
-# Install python-3.6
-RUN apt-get install -y python3.6
-
 
 # Install gawk to make awk scripts able to use gensub command
 RUN apt-get -y install gawk
@@ -131,10 +130,8 @@ RUN cd /src && \
 # Download nudup.py from January 2018
 RUN cd /src && \
     wget https://raw.githubusercontent.com/nugentechnologies/nudup/555756bbbdc5c83c4d4b00cda9f51758393583ca/nudup.py && \
+    chmod 755 /src/nudup.py && \
     ln -s /src/nudup.py /usr/local/bin
 
-# Install python 3
-RUN apt-get install -y python3-dev python3-pip
-
-# Install cutadapt-1.18 (for Trimgalore)
+# Install cutadapt-1.18
 RUN pip3 install cutadapt==1.18
