@@ -9,11 +9,11 @@ task rsem {
     Int num_threads
     Int num_preempt
 
-    Int? max_frag_len
-    String? estimate_rspd
-    String? is_stranded
-    String? paired_end
-    String? seed
+#    Int? max_frag_len
+#    String? estimate_rspd
+#    String? is_stranded
+#    String? paired_end
+#    String? seed
 
     command {
         set -euo pipefail
