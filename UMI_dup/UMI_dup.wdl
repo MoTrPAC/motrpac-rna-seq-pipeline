@@ -12,10 +12,11 @@ task UMI_dup {
   command {
     set -euo pipefail
     mkdir tmp_dir
-    python ${script} -2 -s 8 -l 8 --rmdup-only -o ${sample_prefix} -T tmp_dir ${star_align}
+    nudup.py -2 -s 8 -l 8 --rmdup-only -o ${sample_prefix} -T tmp_dir ${star_align}
   }
   output{
-    File umi_dup_out= "${sample_prefix}_dup.txt" 
+#    File umi_dup_out= "${sample_prefix}_dup.txt"
+     File umi_dup_out="UMI_dup.log"
   }
   runtime {
     docker: "${docker}"
