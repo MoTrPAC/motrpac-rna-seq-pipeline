@@ -1,17 +1,3 @@
-#FASTQC RAW
-#UMI ATTACH
-#CUTADAPT
-#FASTQC TRIM
-#MULTIQC - RAW , TRIM , CUTADAPT
-#STAR
-#FEATURE COUNTS
-#rsem-calculate-expression
-#BOWTIE2 GLOBIN AND RRNA
-#MARK DUPLICATES
-#nudup.py
-#Compute the % mapped reads in different types of chromosomes
-#Picard’s tool CollectRnaSeqMetrics
-
 import "FastQC/fastqc.wdl" as fastqc
 import "AttachUMI/attach_UMI.wdl" as attach_umi
 import "cutadapt/cutadapt.wdl" as cutadapt
