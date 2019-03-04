@@ -2,7 +2,7 @@
 task markduplicates {
 
     File input_bam
-    String prefix
+    String SID
 
     Int memory
     Int disk_space
@@ -21,7 +21,7 @@ task markduplicates {
             CREATE_INDEX=true \
             VALIDATION_STRINGENCY=SILENT \
             ASSUME_SORT_ORDER=coordinate \
-            M=${prefix}.marked_dup_metrics.txt \
+            M=${SID}.marked_dup_metrics.txt \
             REMOVE_DUPLICATES=false
 
         samtools index ${output_bam}
@@ -30,7 +30,7 @@ task markduplicates {
     output {
         File bam_file = "${output_bam}"
         File bam_index = "${output_bam}.bai"
-        File metrics = "${prefix}.marked_dup_metrics.txt"
+        File metrics = "${SID}.marked_dup_metrics.txt"
     }
 
     runtime {

@@ -5,7 +5,6 @@
   "UMI_qc.UMI_dup.num_preempt": "0",
   "UMI_qc.UMI_dup.memory": "30",
   "UMI_qc.UMI_dup.disk_space": "50",
-  "UMI_qc.UMI_dup.script": "gs://archanaraja/rnaseq/scripts/nudup.py",
   "UMI_qc.UMI_dup.docker": "akre96/motrpac_rnaseq:v0.1"
 }
 

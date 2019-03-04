@@ -3,7 +3,7 @@ task Cutadapt {
         String univ_adapter
         File fastqr1
         File fastqr2
-        String sample_prefix
+        String SID
         Int? minimumLength
         Int cpus
         Int disk_space
@@ -18,20 +18,20 @@ task Cutadapt {
         cutadapt \
         -a ${index_adapter} \
         -A ${univ_adapter} \
-        -o fastq_trim/${sample_prefix}_R1.fastq \
-        -p fastq_trim/${sample_prefix}_R2.fastq \
+        -o fastq_trim/${SID}_R1.fastq.gz \
+        -p fastq_trim/${SID}_R2.fastq.gz \
         -m ${minimumLength} \
-        --too-short-output fastq_trim/tooshort/${sample_prefix}_R1.fastq \
-        --too-short-paired-output fastq_trim/tooshort/${sample_prefix}_R2.fastq \
-        ${fastqr1} ${fastqr2} > "fastq_trim/${sample_prefix}_report.log"
+        --too-short-output fastq_trim/tooshort/${SID}_R1.fastq.gz \
+        --too-short-paired-output fastq_trim/tooshort/${SID}_R2.fastq.gz \
+        ${fastqr1} ${fastqr2} > "fastq_trim/${SID}_report.log"
     }
 
     output{
-        File fastq_trimmed_R1="fastq_trim/${sample_prefix}_R1.fastq"
-        File fastq_trimmed_R2="fastq_trim/${sample_prefix}_R2.fastq"
-        File report="fastq_trim/${sample_prefix}_report.log"
-        File tooShortOutput="fastq_trim/tooshort/${sample_prefix}_R1.fastq"
-        File tooShortPairedOutput="fastq_trim/tooshort/${sample_prefix}_R2.fastq"
+        File fastq_trimmed_R1="fastq_trim/${SID}_R1.fastq.gz"
+        File fastq_trimmed_R2="fastq_trim/${SID}_R2.fastq.gz"
+        File report="fastq_trim/${SID}_report.log"
+        File tooShortOutput="fastq_trim/tooshort/${SID}_R1.fastq.gz"
+        File tooShortPairedOutput="fastq_trim/tooshort/${SID}_R2.fastq.gz"
     }
 
     runtime {
