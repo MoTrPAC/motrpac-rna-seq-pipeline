@@ -1,8 +1,9 @@
+#Use version v1.6.3 , currently uses v1.6.2 as specified in the MOP , subtle changes in .out file
 task featurecounts {
 
     File input_bam
     File gtf_file
-    String prefix
+    String SID
 
     Int memory
     Int disk_space
@@ -12,13 +13,13 @@ task featurecounts {
 
     command {
         set -euo pipefail
-        featureCounts -a ${gtf_file} -o ${prefix}.out -p -M --fraction ${input_bam}
+        featureCounts -a ${gtf_file} -o ${SID}.out -p -M --fraction ${input_bam}
         ls -ltr
     }
 
     output {
-        File fc_out = "${prefix}.out"
-        File fc_summary = "${prefix}.out.summary"
+        File fc_out = "${SID}.out"
+        File fc_summary = "${SID}.out.summary"
     }
 
     runtime {

@@ -6,7 +6,7 @@ task bowtie2_align {
     File genome_dir_tar
     String genome_dir # name of the directory when uncompressed
     String index_prefix="bowtie2_index"
-    String sample_prefix
+    String SID
     Int memory
     Int disk_space
     Int num_threads
@@ -16,12 +16,12 @@ task bowtie2_align {
     command {
         mkdir genome
         tar -zxvf ${genome_dir_tar} -C ./genome
-        bowtie2 -p ${num_threads} -1 ${fastqr1} -2 ${fastqr2} -x genome/${genome_dir}/${index_prefix} --local -S ${sample_prefix}.sam > ${sample_prefix}.log
+        bowtie2 -p ${num_threads} -1 ${fastqr1} -2 ${fastqr2} -x genome/${genome_dir}/${index_prefix} --local -S ${SID}.sam > ${SID}.log
     }
 
     output {
-        File bowtie2_output = "${sample_prefix}.sam"
-        File bowtie2_log = "${sample_prefix}.log"
+        File bowtie2_output = "${SID}.sam"
+        File bowtie2_log = "${SID}.log"
 
     }
 
