@@ -1,0 +1,10 @@
+{
+  "UMI_qc.UMI_dup.num_threads": "8",
+  "UMI_qc.UMI_dup.star_align": "gs://archanaraja/rnaseq/test_data/Aligned.sortedByCoord.out.bam",
+  "UMI_qc.UMI_dup.sample_prefix": "Con_BL_1",
+  "UMI_qc.UMI_dup.num_preempt": "0",
+  "UMI_qc.UMI_dup.memory": "30",
+  "UMI_qc.UMI_dup.disk_space": "50",
+  "UMI_qc.UMI_dup.docker": "akre96/motrpac_rnaseq:v0.1"
+}
+

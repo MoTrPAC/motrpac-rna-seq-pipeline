@@ -1,0 +1,13 @@
+{
+  "Cutadapt_workflow.Cutadapt.memory": "8",
+  "Cutadapt_workflow.Cutadapt.num_preempt": "0",
+  "Cutadapt_workflow.Cutadapt.minimumLength": "20",
+  "Cutadapt_workflow.Cutadapt.univ_adapter": "AGATCGGAAGAGC",
+  "Cutadapt_workflow.Cutadapt.disk_space": "30",
+  "Cutadapt_workflow.Cutadapt.fastqr2": "gs://archanaraja/rnaseq/test_data/Lung_Powder_S10_R2_001.head.fastq.gz",
+  "Cutadapt_workflow.Cutadapt.sample_prefix": "Lung_Powder_S10",
+  "Cutadapt_workflow.Cutadapt.index_adapter": "AGATCGGAAGAGC",
+  "Cutadapt_workflow.Cutadapt.fastqr1": "gs://archanaraja/rnaseq/test_data/Lung_Powder_S10_R1_001.head.fastq.gz",
+  "Cutadapt_workflow.Cutadapt.cpus": "1"
+}
+

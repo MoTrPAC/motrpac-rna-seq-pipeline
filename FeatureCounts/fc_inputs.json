@@ -1,0 +1,10 @@
+{
+  "featurecounts_workflow.featurecounts.gtf_file": "gs://archanaraja/rnaseq/references/rat/genes/Rattus_norvegicus.Rnor_6.0.94_only_transcripts.gtf",
+  "featurecounts_workflow.featurecounts.num_threads": "1",
+  "featurecounts_workflow.featurecounts.prefix": "A1k_R1_S16",
+  "featurecounts_workflow.featurecounts.input_bam": "gs://archanaraja/rnaseq/test/cromwell-execution/rnaseq_pipeline_fastq_workflow/fe3162f2-a727-494f-a737-46c2bc279098/call-star/shard-0/star_out/A1k_R1_S16.Aligned.sortedByCoord.out.bam",
+  "featurecounts_workflow.featurecounts.memory": "30",
+  "featurecounts_workflow.featurecounts.disk_space": "50",
+  "featurecounts_workflow.featurecounts.num_preempt": "0"
+}
+

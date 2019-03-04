@@ -1,12 +1,12 @@
 {
   "rnaseqc_counts_workflow.rnaseqc_counts.disk_space": "100",
-  "rnaseqc_counts_workflow.rnaseqc_counts.bam_index": "gs://user-mshruti/wdl/cromwell-execution/rnaseq_pipeline_fastq_workflow/56ab19d9-0b22-436f-b415-3dfa01c8f5d3/call-markduplicates/Rnor_6.0.Aligned.sortedByCoord.out.md.bam.bai",
+  "rnaseqc_counts_workflow.rnaseqc_counts.bam_index": "gs://archanaraja/rnaseq/test/cromwell-execution/rnaseq_pipeline_fastq_workflow/46f6dd58-e3f4-4577-b2a6-d13c61339d1c/call-markduplicates/attempt-2/Rnor_6.0.Aligned.sortedByCoord.out.md.bam.bai",
   "rnaseqc_counts_workflow.rnaseqc_counts.genome_fasta_index": "gs://user-mshruti/rat/Rattus_norvegicus.Rnor_6.0.dna.toplevel.fa.fai",
   "rnaseqc_counts_workflow.rnaseqc_counts.genome_fasta": "gs://user-mshruti/rat/Rattus_norvegicus.Rnor_6.0.dna.toplevel.fa",
   "rnaseqc_counts_workflow.rnaseqc_counts.memory": "60",
-  "rnaseqc_counts_workflow.rnaseqc_counts.bam_file": "gs://user-mshruti/wdl/cromwell-execution/rnaseq_pipeline_fastq_workflow/56ab19d9-0b22-436f-b415-3dfa01c8f5d3/call-markduplicates/Rnor_6.0.Aligned.sortedByCoord.out.md.bam",
+  "rnaseqc_counts_workflow.rnaseqc_counts.bam_file": "gs://archanaraja/rnaseq/test/cromwell-execution/rnaseq_pipeline_fastq_workflow/46f6dd58-e3f4-4577-b2a6-d13c61339d1c/call-markduplicates/attempt-2/Rnor_6.0.Aligned.sortedByCoord.out.md.bam",
   "rnaseqc_counts_workflow.rnaseqc_counts.num_preempt": "15",
   "rnaseqc_counts_workflow.rnaseqc_counts.num_threads": "10",
   "rnaseqc_counts_workflow.rnaseqc_counts.prefix": "Rnor_6.0",
-  "rnaseqc_counts_workflow.rnaseqc_counts.genes_gtf": "gs://user-mshruti/rat/Rattus_norvegicus.Rnor_6.0.94.gtf"
+  "rnaseqc_counts_workflow.rnaseqc_counts.genes_gtf": "gs://archanaraja/rnaseq/references/rat/genes/Rattus_norvegicus.Rnor_6.0.94_only_transcripts.gtf"
 }
