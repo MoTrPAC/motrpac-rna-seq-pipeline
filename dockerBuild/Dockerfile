@@ -98,12 +98,12 @@ RUN cd /src && \
   rm bowtie2.zip && \
 	ln -s /src/bowtie2-2.3.4.3-linux-x86_64/bowtie2* /usr/local/bin
 
-# Install subread-1.6.2 (Only links featureCounts)
+# Install subread-1.6.3 (Only links featureCounts)
 RUN cd /src && \
-    wget -O subread.tar.gz https://sourceforge.net/projects/subread/files/subread-1.6.2/subread-1.6.2-Linux-x86_64.tar.gz/download && \
+    wget -O subread.tar.gz https://sourceforge.net/projects/subread/files/subread-1.6.3/subread-1.6.3-Linux-x86_64.tar.gz/download && \
     tar -zxvf subread.tar.gz && \
     rm subread.tar.gz && \
-    cd subread-1.6.2*/bin && \
+    cd subread-1.6.3*/bin && \
     ln -s /src/subread-*/bin/fe* /usr/local/bin
 
 # Install STAR-2.6.1b
