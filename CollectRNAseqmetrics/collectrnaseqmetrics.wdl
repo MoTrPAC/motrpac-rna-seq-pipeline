@@ -29,8 +29,6 @@ task collectrnaseqmetrics {
     output {
          File rnaseqmetrics="qc53/${SID}.RNA_Metrics"
          File log="qc53/log/${SID}.log"
-#        File rnaseqmetrics = glob("*.RNA_Metrics")[0]
-#        Array[File] output_results= glob('*')
     }
 
     runtime {
