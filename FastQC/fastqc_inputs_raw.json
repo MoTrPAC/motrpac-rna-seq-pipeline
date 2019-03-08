@@ -1,0 +1,10 @@
+{
+  "fastqc_report.num_threads": "1",
+  "fastqc_report.disk_space": "20",
+  "fastqc_report.memory": "20",
+  "fastqc_report.fastQC.docker": "gcr.io/***REMOVED***-dev/motrpac_rnaseq:v0.1_03_08_19",
+  "fastqc_report.num_preempt": "0",
+  "fastqc_report.outdir": "fastqc_raw",
+  "fastqc_report.fastQC.fastqr1": "gs://archanaraja/rnaseq/test/pilot/fastq_raw/Con_BL_1_R1.fastq.gz",
+  "fastqc_report.fastQC.fastqr2": "gs://archanaraja/rnaseq/test/pilot/fastq_raw/Con_BL_1_R2.fastq.gz"
+}

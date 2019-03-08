@@ -1,0 +1,11 @@
+{
+  "attach_umi.memory": "50",
+  "attach_umi.num_threads": "8",
+  "attach_umi.attachUMI.fastqi1": "gs://archanaraja/rnaseq/test_data/Muscle2_100ksub_I1.fastq.gz",
+  "attach_umi.num_preempt": "0",
+  "attach_umi.docker": "akre96/motrpac_rnaseq:v0.1",
+  "attach_umi.disk_space": "100",
+  "attach_umi.attachUMI.fastqr2": "gs://archanaraja/rnaseq/test_data/Muscle2_100ksub_R2.fastq.gz",
+  "attach_umi.attachUMI.SID": "Muscle2_100ksub",
+  "attach_umi.attachUMI.fastqr1": "gs://archanaraja/rnaseq/test_data/Muscle2_100ksub_R1.fastq.gz"
+}
