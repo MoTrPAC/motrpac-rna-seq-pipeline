@@ -1,10 +1,10 @@
 {
-  "fastqc_report.num_threads": "2",
-  "fastqc_report.disk_space": "30",
-  "fastqc_report.fastQC.fastqr2": "gs://archanaraja/rnaseq/test_data/A1k_R1_S16_R2_001.trimmed.fastq.gz",
+  "fastqc_report.num_threads": "1",
+  "fastqc_report.disk_space": "20",
   "fastqc_report.memory": "20",
-  "fastqc_report.fastQC.docker": "akre96/motrpac_rnaseq:v0.1",
+  "fastqc_report.fastQC.docker": "gcr.io/motrpac-portal-dev/motrpac_rnaseq:v0.1_03_08_19",
   "fastqc_report.num_preempt": "0",
-  "fastqc_report.fastQC.fastqr1": "gs://archanaraja/rnaseq/test_data/A1k_R1_S16_R1_001.trimmed.fastq.gz"
+  "fastqc_report.outdir": "fastqc_trimmed",
+  "fastqc_report.fastQC.fastqr1": "gs://archanaraja/rnaseq/test/pilot/cromwell-execution/rnaseq_pipeline/e0fc6dfe-e30b-4005-bab9-e378d3d5ab1b/call-cutadapt/fastq_trim/Con_BL_1_R1.trimmed.fastq.gz",
+  "fastqc_report.fastQC.fastqr2": "gs://archanaraja/rnaseq/test/pilot/cromwell-execution/rnaseq_pipeline/e0fc6dfe-e30b-4005-bab9-e378d3d5ab1b/call-cutadapt/fastq_trim/Con_BL_1_R2.trimmed.fastq.gz"
 }
-
