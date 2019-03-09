@@ -6,29 +6,11 @@ task star {
     File fastq1
     File fastq2
     # STAR options
-#    Int? outFilterMultimapNmax
-#    Int? alignSJoverhangMin
-#    Int? alignSJDBoverhangMin
-#    Int? outFilterMismatchNmax
-#    Float? outFilterMismatchNoverLmax
-#    Int? alignIntronMin
-#    Int? alignIntronMax
-#    Int? alignMatesGapMax
     String outFilterType = "BySJout"
     String outSAMtype = "BAM SortedByCoordinate"
-#    Float? outFilterScoreMinOverLread
-#    Float? outFilterMatchNminOverLread
-#    Int? limitSjdbInsertNsj
-#    String? outSAMstrandField
-#    String? outFilterIntronMotifs
-#    String? alignSoftClipAtReferenceEnds
     String? quantMode = "TranscriptomeSAM"
     String? outSAMattrRGline
     String? outSAMattributes
-#    Int? chimSegmentMin
-#    Int? chimJunctionOverhangMin
-#    String? chimOutType
-#    Int? chimMainSegmentMultNmax
     Int memory
     Int disk_space
     Int num_threads
@@ -73,12 +55,7 @@ task star {
         File bam_file = "star_out/${prefix}.Aligned.sortedByCoord.out.bam"
         File bam_index = "star_out/${prefix}.Aligned.sortedByCoord.out.bam.bai"
         File transcriptome_bam = "star_out/${prefix}.Aligned.toTranscriptome.out.bam"
-        #File chimeric_junctions = "star_out/${prefix}.Chimeric.out.junction"
-        #File chimeric_bam_file = "star_out/${prefix}.Chimeric.out.sorted.bam"
-        #File chimeric_bam_index = "star_out/${prefix}.Chimeric.out.sorted.bam.bai"
-        #File read_counts = "star_out/${prefix}.ReadsPerGene.out.tab"
         File junctions = "star_out/${prefix}.SJ.out.tab"
-        #File junctions_pass1 = "star_out/${prefix}._STARpass1/SJ.out.tab"
         Array[File] logs = ["star_out/${prefix}.Log.final.out", "star_out/${prefix}.Log.out", "star_out/${prefix}.Log.progress.out"]
     }
 
