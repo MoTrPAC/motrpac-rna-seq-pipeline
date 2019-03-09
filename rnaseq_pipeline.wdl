@@ -1,14 +1,14 @@
-import "FastQC/fastqc.wdl" as fastqc
-import "AttachUMI/attach_UMI.wdl" as attach_umi
-import "cutadapt/cutadapt.wdl" as cutadapt
-import "MultiQC/multiqc.wdl" as multiqc
-import "STAR/star.wdl" as star
-import "FeatureCounts/fc.wdl" as fc
-import "RSEM/rsem.wdl" as rsem
+import "fastqc/fastqc.wdl" as fastqc
+import "fastq_attach/attach_UMI.wdl" as attach_umi
+import "fastq_trim/cutadapt.wdl" as cutadapt
+import "multiqc/multiqc.wdl" as multiqc
+import "star_align/star.wdl" as star
+import "featureCounts/fc.wdl" as fc
+import "rsem/rsem.wdl" as rsem
 import "bowtie2_align/bowtie2_align.wdl" as bowtie2_align
 import "mark_duplicates/markduplicates.wdl" as markdup
-import "CollectRNAseqmetrics/collectrnaseqmetrics.wdl" as metrics
-import "UMI_dup/UMI_dup.wdl" as umi_dup
+import "rnaseq_metrics/collectrnaseqmetrics.wdl" as metrics
+import "umi_dup/UMI_dup.wdl" as umi_dup
 
 workflow rnaseq_pipeline{
   # Default values for runtime, changed in individual calls according to requirements
@@ -30,8 +30,8 @@ workflow rnaseq_pipeline{
 
   call fastqc.fastQC as preTrimFastQC {
     input:
-    memory=30,
-    disk_space=50,
+    memory=20,
+    disk_space=20,
     num_threads=1,
     num_preempt=0,
     docker=docker,
@@ -41,8 +41,8 @@ workflow rnaseq_pipeline{
 
   call attach_umi.attachUMI as aumi {
     input :
-    memory=30,
-    disk_space=50,
+    memory=20,
+    disk_space=30,
     num_threads=1,
     num_preempt=0,
     docker=docker,
@@ -78,12 +78,13 @@ workflow rnaseq_pipeline{
   }
   call multiqc.multiQC as mqc {
     input :
-    memory=30,
-    disk_space=50,
+    memory=20,
+    disk_space=20,
     num_threads=1,
     num_preempt=0,
     docker=docker,
-    fastQCReports=[preTrimFastQC.fastQC_report,postTrimFastQC.fastQC_report]
+    fastQCReports=[preTrimFastQC.fastQC_report,postTrimFastQC.fastQC_report],
+    trim_report=cutadapt.report
  }
 
   call star.star as star_align {
@@ -93,6 +94,7 @@ workflow rnaseq_pipeline{
     num_threads=10,
     num_preempt=0,
     docker=docker,
+    prefix=SID,
     fastq1=cutadapt.fastq_trimmed_R1,
     fastq2=cutadapt.fastq_trimmed_R2,
  }
@@ -104,6 +106,7 @@ workflow rnaseq_pipeline{
     num_threads=1,
     num_preempt=0,
     docker=docker,
+    SID=SID,
     input_bam=star_align.bam_file
  }
 
@@ -114,6 +117,7 @@ workflow rnaseq_pipeline{
     num_threads=10,
     num_preempt=0,
     docker=docker,
+    prefix=SID,
     transcriptome_bam=star_align.transcriptome_bam
  }
 
@@ -124,6 +128,7 @@ workflow rnaseq_pipeline{
     num_threads=10,
     num_preempt=0,
     docker=docker,
+    SID=SID,
     fastqr1=cutadapt.fastq_trimmed_R1,
     fastqr2=cutadapt.fastq_trimmed_R2
 }
@@ -135,9 +140,22 @@ workflow rnaseq_pipeline{
     num_threads=10,
     num_preempt=0,
     docker=docker,
+    SID=SID,
     fastqr1=cutadapt.fastq_trimmed_R1,
     fastqr2=cutadapt.fastq_trimmed_R2
 }
+
+call bowtie2_align.bowtie2_align as bowtie2_phix {
+    input :
+    memory=45,
+    disk_space=50,
+    num_threads=10,
+    num_preempt=0,
+    docker=docker,
+    SID=SID,
+    fastqr1=cutadapt.fastq_trimmed_R1,
+    fastqr2=cutadapt.fastq_trimmed_R2
+} 
 
   call markdup.markduplicates as md {
   input :
@@ -146,6 +164,7 @@ workflow rnaseq_pipeline{
   disk_space=50,
   num_preempt=0,
   docker=docker,
+  SID=SID,
   input_bam=star_align.bam_file
 }
   call metrics.collectrnaseqmetrics as rnametrics {
@@ -155,6 +174,7 @@ workflow rnaseq_pipeline{
   disk_space=100,
   num_preempt=0,
   docker=docker,
+  SID=SID,
   input_bam=star_align.bam_file
 }
   call umi_dup.UMI_dup as udup {
@@ -164,6 +184,7 @@ workflow rnaseq_pipeline{
   disk_space=50,
   num_preempt=0,
   docker=docker,
+  sample_prefix=SID,
   star_align=star_align.bam_file
 }
 }
