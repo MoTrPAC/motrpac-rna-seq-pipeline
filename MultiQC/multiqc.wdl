@@ -1,13 +1,14 @@
 task multiQC{
   Array[File] fastQCReports
-#  Array[File] cutadaptReports
   Int memory
   Int disk_space
   Int num_threads
   Int num_preempt
   String docker
+  File trim_report
 
   command {
+    set -eou pipefail
     mkdir reports
     cd reports
     for file in ${sep=' ' fastQCReports}  ; do
@@ -17,17 +18,18 @@ task multiQC{
 
 
     cd ..
+    ls reports
 
     mkdir multiQC_report
     multiqc \
       -d \
       -f \
-      -o multiQC_report \
-      reports/*
-    tar -czvf multiqc_report.tar.gz ./multiQC_report
+      -o multiQC_prealign_report \
+      reports/* ${trim_report}
+    tar -czvf multiqc_prealign_report.tar.gz ./multiQC_prealign_report
   }
   output {
-    File multiQC_report = 'multiqc_report.tar.gz'  
+    File multiQC_report = 'multiqc_prealign_report.tar.gz'  
   }
   runtime {
     docker: "${docker}"

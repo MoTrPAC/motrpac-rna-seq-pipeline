@@ -1,8 +1,8 @@
 {
-  "multiqc_report.num_threads": "8",
+  "multiqc_report.num_threads": "1",
   "multiqc_report.num_preempt": "0",
   "multiqc_report.memory": "10",
-  "multiqc_report.multiQC.fastQCReports": ["gs://archanaraja/rnaseq/test/pilot/cromwell-execution/rnaseq_pipeline/e0fc6dfe-e30b-4005-bab9-e378d3d5ab1b/call-preTrimFastQC/fastqc_report.tar.gz","gs://archanaraja/rnaseq/test/pilot/cromwell-execution/rnaseq_pipeline/e0fc6dfe-e30b-4005-bab9-e378d3d5ab1b/call-postTrimFastQC/fastqc_report.tar.gz"],
-  "multiqc_report.multiQC.docker": "araja7/motrpac_rnaseq:v0.1",
-  "multiqc_report.disk_space": "30"
+  "multiqc_report.multiQC.fastQCReports": ["gs://archanaraja/rnaseq/test/pilot/cromwell-execution/fastqc_report/0b5144ee-2297-466f-a74a-0edb982a853f/call-fastQC/fastqc_raw.tar.gz","gs://archanaraja/rnaseq/test/pilot/cromwell-execution/fastqc_report/60a2faa5-31cc-4732-a0cf-526108e94b3c/call-fastQC/fastqc_trimmed.tar.gz"],
+  "multiqc_report.multiQC.docker": "gcr.io/***REMOVED***-dev/motrpac_rnaseq:v0.1_03_08_19",
+  "multiqc_report.disk_space": "20"
 }
