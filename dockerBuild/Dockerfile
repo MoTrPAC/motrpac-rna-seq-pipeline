@@ -106,14 +106,14 @@ RUN cd /src && \
     cd subread-1.6.3*/bin && \
     ln -s /src/subread-*/bin/fe* /usr/local/bin
 
-# Install STAR-2.6.1b
+# Install STAR-2.7.0d , changed the star version from 2.6.1b 
 RUN cd /src && \
-    wget -O star.tar.gz https://github.com/alexdobin/STAR/archive/2.6.1b.tar.gz && \
+    wget -O star.tar.gz https://github.com/alexdobin/STAR/archive/2.7.0d.tar.gz && \
     tar -zxvf star.tar.gz && \
     rm star.tar.gz && \
     cd STAR-*/source && \
     make && \
-    ln -s /src/STAR-2.6.1b/bin/Linux_x86_64/* /usr/local/bin
+    ln -s /src/STAR-2.7.0d/bin/Linux_x86_64/* /usr/local/bin
     
 # Install ucsc-gtftogenepred
 RUN cd /src && \
