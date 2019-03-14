@@ -17,3 +17,10 @@ gs://archanaraja/rnaseq/test/pilot/cromwell-execution/rnaseq_pipeline/c5af4850-e
 Docker image : (only updated subreads package)
 araja7/motrpac_rnaseq:v0.1
 
+gcr.io docker image with updated star version (2.7.0d)
+
+gcr.io/***REMOVED***-dev/motrpac_rnaseq:v0.1_03_08_19
+
+Ran the rnaseq pipeline on 2 pilot samples
+run_id => 2f9e005d
+run id => e69cdf99
