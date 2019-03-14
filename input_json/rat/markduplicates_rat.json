@@ -1,8 +1,0 @@
-{
-  "markduplicates_workflow.markduplicates.disk_space": "100",
-  "markduplicates_workflow.markduplicates.num_preempt": "15",
-  "markduplicates_workflow.markduplicates.memory": "60",
-  "markduplicates_workflow.markduplicates.num_threads": "10",
-  "markduplicates_workflow.markduplicates.prefix": "Rnor_6.0",
-  "markduplicates_workflow.markduplicates.input_bam": "gs://user-mshruti/wdl/cromwell-execution/rnaseq_pipeline_fastq_workflow/dcf9ca44-a930-44e4-9672-36e08c9b941a/call-star/star_out/Rnor_6.0.Aligned.sortedByCoord.out.bam"
-}
