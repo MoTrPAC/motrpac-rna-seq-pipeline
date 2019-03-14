@@ -1,14 +1,15 @@
-import "fastqc/fastqc.wdl" as fastqc
+import "FastQC/fastqc.wdl" as fastqc
 import "fastq_attach/attach_UMI.wdl" as attach_umi
 import "fastq_trim/cutadapt.wdl" as cutadapt
-import "multiqc/multiqc.wdl" as multiqc
+import "MultiQC/multiqc.wdl" as multiqc
 import "star_align/star.wdl" as star
-import "featureCounts/fc.wdl" as fc
-import "rsem/rsem.wdl" as rsem
+import "FeatureCounts/fc.wdl" as fc
+import "rsem_exp/rsem.wdl" as rsem
 import "bowtie2_align/bowtie2_align.wdl" as bowtie2_align
 import "mark_duplicates/markduplicates.wdl" as markdup
 import "rnaseq_metrics/collectrnaseqmetrics.wdl" as metrics
-import "umi_dup/UMI_dup.wdl" as umi_dup
+import "dup_umi/UMI_dup.wdl" as umi_dup
+import "compute_mapped/mapped.wdl" as mapped
 
 workflow rnaseq_pipeline{
   # Default values for runtime, changed in individual calls according to requirements
@@ -22,8 +23,6 @@ workflow rnaseq_pipeline{
   File fastqr2
   File fastqi1
   String SID
-  String prefix
-  String sample_prefix
   String index_adapter
   String univ_adapter
   Int minimumLength
@@ -60,7 +59,7 @@ workflow rnaseq_pipeline{
     num_preempt=0,
     docker=docker,
     index_adapter=index_adapter,
-    univ_adapter=univ_adapter,
+    univ_adapter=index_adapter,
     SID=SID,
     fastqr1=aumi.r1_umi_attached,
     fastqr2=aumi.r2_umi_attached,
@@ -186,6 +185,16 @@ call bowtie2_align.bowtie2_align as bowtie2_phix {
   docker=docker,
   sample_prefix=SID,
   star_align=star_align.bam_file
+}
+call mapped.samtools_mapped as sm {
+input :
+num_threads=1,
+memory=30,
+disk_space=30,
+num_preempt=0,
+docker=docker,
+SID=SID,
+input_bam=star_align.bam_file
 }
 }
 
