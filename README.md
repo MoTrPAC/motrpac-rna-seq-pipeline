@@ -9,7 +9,7 @@ To run the pipeline
 
 Output
 ---------------------------------------------------
-* Results can be found here : [gs://archanaraja/rnaseq/test/pilot/cromwell-execution/rnaseq_pipeline]
+* Results can be found here `gs://archanaraja/rnaseq/test/pilot/cromwell-execution/rnaseq_pipeline`
 
 Maintainer
 ----------------------------------------------------
