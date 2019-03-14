@@ -9,6 +9,7 @@ import "bowtie2_align/bowtie2_align.wdl" as bowtie2_align
 import "mark_duplicates/markduplicates.wdl" as markdup
 import "rnaseq_metrics/collectrnaseqmetrics.wdl" as metrics
 import "dup_umi/UMI_dup.wdl" as umi_dup
+import "compute_mapped/mapped.wdl" as mapped
 
 workflow rnaseq_pipeline{
   # Default values for runtime, changed in individual calls according to requirements
@@ -184,6 +185,16 @@ call bowtie2_align.bowtie2_align as bowtie2_phix {
   docker=docker,
   sample_prefix=SID,
   star_align=star_align.bam_file
+}
+call mapped.samtools_mapped as sm {
+input :
+num_threads=1,
+memory=30,
+disk_space=30,
+num_preempt=0,
+docker=docker,
+SID=SID,
+input_bam=star_align.bam_file
 }
 }
 
