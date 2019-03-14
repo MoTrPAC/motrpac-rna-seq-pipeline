@@ -1,9 +1,0 @@
-{
-  "rsem_reference_workflow.rsem_reference.annotation_gtf": "gs://my-bucket/rat/Rattus_norvegicus.Rnor_6.0.94.gtf",
-  "rsem_reference_workflow.rsem_reference.prefix": "Rnor_6.0_rsem_reference",
-  "rsem_reference_workflow.rsem_reference.num_preempt": "25",
-  "rsem_reference_workflow.rsem_reference.memory": "60",
-  "rsem_reference_workflow.rsem_reference.disk_space": "100",
-  "rsem_reference_workflow.rsem_reference.num_threads": "10",
-  "rsem_reference_workflow.rsem_reference.reference_fasta": "gs://my-bucket/rat/Rattus_norvegicus.Rnor_6.0.dna.toplevel.fa"
-}
