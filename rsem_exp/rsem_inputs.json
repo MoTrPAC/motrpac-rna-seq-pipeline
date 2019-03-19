@@ -1,12 +1,10 @@
 {
-  "rsem_workflow.rsem.seed": "true",
   "rsem_workflow.rsem.transcriptome_bam": "gs://archanaraja/rnaseq/test/cromwell-execution/rnaseq_pipeline_fastq_workflow/08004d52-bdd3-4d4e-822a-1c53236af458/call-star/star_out/Rnor_6.0.Aligned.toTranscriptome.out.bam",
-  "rsem_workflow.rsem.memory": "60",
-  "rsem_workflow.rsem.prefix": "A_R1_S16",
-  "rsem_workflow.rsem.disk_space": "100",
-  "rsem_workflow.rsem.paired_end": "true",
+  "rsem_workflow.rsem.memory": "30",
+  "rsem_workflow.rsem.SID": "A_R1_S16",
+  "rsem_workflow.rsem.disk_space": "50",
   "rsem_workflow.rsem.rsem_reference": "gs://my-bucket/wdl/cromwell-execution/rsem_reference_workflow/b8fc6741-f136-4152-93dc-00626a99f2fc/call-rsem_reference/Rnor_6.0_rsem_reference.tar.gz",
   "rsem_workflow.rsem.num_preempt": "0",
   "rsem_workflow.rsem.num_threads": "10",
-  "rsem_workflow.rsem.docker": "akre96/motrpac_rnaseq:v0.1"
+  "rsem_workflow.rsem.docker": "gcr.io/***REMOVED***-dev/motrpac_rnaseq:v0.1_03_08_19"
 }
