@@ -19,7 +19,7 @@ task multiQC{
 
     cd ..
     ls reports
-
+#check if this name has to be changed
     mkdir multiQC_report
     multiqc \
       -d \
