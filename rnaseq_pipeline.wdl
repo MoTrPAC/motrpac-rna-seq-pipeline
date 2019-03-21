@@ -10,6 +10,7 @@ import "mark_duplicates/markduplicates.wdl" as markdup
 import "rnaseq_metrics/collectrnaseqmetrics.wdl" as metrics
 import "dup_umi/UMI_dup.wdl" as umi_dup
 import "compute_mapped/mapped.wdl" as mapped
+import "MultiQC/multiqc_postalign.wdl" as mqc_postalign
 
 workflow rnaseq_pipeline{
   # Default values for runtime, changed in individual calls according to requirements
@@ -116,7 +117,7 @@ workflow rnaseq_pipeline{
     num_threads=10,
     num_preempt=0,
     docker=docker,
-    prefix=SID,
+    SID=SID,
     transcriptome_bam=star_align.transcriptome_bam
  }
 
@@ -187,14 +188,25 @@ call bowtie2_align.bowtie2_align as bowtie2_phix {
   star_align=star_align.bam_file
 }
 call mapped.samtools_mapped as sm {
+  input :
+  num_threads=1,
+  memory=30,
+  disk_space=30,
+  num_preempt=0,
+  docker=docker,
+  SID=SID,
+  input_bam=star_align.bam_file
+}
+call mqc_postalign.multiQC_postalign as mqc_pa {
 input :
-num_threads=1,
-memory=30,
-disk_space=30,
-num_preempt=0,
-docker=docker,
-SID=SID,
-input_bam=star_align.bam_file
+   memory=30,
+   disk_space=40,
+   num_threads=1,
+   num_preempt=0,
+   docker=docker,
+   star_report=star_align.logs[0],
+   rsem_report=rsem_quant.stat_cnt,
+   fc_report=featurecounts.fc_summary
 }
 }
 
