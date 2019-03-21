@@ -30,7 +30,7 @@ task star_index {
     }
 
     runtime {
-        docker: "akre96/motrpac_rnaseq:v0.1"
+        docker: "gcr.io/***REMOVED***-dev/motrpac_rnaseq:v0.1_03_08_19"
         memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${num_threads}"
