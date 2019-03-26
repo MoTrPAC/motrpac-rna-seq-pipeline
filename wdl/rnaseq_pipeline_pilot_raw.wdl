@@ -22,7 +22,6 @@ workflow rnaseq_pipeline{
   Int cpus
   File fastqr1
   File fastqr2
-  File fastqi1
   String SID
   String index_adapter
   String univ_adapter
@@ -39,19 +38,6 @@ workflow rnaseq_pipeline{
     fastqr2=fastqr2
   }
 
-  call attach_umi.attachUMI as aumi {
-    input :
-    memory=20,
-    disk_space=30,
-    num_threads=1,
-    num_preempt=0,
-    docker=docker,
-    SID=SID,
-    fastqr1=fastqr1,
-    fastqr2=fastqr2,
-    fastqi1=fastqi1
-  }
-
   call cutadapt.Cutadapt as cutadapt {
     input :
     memory=45,
@@ -62,8 +48,8 @@ workflow rnaseq_pipeline{
     index_adapter=index_adapter,
     univ_adapter=index_adapter,
     SID=SID,
-    fastqr1=aumi.r1_umi_attached,
-    fastqr2=aumi.r2_umi_attached,
+    fastqr1=fastqr1,
+    fastqr2=fastqr2,
     minimumLength=minimumLength
   }
   call fastqc.fastQC as postTrimFastQC {
@@ -167,7 +153,7 @@ call bowtie2_align.bowtie2_align as bowtie2_phix {
   SID=SID,
   input_bam=star_align.bam_file
 }
-  call metrics.collectrnaseqmetrics as rnaqc {
+  call metrics.collectrnaseqmetrics as rnametrics {
   input :
   num_threads=10,
   memory=40,
@@ -176,16 +162,6 @@ call bowtie2_align.bowtie2_align as bowtie2_phix {
   docker=docker,
   SID=SID,
   input_bam=star_align.bam_file
-}
-  call umi_dup.UMI_dup as udup {
-  input :
-  num_threads=8,
-  memory=50,
-  disk_space=50,
-  num_preempt=0,
-  docker=docker,
-  sample_prefix=SID,
-  star_align=star_align.bam_file
 }
 call mapped.samtools_mapped as sm {
   input :
@@ -204,10 +180,6 @@ input :
    num_threads=1,
    num_preempt=0,
    docker=docker,
-   fastQCReport=[postTrimFastQC.fastQC_report],
-   trim_report=cutadapt.report,
-   rnametric_report=rnaqc.rnaseqmetrics,
-   md_report=md.metrics,
    star_report=star_align.logs[0],
    rsem_report=rsem_quant.stat_cnt,
    fc_report=featurecounts.fc_summary

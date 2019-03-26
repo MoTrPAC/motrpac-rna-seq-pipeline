@@ -5,28 +5,39 @@ task multiQC_postalign{
   Int num_threads
   Int num_preempt
   String docker
+  Array[File] fastQCReport
+  File trim_report
   File rsem_report
   File star_report
   File fc_report
+  File md_report
+  File rnametric_report
 
   command {
     set -eou pipefail
     mkdir -p reports
     cd reports/
+    for file in ${sep=' ' fastQCReport}  ; do
+        tar -zxvf $file
+        rm $file
+    done
+    cp ${trim_report} ./
     cp ${rsem_report} ./
     cp ${star_report} ./
     cp ${fc_report} ./
+    cp ${md_report} ./
+    cp ${rnametric_report} ./
     cd ..
+
     echo "ls-------"
     ls reports
     mkdir multiQC_report
     multiqc \
-      -d \
       -f \
       -o multiQC_postalign_report \
       reports/*
     echo "success"
-#      ${rsem_report} ${star_report} ${fc_report}
+    
     tar -czvf multiqc_postalign_report.tar.gz ./multiQC_postalign_report
   }
   output {

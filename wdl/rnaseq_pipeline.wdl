@@ -167,7 +167,7 @@ call bowtie2_align.bowtie2_align as bowtie2_phix {
   SID=SID,
   input_bam=star_align.bam_file
 }
-  call metrics.collectrnaseqmetrics as rnaqc {
+  call metrics.collectrnaseqmetrics as rnametrics {
   input :
   num_threads=10,
   memory=40,
@@ -204,10 +204,6 @@ input :
    num_threads=1,
    num_preempt=0,
    docker=docker,
-   fastQCReport=[postTrimFastQC.fastQC_report],
-   trim_report=cutadapt.report,
-   rnametric_report=rnaqc.rnaseqmetrics,
-   md_report=md.metrics,
    star_report=star_align.logs[0],
    rsem_report=rsem_quant.stat_cnt,
    fc_report=featurecounts.fc_summary

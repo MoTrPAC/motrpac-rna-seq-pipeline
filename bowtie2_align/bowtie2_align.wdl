@@ -1,6 +1,5 @@
 task bowtie2_align {
 
-#    Array[File] fastq
     File fastqr1
     File fastqr2
     File genome_dir_tar
@@ -13,15 +12,18 @@ task bowtie2_align {
     Int num_preempt
     String docker
 
-    command {
+    command <<<
         mkdir genome
         tar -zxvf ${genome_dir_tar} -C ./genome
-        bowtie2 -p ${num_threads} -1 ${fastqr1} -2 ${fastqr2} -x genome/${genome_dir}/${index_prefix} --local -S ${SID}.sam > ${SID}.log
-    }
+        bowtie2 -p ${num_threads} -1 ${fastqr1} -2 ${fastqr2} -x genome/${genome_dir}/${index_prefix} --local -S ${SID}.sam 2> ${SID}.log
+        type=$(echo ${genome_dir}|awk '{print substr($1,4)}')
+        tail -n1 ${SID}.log |awk -v id=${SID} -v kind=$type '{print "Sample""\t""%"kind"\n"id"\t"$1}' > ${SID}_rRNA_report.txt
+    >>>
 
     output {
         File bowtie2_output = "${SID}.sam"
         File bowtie2_log = "${SID}.log"
+        File bowtie2_report="${SID}_rRNA_report.txt"
 
     }
 
