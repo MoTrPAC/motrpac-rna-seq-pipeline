@@ -11,8 +11,8 @@ task Cutadapt {
         Int num_preempt
         String docker
 
-    command {
-        set -e -o pipefail
+    command <<<
+        set -eou pipefail
         mkdir -p fastq_trim
         mkdir -p fastq_trim/tooshort
         cutadapt \
@@ -24,12 +24,14 @@ task Cutadapt {
         --too-short-output fastq_trim/tooshort/${SID}_R1.fastq.gz \
         --too-short-paired-output fastq_trim/tooshort/${SID}_R2.fastq.gz \
         ${fastqr1} ${fastqr2} > "fastq_trim/${SID}_report.log"
-    }
+        grep "with adapter:" fastq_trim/${SID}_report.log|awk -F "(" '{print $2}'|sed 's/%//;s/)//'|awk -v id=${SID} '{sum+=$1}END{print "Sample""\t""%adapter_detected""\n"id"\t"sum/2}' >fastq_trim/${SID}_summary.txt
+    >>>
 
     output{
         File fastq_trimmed_R1="fastq_trim/${SID}_R1.fastq.gz"
         File fastq_trimmed_R2="fastq_trim/${SID}_R2.fastq.gz"
         File report="fastq_trim/${SID}_report.log"
+        File summary="fastq_trim/${SID}_summary.txt"
         File tooShortOutput="fastq_trim/tooshort/${SID}_R1.fastq.gz"
         File tooShortPairedOutput="fastq_trim/tooshort/${SID}_R2.fastq.gz"
     }
