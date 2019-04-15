@@ -1,0 +1,17 @@
+{
+  "rnaseqQC_report.rnaseqQC.multiQCReports": ["gs://archanaraja/rnaseq/test/harmony/stanford/cromwell-execution/rnaseq_pipeline/1c6b3560-6691-401e-813b-fdf79ebe336a/call-mqc/multiqc_prealign_report.tar.gz","gs://archanaraja/rnaseq/test/harmony/stanford/cromwell-execution/rnaseq_pipeline/1c6b3560-6691-401e-813b-fdf79ebe336a/call-mqc_pa/multiqc_postalign_report.tar.gz"],
+  "rnaseqQC_report.rnaseqQC.globin_report": "gs://archanaraja/rnaseq/test_data/qc_test/8019468197_globin_report.txt",
+  "rnaseqQC_report.rnaseqQC.phix_report": "gs://archanaraja/rnaseq/test_data/qc_test/8019468197_phix_report.txt",
+  "rnaseqQC_report.rnaseqQC.rRNA_report": "gs://archanaraja/rnaseq/test_data/qc_test/8019468197_rRNA_report.txt",
+  "rnaseqQC_report.rnaseqQC.trim_summary": "gs://archanaraja/rnaseq/test_data/qc_test/8019468197_summary.txt",
+  "rnaseqQC_report.rnaseqQC.mapped_report": "gs://archanaraja/rnaseq/test_data/qc_test/8019468197_mapped_report.txt",
+  "rnaseqQC_report.rnaseqQC.star_log": "gs://archanaraja/rnaseq/test_data/qc_test/8019468197.Log.final.out",
+  "rnaseqQC_report.rnaseqQC.umi_report": "gs://archanaraja/rnaseq/test_data/qc_test/8019468197_umi_report.txt",
+  "rnaseqQC_report.disk_space": "10",
+  "rnaseqQC_report.num_threads": "1",
+  "rnaseqQC_report.memory": "20",
+  "rnaseqQC_report.num_preempt": "0",
+  "rnaseqQC_report.rnaseqQC.docker": "gcr.io/***REMOVED***-dev/motrpac_rnaseq:v0.1_04_15_19",
+  "rnaseqQC_report.rnaseqQC.SCRIPT": "gs://archanaraja/rnaseq/scripts/rnaseq_qc.py"
+}
+

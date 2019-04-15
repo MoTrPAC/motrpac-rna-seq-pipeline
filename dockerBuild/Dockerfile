@@ -135,3 +135,7 @@ RUN cd /src && \
 
 # Install cutadapt-1.18
 RUN pip3 install cutadapt==1.18
+
+# Install Pandas
+RUN pip3 install pandas==0.24.1
+
