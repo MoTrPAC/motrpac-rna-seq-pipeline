@@ -12,6 +12,6 @@
   "rnaseqQC_report.memory": "20",
   "rnaseqQC_report.num_preempt": "0",
   "rnaseqQC_report.rnaseqQC.docker": "gcr.io/***REMOVED***-dev/motrpac_rnaseq:v0.1_04_15_19",
-  "rnaseqQC_report.rnaseqQC.SCRIPT": "gs://archanaraja/rnaseq/scripts/rnaseq_qc.py"
+  "rnaseqQC_report.rnaseqQC.script": "gs://archanaraja/rnaseq/scripts/rnaseq_qc.py"
 }
 

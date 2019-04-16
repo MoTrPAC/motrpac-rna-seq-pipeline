@@ -7,7 +7,7 @@ task rnaseqQC{
   Int num_threads
   Int num_preempt
   String docker
-  File SCRIPT
+  File script
   File trim_summary
   File mapped_report
   File rRNA_report
@@ -30,7 +30,7 @@ task rnaseqQC{
 #    cd ..
 #    ls reports
     
-    python3 ${SCRIPT} --multiqc_prealign multiQC_prealign_report \
+    python3 ${script} --multiqc_prealign multiQC_prealign_report \
     --multiqc_postalign multiQC_postalign_report \
     ${trim_summary} \
     ${mapped_report} \
