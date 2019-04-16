@@ -13,7 +13,7 @@ task UMI_dup {
     mkdir tmp_dir
     nudup.py -2 -s 8 -l 8 --rmdup-only -o ${sample_prefix} -T tmp_dir ${star_align} >${sample_prefix}.out
     touch UMI_dup.log ${sample_prefix}.out
-    grep "Molecular tag dups count" ${sample_prefix}.out |awk -F "(" '{print $2}'|awk -v id=${sample_prefix} '{print "Sample""\t""%umi_dup""\n"id"\t"($1*100)}' >${sample_prefix}_umi_report.txt
+    grep "Molecular tag dups count" ${sample_prefix}.out |awk -F "(" '{print $2}'|awk -v id=${sample_prefix} '{print "Sample""\t""pct_umi_dup""\n"id"\t"($1*100)}' >${sample_prefix}_umi_report.txt
   >>>
   output{
     File umi_dup_out="UMI_dup.log"

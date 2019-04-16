@@ -44,8 +44,11 @@ df_rnametrics=pd.read_csv(mqc_rna_metrics,sep="\t",header=0)
 df_cutadapt=pd.read_csv(args.cutadapt_report,sep="\t",header=0)
 df_umi=pd.read_csv(args.umi_report,sep="\t",header=0)
 df_globin=pd.read_csv(args.globin_report,sep="\t",header=0)
+df_globin["perc_globin"]=df_globin["perc_globin"].str.replace("%",'')
 df_rRNA=pd.read_csv(args.rRNA_report,sep="\t",header=0)
+df_rRNA["perc_rRNA"]=df_rRNA["perc_rRNA"].str.replace("%",'')
 df_phix=pd.read_csv(args.phix_report,sep="\t",header=0)
+df_phix["perc_phix"]=df_phix["perc_phix"].str.replace("%",'')
 df_mapped=pd.read_csv(args.mapped_report,sep="\t",header=0)
 print ("Success creating data frames")
 
@@ -81,7 +84,7 @@ perc_uniquely_mapped=((u_m/total_reads)*100).round(2)
 #% chimeric reads
 d=df_star_log.to_dict()
 perc_chimeric_reads=d[list(d.keys())[0]]["                            % of chimeric reads |"].strip('%')
-data1={'Sample':[sample_name], '%trimmed_bases':[percent_trimmed_bases],'reads_raw':[reads_raw],'reads':[reads_trim],'%trimmed':[perc_trimmed],'%GC':[gc],'%dup_sequence':[dup_seq],'%picard_dup':[perc_picard_dup],'%uniquely_mapped':[perc_uniquely_mapped]}
+data1={'Sample':[sample_name], 'pct_trimmed_bases':[percent_trimmed_bases],'reads_raw':[reads_raw],'reads':[reads_trim],'pct_trimmed':[perc_trimmed],'pct_GC':[gc],'pct_dup_sequence':[dup_seq],'pct_picard_dup':[perc_picard_dup],'pct_uniquely_mapped':[perc_uniquely_mapped]}
 df1=pd.DataFrame(data1)
 df1['Sample']=df1.Sample.astype('str')
 print ('df_prealign')
@@ -99,4 +102,5 @@ print ("Merging successful")
 print (df_final)
 
 df_final=df_final.round(2)
+df_final.columns = df_final.columns.str.lower()
 df_final.to_csv("qc_info.csv",sep=",",index=False)

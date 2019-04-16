@@ -11,6 +11,7 @@ import "rnaseq_metrics/collectrnaseqmetrics.wdl" as metrics
 import "dup_umi/UMI_dup.wdl" as umi_dup
 import "compute_mapped/mapped.wdl" as mapped
 import "MultiQC/multiqc_postalign.wdl" as mqc_postalign
+import "collect_qc_metrics/collect_qc.wdl" as collect_qc 
 
 workflow rnaseq_pipeline{
   # Default values for runtime, changed in individual calls according to requirements
@@ -27,6 +28,7 @@ workflow rnaseq_pipeline{
   String index_adapter
   String univ_adapter
   Int minimumLength
+  File script
 
   call fastqc.fastQC as preTrimFastQC {
     input:
@@ -211,6 +213,23 @@ input :
    star_report=star_align.logs[0],
    rsem_report=rsem_quant.stat_cnt,
    fc_report=featurecounts.fc_summary
+}
+call collect_qc.rnaseqQC as qc_report {
+input :
+   memory=10,
+   disk_space=20,
+   num_threads=1,
+   num_preempt=0,
+   docker=docker,
+   script=script,
+   multiQCReports=[mqc.multiQC_report,mqc_pa.multiQC_report],
+   globin_report=bowtie2_globin.bowtie2_report,
+   phix_report=bowtie2_phix.bowtie2_report,
+   rRNA_report=bowtie2_rrna.bowtie2_report,
+   trim_summary=cutadapt.summary,
+   mapped_report=sm.report,
+   star_log=star_align.logs[0],
+   umi_report=udup.umi_report
 }
 }
 

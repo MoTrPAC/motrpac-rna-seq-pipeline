@@ -31,7 +31,8 @@ SUF_R1=_R1.fastq.gz
 SUF_R2=_R2.fastq.gz
 SUF_I1=_I1.fastq.gz
 #docker="araja7/motrpac_rnaseq:v0.1"
-docker="gcr.io/motrpac-portal-dev/motrpac_rnaseq:v0.1_03_08_19"
+docker="gcr.io/motrpac-portal-dev/motrpac_rnaseq:v0.1_04_15_19"
+SCRIPT="gs://archanaraja/rnaseq/scripts/rnaseq_qc.py"
 #gsutil ls gs://motrpac-portal-transfer-stanford/montgomery/rat_pilot/RNA-seq/fastq|awk -F "/" '{print $8}'|awk '{print substr($0,1,8)}'|sed -e 's/_$//'|cut -f1|sort|uniq
 #for i in $indiv;do echo $fastq_dir/$i"_R1_001.trimmed.fastq.gz" $fastq_dir/$i"_R2_001.trimmed.fastq.gz";done
 #below line is modified to parse samples from the pilot run format
@@ -69,8 +70,10 @@ for i in $indiv; do
     echo "    \"rnaseq_pipeline.bowtie2_globin.genome_dir_tar\": \"${bowtie2_globin}\"," >> ${json_file}
     echo "    \"rnaseq_pipeline.bowtie2_rrna.genome_dir\" : \"rn_rRNA\"," >> ${json_file}
     echo "    \"rnaseq_pipeline.bowtie2_rrna.genome_dir_tar\": \"${bowtie2_rrna}\"," >> ${json_file}
-    echo "    \"rnaseq_pipeline.bowtie2_phix.genome_dir\" : \"rn_phix\"," >> ${json_file}
+    echo "    \"rnaseq_pipeline.bowtie2_phix.genome_dir\" : \"phix\"," >> ${json_file}
     echo "    \"rnaseq_pipeline.bowtie2_phix.genome_dir_tar\": \"${bowtie2_phix}\"," >> ${json_file}
+
+    echo "    \"rnaseq_pipeline.script\": \"${SCRIPT}\"," >> ${json_file}
 
     # allocate compute resources
     echo "    \"rnaseq_pipeline.num_threads\" : 4," >> ${json_file}
@@ -81,5 +84,4 @@ for i in $indiv; do
     echo "    \"rnaseq_pipeline.disk_space\" : 100" >> ${json_file}
     echo >> ${json_file}
     echo "}" >> ${json_file}
-
 done
