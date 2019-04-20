@@ -15,7 +15,7 @@ task rnaseqQC{
   File phix_report
   File umi_report
   File star_log
-
+  String SID
 
   command {
     set -eou pipefail
@@ -39,10 +39,10 @@ task rnaseqQC{
     ${phix_report} \
     ${umi_report} \
     ${star_log}
-    touch qc_info.csv
+    touch ${SID}_qc_info.csv
   }
   output {
-    File rnaseq_report = 'qc_info.csv'  
+    File rnaseq_report = "${SID}_qc_info.csv"  
   }
   runtime {
     docker: "${docker}"

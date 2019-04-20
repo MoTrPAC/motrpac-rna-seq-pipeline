@@ -222,6 +222,7 @@ input :
    num_preempt=0,
    docker=docker,
    script=script,
+   SID=SID,
    multiQCReports=[mqc.multiQC_report,mqc_pa.multiQC_report],
    globin_report=bowtie2_globin.bowtie2_report,
    phix_report=bowtie2_phix.bowtie2_report,
