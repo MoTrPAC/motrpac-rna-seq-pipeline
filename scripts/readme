@@ -1,0 +1,2 @@
+for i in `gsutil ls gs://***REMOVED***-transfer-sinai/rna-seq/PASS1A/*.gz` ; do echo "md5sum" $i ">>checksums_stanford.txt" ;done >>checksums_stanford.sh
+java -Dconfig.file=google_prod.conf -jar /Users/archanaraja/work/tools/cromwell-38.jar run scripts/compute_md5sum.wdl -i scripts/compute_md5sum_inputs.json
