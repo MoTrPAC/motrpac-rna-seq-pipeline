@@ -7,6 +7,7 @@
   "rnaseqQC_report.rnaseqQC.mapped_report": "gs://archanaraja/rnaseq/test_data/qc_test/8019468197_mapped_report.txt",
   "rnaseqQC_report.rnaseqQC.star_log": "gs://archanaraja/rnaseq/test_data/qc_test/8019468197.Log.final.out",
   "rnaseqQC_report.rnaseqQC.umi_report": "gs://archanaraja/rnaseq/test_data/qc_test/8019468197_umi_report.txt",
+  "rnaseqQC_report.rnaseqQC.SID" : "8019468197",
   "rnaseqQC_report.disk_space": "10",
   "rnaseqQC_report.num_threads": "1",
   "rnaseqQC_report.memory": "20",
