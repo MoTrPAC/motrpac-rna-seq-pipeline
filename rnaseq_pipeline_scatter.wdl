@@ -1,5 +1,5 @@
 import "FastQC/fastqc.wdl" as fastqc
-import "fastq_attach/attach_UMI.wdl" as attach_umi
+import "fastq_attach/attach_umi.wdl" as attach_umi
 import "fastq_trim/cutadapt.wdl" as cutadapt
 import "MultiQC/multiqc.wdl" as multiqc
 import "star_align/star.wdl" as star
