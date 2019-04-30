@@ -55,6 +55,9 @@ print ("Success creating data frames")
 #%trimmed_bases
 percent_trimmed_bases=df_raw["Cutadapt_mqc-generalstats-cutadapt-percent_trimmed"][0].round(2)
 
+#%Adapter detected
+pct_adapter_detected=df_cutadapt["pct_adapter_detected"][0]
+
 #get mean raw read count
 reads_raw=(df_raw["FastQC_mqc-generalstats-fastqc-total_sequences"][1]+df_raw["FastQC_mqc-generalstats-fastqc-total_sequences"][2])/2
 sample_name=df_raw["Sample"][0].split("_")[0]
@@ -71,8 +74,20 @@ dup_seq=((df_raw["FastQC_mqc-generalstats-fastqc-percent_duplicates"][3]+df_raw[
 #%trimmed
 perc_trimmed=(((reads_raw-reads_trim)/reads_raw)*100).round(2)
 
+#%rRNA
+perc_rRNA=df_rRNA["pct_rRNA"][0]
+
+#%globin
+perc_globin=df_globin["pct_globin"][0]
+
+#%phix
+perc_phix=df_phix["pct_phix"][0]
+
 #%picard_dup
 perc_picard_dup=((df_pa["Picard_mqc-generalstats-picard-PERCENT_DUPLICATION"][0])*100).round(2)
+
+#UMI dup percent
+pct_umi_dup=df_umi["pct_umi_dup"][0]
 
 #Star stats
 #uniquely_mapped
@@ -84,26 +99,45 @@ perc_uniquely_mapped=((u_m/total_reads)*100).round(2)
 #% chimeric reads
 d=df_star_log.to_dict()
 perc_chimeric_reads=d[list(d.keys())[0]]["                            % of chimeric reads |"].strip('%')
-data1={'Sample':[sample_name], 'pct_trimmed_bases':[percent_trimmed_bases],'reads_raw':[reads_raw],'reads':[reads_trim],'pct_trimmed':[perc_trimmed],'pct_GC':[gc],'pct_dup_sequence':[dup_seq],'pct_picard_dup':[perc_picard_dup],'pct_uniquely_mapped':[perc_uniquely_mapped]}
+
+
+data1={'Sample':[sample_name], 'reads_raw':[reads_raw],'pct_adapter_detected':[pct_adapter_detected],'pct_trimmed':[perc_trimmed],'pct_trimmed_bases':[percent_trimmed_bases],'reads':[reads_trim],'pct_GC':[gc],'pct_dup_sequence':[dup_seq],'pct_rRNA':[perc_rRNA],'pct_globin':[perc_globin],'pct_phix':[perc_phix],'pct_picard_dup':[perc_picard_dup],'pct_umi_dup':[pct_umi_dup]}
+
 df1=pd.DataFrame(data1)
 df1['Sample']=df1.Sample.astype('str')
 print ('df_prealign')
 print (df1)
+print ("Success")
 df1.to_csv("df1.txt",sep="\t",index=False)
 df1=pd.read_csv("df1.txt",sep="\t",header=0)
+
 df_star=df_star.drop(['insertion_length','deletion_length','deletion_rate','mismatch_rate','multimapped_toomany','unmapped_mismatches','unmapped_other','insertion_rate','multimapped','unmapped_tooshort','total_reads'],axis=1)
+df_star = df_star.reindex(['Sample','avg_input_read_length','uniquely_mapped','uniquely_mapped_percent','avg_mapped_read_length','num_splices','num_annotated_splices','num_GTAG_splices','num_GCAG_splices','num_ATAC_splices','num_noncanonical_splices','multimapped_percent','multimapped_toomany_percent','unmapped_mismatches_percent','unmapped_tooshort_percent','unmapped_other_percent'], axis=1)
+df_star.rename(columns={'Sample':'sample','uniquely_mapped_percent':'pct_uniquely_mapped','multimapped_percent':'pct_multimapped','multimapped_toomany_percent':'pct_multimapped_toomany','unmapped_mismatches_percent':'pct_unmapped_mismatches','unmapped_tooshort_percent':'pct_unmapped_tooshort','unmapped_other_percent':'pct_unmapped_other'}, inplace=True)
+#print (df_star.columns)
+#Adding pct_chimeric column to the star data frame
+df_star = df_star.assign(pct_chimeric = [perc_chimeric_reads])
 print (df_star)
 
+#Modifying rnaseqmetrics data frame column names
 df_rnametrics=df_rnametrics.loc[:,['Sample','PCT_CODING_BASES','PCT_MRNA_BASES','PCT_INTRONIC_BASES','MEDIAN_5PRIME_TO_3PRIME_BIAS','PCT_INTERGENIC_BASES','PCT_UTR_BASES']]
+df_rnametrics=df_rnametrics.reindex(['Sample','PCT_CODING_BASES','PCT_UTR_BASES','PCT_INTRONIC_BASES','PCT_INTERGENIC_BASES','PCT_MRNA_BASES','MEDIAN_5PRIME_TO_3PRIME_BIAS'],axis=1)
+df_rnametrics.columns = [x.strip().replace('_BASES', '') for x in df_rnametrics.columns]
+df_rnametrics.rename(columns={'MEDIAN_5PRIME_TO_3PRIME_BIAS':'median_5_3_bias'},inplace=True)
+df_rnametrics.columns = df_rnametrics.columns.str.lower()
 print (df_rnametrics)
-dfs=[df1,df_cutadapt,df_star,df_rnametrics,df_mapped,df_umi,df_globin,df_rRNA,df_phix]
-df_final = reduce(lambda left,right:pd.merge(left,right,on='Sample'), dfs)
+
+df_mapped.rename(columns={'Sample':'sample'},inplace=True)
+df1.rename(columns={'Sample':'sample'},inplace=True)
+
+#Merging data frames
+dfs=[df1,df_star,df_mapped,df_rnametrics]
+df_final = reduce(lambda left,right:pd.merge(left,right,on='sample'), dfs)
 print ("Merging successful")
 print (df_final)
-
 df_final=df_final.round(2)
-df_final.columns = df_final.columns.str.lower()
 name=df_final['sample'][0].astype('str')+"_qc_info.csv"
 print (name)
+
+#Wrting qc_report to a csv file
 df_final.to_csv(name,sep=",",index=False)
-#df_final.to_csv("qc_info.csv",sep=",",index=False)
