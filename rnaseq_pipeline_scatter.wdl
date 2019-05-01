@@ -43,7 +43,7 @@ workflow rnaseq_pipeline{
          num_preempt=0,
          docker=docker,
          fastqr1=fastq1[i],
-        fastqr2=fastq2[i]
+         fastqr2=fastq2[i]
        }
 
       call attach_umi.attachUMI as aumi {
