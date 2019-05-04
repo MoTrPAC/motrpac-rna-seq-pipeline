@@ -1,6 +1,10 @@
 {
     "default_runtime_attributes" : {
         "preemptible": "0",
-        "zones": "us-central1-c us-central1-b us-west1-b us-west1-a us-west1-c"
+        "zones": "us-central1-c us-central1-b us-west1-b us-west1-a us-west1-c",
+        "workflow-log-temporary": "true",
+        "final_workflow_log_dir": "gs://***REMOVED***/PASS1A/mtsinai/batch1/set3/log/",
+        "final_call_logs_dir": "gs://***REMOVED***/PASS1A/mtsinai/batch1/set3/call-log/"
     }
 }
+
