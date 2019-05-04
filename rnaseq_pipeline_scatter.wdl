@@ -37,9 +37,9 @@ workflow rnaseq_pipeline{
   scatter (i in range(length(fastq1))) {
       call fastqc.fastQC as preTrimFastQC {
         input:
-         memory=20,
-         disk_space=20,
-         num_threads=1,
+         memory=40,
+         disk_space=100,
+         num_threads=8,
          num_preempt=0,
          docker=docker,
          fastqr1=fastq1[i],
@@ -48,9 +48,9 @@ workflow rnaseq_pipeline{
 
       call attach_umi.attachUMI as aumi {
          input :
-         memory=20,
-         disk_space=30,
-         num_threads=1,
+         memory=40,
+         disk_space=100,
+         num_threads=8,
          num_preempt=0,
          docker=docker,
          SID=sample_prefix[i],
@@ -62,8 +62,8 @@ workflow rnaseq_pipeline{
       call cutadapt.Cutadapt as cutadapt {
          input :
          memory=45,
-         disk_space=50,
-         cpus=1,
+         disk_space=100,
+         cpus=8,
          num_preempt=0,
          docker=docker,
          index_adapter=index_adapter,
@@ -76,8 +76,8 @@ workflow rnaseq_pipeline{
       call fastqc.fastQC as postTrimFastQC {
          input :
          memory=30,
-         disk_space=50,
-         num_threads=1,
+         disk_space=100,
+         num_threads=8,
          num_preempt=0,
          docker=docker,
          fastqr1=cutadapt.fastq_trimmed_R1,
@@ -86,8 +86,8 @@ workflow rnaseq_pipeline{
       call multiqc.multiQC as mqc {
          input :
          memory=20,
-         disk_space=20,
-         num_threads=1,
+         disk_space=100,
+         num_threads=8,
          num_preempt=0,
          docker=docker,
          fastQCReports=[preTrimFastQC.fastQC_report,postTrimFastQC.fastQC_report],
@@ -97,7 +97,7 @@ workflow rnaseq_pipeline{
        call star.star as star_align {
           input :
           memory=100,
-          disk_space=150,
+          disk_space=200,
           num_threads=10,
           num_preempt=0,
           docker=docker,
@@ -108,9 +108,9 @@ workflow rnaseq_pipeline{
 
       call fc.featurecounts as featurecounts {
         input :
-        memory=30,
-        disk_space=50,
-        num_threads=1,
+        memory=40,
+        disk_space=100,
+        num_threads=8,
         num_preempt=0,
         docker=docker,
         SID=sample_prefix[i],
@@ -120,7 +120,7 @@ workflow rnaseq_pipeline{
        call rsem.rsem as rsem_quant {
          input :
          memory=50,
-         disk_space=100,
+         disk_space=150,
          num_threads=10,
          num_preempt=0,
          docker=docker,
@@ -130,8 +130,8 @@ workflow rnaseq_pipeline{
 
       call bowtie2_align.bowtie2_align as bowtie2_rrna {
         input :
-        memory=45,
-        disk_space=50,
+        memory=80,
+        disk_space=200,
         num_threads=10,
         num_preempt=0,
         docker=docker,
@@ -142,8 +142,8 @@ workflow rnaseq_pipeline{
 
       call bowtie2_align.bowtie2_align as bowtie2_globin {
         input :
-        memory=45,
-        disk_space=50,
+        memory=80,
+        disk_space=200,
         num_threads=10,
         num_preempt=0,
         docker=docker,
@@ -154,8 +154,8 @@ workflow rnaseq_pipeline{
 
       call bowtie2_align.bowtie2_align as bowtie2_phix {
          input :
-         memory=45,
-         disk_space=50,
+         memory=80,
+         disk_space=200,
          num_threads=10,
          num_preempt=0,
          docker=docker,
@@ -167,8 +167,8 @@ workflow rnaseq_pipeline{
       call markdup.markduplicates as md {
         input :
         num_threads=10,
-        memory=30,
-        disk_space=50,
+        memory=45,
+        disk_space=150,
         num_preempt=0,
         docker=docker,
         SID=sample_prefix[i],
@@ -188,7 +188,7 @@ workflow rnaseq_pipeline{
          input :
          num_threads=8,
          memory=50,
-         disk_space=50,
+         disk_space=100,
          num_preempt=0,
          docker=docker,
          sample_prefix=sample_prefix[i],
@@ -196,9 +196,9 @@ workflow rnaseq_pipeline{
         }
        call mapped.samtools_mapped as sm {
          input :
-         num_threads=1,
+         num_threads=8,
          memory=30,
-         disk_space=30,
+         disk_space=200,
          num_preempt=0,
          docker=docker,
          SID=sample_prefix[i],
@@ -207,8 +207,8 @@ workflow rnaseq_pipeline{
        call mqc_postalign.multiQC_postalign as mqc_pa {
          input :
          memory=30,
-         disk_space=40,
-         num_threads=1,
+         disk_space=50,
+         num_threads=8,
          num_preempt=0,
          docker=docker,
          fastQCReport=[postTrimFastQC.fastQC_report],
@@ -222,8 +222,8 @@ workflow rnaseq_pipeline{
        call collect_qc.rnaseqQC as qc_report {
           input :
           memory=10,
-          disk_space=20,
-          num_threads=1,
+          disk_space=50,
+          num_threads=8,
           num_preempt=0,
           docker=docker,
           script=script,
