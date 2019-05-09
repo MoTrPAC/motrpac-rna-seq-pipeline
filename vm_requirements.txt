@@ -1,0 +1,11 @@
+#INSTALL DOCKER
+sudo snap install docker
+#INSTALL JAVA
+sudo apt install default-jre
+#INSTALL CROMWELL
+wget https://github.com/broadinstitute/cromwell/releases/download/40/cromwell-40.jar
+#INSTALL WOMTOOLS
+wget https://github.com/broadinstitute/cromwell/releases/download/40/womtool-40.jar
+
+#CLONE PIPELINE REPO
+git clone -b pipeline_test https://github.com/AshleyLab/motrpac-rna-seq-pipeline.git 
