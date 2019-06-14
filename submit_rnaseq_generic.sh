@@ -4,5 +4,5 @@
 #Usage : for i in `cat ids3.txt`;do ./submit_rnaseq_pilot_generic.sh $i;done
 #for i in input_json/harmony_test/stanford_working/* ;do ./submit_rnaseq_generic.sh $i;done >>jobs.sh
 #chmod +x jobs.sh
-echo java -Dconfig.file=google.conf -jar /Users/archanaraja/work/tools/cromwell-38.jar run rnaseq_pipeline.wdl -i "$1" "&"
-echo "Done , success"
+echo nohup java -Dconfig.file=google_prod_PAPI.conf -jar /home/araja7/tools/cromwell-40.jar run rnaseq_pipeline_scatter.wdl -i "$1"
+
