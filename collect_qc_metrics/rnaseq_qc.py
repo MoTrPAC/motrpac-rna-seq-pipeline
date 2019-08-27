@@ -53,7 +53,7 @@ df_mapped=pd.read_csv(args.mapped_report,sep="\t",header=0)
 print ("Success creating data frames")
 
 #%trimmed_bases
-percent_trimmed_bases=df_raw["Cutadapt_mqc-generalstats-cutadapt-percent_trimmed"][0].round(2)
+percent_trimmed_bases=df_raw["Cutadapt_mqc-generalstats-cutadapt-percent_trimmed"][0].round(3)
 
 #%Adapter detected
 pct_adapter_detected=df_cutadapt["pct_adapter_detected"][0]
@@ -69,10 +69,10 @@ reads_trim=(df_raw["FastQC_mqc-generalstats-fastqc-total_sequences"][3]+df_raw["
 gc=(df_raw["FastQC_mqc-generalstats-fastqc-percent_gc"][3]+df_raw["FastQC_mqc-generalstats-fastqc-percent_gc"][4])/2
 
 #%dup_sequence
-dup_seq=((df_raw["FastQC_mqc-generalstats-fastqc-percent_duplicates"][3]+df_raw["FastQC_mqc-generalstats-fastqc-percent_duplicates"][4])/2).round(2)
+dup_seq=((df_raw["FastQC_mqc-generalstats-fastqc-percent_duplicates"][3]+df_raw["FastQC_mqc-generalstats-fastqc-percent_duplicates"][4])/2).round(3)
 
 #%trimmed
-perc_trimmed=(((reads_raw-reads_trim)/reads_raw)*100).round(2)
+perc_trimmed=(((reads_raw-reads_trim)/reads_raw)*100).round(3)
 
 #%rRNA
 perc_rRNA=df_rRNA["pct_rRNA"][0]
@@ -84,7 +84,7 @@ perc_globin=df_globin["pct_globin"][0]
 perc_phix=df_phix["pct_phix"][0]
 
 #%picard_dup
-perc_picard_dup=((df_pa["Picard_mqc-generalstats-picard-PERCENT_DUPLICATION"][0])*100).round(2)
+perc_picard_dup=((df_pa["Picard_mqc-generalstats-picard-PERCENT_DUPLICATION"][0])*100).round(3)
 
 #UMI dup percent
 pct_umi_dup=df_umi["pct_umi_dup"][0]
@@ -94,7 +94,7 @@ pct_umi_dup=df_umi["pct_umi_dup"][0]
 u_m=df_star["uniquely_mapped"][0]
 total_reads=df_star["total_reads"][0]
 #%uniquely_mapped
-perc_uniquely_mapped=((u_m/total_reads)*100).round(2)
+perc_uniquely_mapped=((u_m/total_reads)*100).round(3)
 
 #% chimeric reads
 d=df_star_log.to_dict()
@@ -130,12 +130,17 @@ print (df_rnametrics)
 df_mapped.rename(columns={'Sample':'sample'},inplace=True)
 df1.rename(columns={'Sample':'sample'},inplace=True)
 
+df1=df1.round(3)
+df_star=df_star.round(3)
+df_rnametrics=df_rnametrics.round(3)
+print (df_rnametrics)
+df_mapped=df_mapped.round({'pct_chrX': 3, 'pct_chrY': 5, 'pct_chrM' : 3,'pct_chrAuto' : 3 , 'pct_contig' : 3})
 #Merging data frames
 dfs=[df1,df_star,df_mapped,df_rnametrics]
 df_final = reduce(lambda left,right:pd.merge(left,right,on='sample'), dfs)
 print ("Merging successful")
 print (df_final)
-df_final=df_final.round(2)
+#df_final=df_final.round(2)
 name=df_final['sample'][0].astype('str')+"_qc_info.csv"
 print (name)
 
