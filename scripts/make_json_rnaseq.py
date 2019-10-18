@@ -1,5 +1,11 @@
+#Usage : python make_json_rnaseq.py /Users/archanaraja/work/repo/motrpac-rna-seq-pipeline/scripts/sample_lists/sinai/batch3/rnaseq_b3 /Users/archanaraja/work/repo/motrpac-rna-seq-pipeline/scripts/sample_lists/sinai/batch3/
+#filelist => comma separated list of files to generate input_json(full path of the file containing only *_R1.fastq.gz)
+#location of output json file
 import simplejson
-filelist=["sinai_batch1aa","sinai_batch1ab","sinai_batch1ac","sinai_batch1ad"]
+import sys
+import os
+filelist=sys.argv[1].split(',')
+output_path=sys.argv[2]
 for i in filelist:
   f=open(i+"_rnaseq.json","w")
   r1 = [line.strip("\n") for line in open(i)]
