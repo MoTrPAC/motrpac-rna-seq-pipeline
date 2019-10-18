@@ -1,4 +1,5 @@
 #Usage : python make_json_rnaseq.py /Users/archanaraja/work/repo/motrpac-rna-seq-pipeline/scripts/sample_lists/sinai/batch3/rnaseq_b3 /Users/archanaraja/work/repo/motrpac-rna-seq-pipeline/scripts/sample_lists/sinai/batch3/
+#Usage: python make_json_rnaseq.py sample_lists/stanford/batch3/stanb3aa,sample_lists/stanford/batch3/stanb3ab sample_lists/stanford/batch3/
 #filelist => comma separated list of files to generate input_json(full path of the file containing only *_R1.fastq.gz)
 #location of output json file
 import simplejson
