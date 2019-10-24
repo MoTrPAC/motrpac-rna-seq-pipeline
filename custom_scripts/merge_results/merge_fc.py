@@ -30,7 +30,7 @@ df_final=reduce(lambda x,y: pd.merge(x,y, on='gene_id', how='outer'), count_l)
 #print (df_final)
 df_final = df_final.astype(str)
 
-df_final.to_csv("featureCounts_pass1a_batch1_Sinai.txt", index=False,sep="\t")
+df_final.to_csv("featureCounts.txt", index=False,sep="\t")
 print ("Shape of Feature counts df")
 print (df_final.shape)
 

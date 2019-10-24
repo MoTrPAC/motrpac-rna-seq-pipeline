@@ -42,16 +42,16 @@ df_final=reduce(lambda x,y: pd.merge(x,y, on='gene_id', how='outer'), count_l)
 #print (df_final)
 df_final = df_final.astype(str)
 
-df_final.to_csv("rsem_genes_count_pass1a_batch1_Stanford.csv", index=False,sep="\t")
+df_final.to_csv("rsem_genes_count.txt", index=False,sep="\t")
 
 
 df_final=reduce(lambda x,y: pd.merge(x,y, on='gene_id', how='outer'), tpm_l)
 df_final = df_final.astype(str)
-df_final.to_csv("rsem_genes_tpm_pass1a_batch1_Stanford.csv", index=False,sep="\t")
+df_final.to_csv("rsem_genes_tpm.txt", index=False,sep="\t")
 
 df_final=reduce(lambda x,y: pd.merge(x,y, on='gene_id', how='outer'), fpkm_l)
 df_final = df_final.astype(str)
-df_final.to_csv("rsem_genes_fpkm_pass1a_batch1_Stanford.csv", index=False,sep="\t")
+df_final.to_csv("rsem_genes_fpkm.txt", index=False,sep="\t")
 
 
 
