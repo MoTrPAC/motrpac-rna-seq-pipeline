@@ -1,7 +1,7 @@
-grep "R1" sinai_batch1_filenames.txt |wc -l
-split -l 80 sinai_batch1_filenamesR1.txt sinai_batch1
-python make_json_rnaseq.py
-
+grep "R1" sinai_batch1_filenames.txt |grep -v "Undetermined"|wc -l
+grep "R1" sinai_batch1_filenames.txt |grep -v "Undetermined" >file_list.txt
+split -l 80 file_list.txt sinai_batch1
+python make_json_rnaseq.py sample_lists/sinai/batch5/sinai_batch5aa,sample_lists/sinai/batch5/sinai_batch5ab,sample_lists/sinai/batch5/sinai_batch5ac,sample_lists/sinai/batch5/sinai_batch5ad sample_lists/sinai/batch5/
 
 ###NOTES
 #>>> r1="gs://motrpac-portal-transfer-sinai/rna-seq/PASS1A/80000885506_R1.fastq.gz"
