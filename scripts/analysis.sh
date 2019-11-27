@@ -20,4 +20,11 @@ Eg: python make_json_rnaseq.py sample_lists/sinai/batch5/sinai_batch5aa,sample_l
 #>>> a.split("/")[-1].split("_I1.fastq.gz")[0]
 #'90028013001'
 #gs://rna-seq_araja/references/rn/v96/star_2.7.0d_04-20-19/sorted/Rnor6_v96_star_index.tar.gz
+#reading directly from a gcp bucket
+#>>> import gcsfs
+#>>> fs = gcsfs.GCSFileSystem(project='motrpac-portal')
+#fs.ls('motrpac-portal-transfer-stanford/rna-seq/rat/batch1_20190503/fastq_raw')
+#l1=fs.glob('motrpac-portal-transfer-stanford/rna-seq/rat/batch1_20190503/fastq_raw/*_R1.fastq.gz')
+#unix script splitting file-list
+##gsutil ls gs://motrpac-portal-transfer-stanford/rna-seq/rat/batch1_20190503/fastq_raw/*_R1.fastq.gz|grep -v "Undetermined"|split -l 80 - test/test_b1
 
