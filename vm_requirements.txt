@@ -1,13 +1,28 @@
-#Create a VM
-gcloud beta compute --project=***REMOVED*** instances create ubuntu1904-nopreempt-rnaseq-12cpu-78gb-1 --zone=us-west1-b --machine-type=n1-standard-16 --subnet=default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=772888428329-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/cloud-platform --tags=http-server,https-server --image=ubuntu-1904-disco-v20190417 --image-project=ubuntu-os-cloud --boot-disk-size=200GB --boot-disk-type=pd-standard --boot-disk-device-name=ubuntu1904-nopreempt-rnaseq --labels=pipelines=rna-seq --reservation-affinity=any
+#Create a VM to run the pipeline and submit jobs
+gcloud beta compute --project=***REMOVED*** instances create ubuntu1904-nopreempt-rnaseq-n1-standard-8 --zone=us-west1-b --machine-type=n1-standard-8 --subnet=default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account= --scopes=https://www.googleapis.com/auth/cloud-platform --tags=http-server,https-server --image=ubuntu-1904-disco-v20191113a --image-project=ubuntu-os-cloud --boot-disk-size=200GB --boot-disk-type=pd-standard --boot-disk-device-name=ubuntu1904-nopreempt-rnaseq --labels=pipelines=rna-seq --reservation-affinity=any
+
 #INSTALL DOCKER
 sudo snap install docker
+
 #INSTALL JAVA
 sudo apt install default-jre
+
+#INSTALL caper 0.6.0
+pip3 install 'caper==0.6.0'
+
+# run docker without sudo, You should be able to run docker without sudo , [source for fixing can be found in this link](https://techoverflow.net/2017/03/01/solving-docker-permissions)
+# Add docker to group
+sudo groupadd docker
+sudo usermod -a -G docker $USER
+#shutdown and restart the instance after doing the above
+docker run hello-world
+#Above command shold work successfully without any permission denied errors.
+
 #INSTALL CROMWELL
-wget https://github.com/broadinstitute/cromwell/releases/download/40/cromwell-40.jar
+wget https://github.com/broadinstitute/cromwell/releases/download/47/cromwell-47.jar
+
 #INSTALL WOMTOOLS
-wget https://github.com/broadinstitute/cromwell/releases/download/40/womtool-40.jar
+wget https://github.com/broadinstitute/cromwell/releases/download/47/womtool-47.jar
 
 #CLONE PIPELINE REPO
 git clone -b pipeline_test https://github.com/AshleyLab/motrpac-rna-seq-pipeline.git 
