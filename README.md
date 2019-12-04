@@ -11,12 +11,12 @@ Follow instructions in the [VM requirements](https://github.com/AshleyLab/motrpa
 
 Setup
 --------------------------------------------------
-1. Set up mysql db to store metadata on a persistent hard-disk
+1. **Set up mysql db to store metadata on a persistent hard-disk**
 ```
 mkdir -p mysql_db_rnaseq (should be run only once , subsequent runs can use the same mysql db)
 ```
 
-2. Start the mysql db everytime before starting a pipeline , below step needs to be run first time your going to run a pipeline or everytime a VM instance is restarted.
+2. **Start the mysql db everytime before starting a pipeline , below step needs to be run first time your going to run a pipeline or everytime a VM instance is restarted.**
 
 
 ```
@@ -38,7 +38,7 @@ docker rm <CONTAINER ID>
  docker ps
  ```
  
-3. Generate and configure ~/.caper/default.conf for gcp, add parameters for mysql backend 
+3. **Generate and configure ~/.caper/default.conf for gcp, add parameters for mysql backend** 
 ```
 caper init gcp
 ```
@@ -65,11 +65,11 @@ port=8000
 
 ### Run the pipeline
 
-1. If you haven't cloned the rna-seq repo as part of requirements step. Clone the repo using the below command.
+1. **If you haven't cloned the rna-seq repo as part of requirements step. Clone the repo using the below command.**
 ```
 git clone -b pipeline_test https://github.com/AshleyLab/motrpac-rna-seq-pipeline.git 
 ```
-2. Generate input configuration files. These files are necessary to run the pipeline.
+2. **Generate input configuration files. These files are necessary to run the pipeline.**
 
 	* split the raw files into 4 batches assuming a batch has 320 samples. If the batch count is lesser we can make fewer batches. (this step might not be necessary if we decide to submit only 1 batch)
 	
@@ -87,7 +87,7 @@ git clone -b pipeline_test https://github.com/AshleyLab/motrpac-rna-seq-pipeline
 	python scripts/make_json_rnaseq.py test_json/test/test_b1aa,test_json/test/test_b1ab,test_json/test/test_b1ac,test_json/test/test_b1ad test_json/test/
 	```
 	
-3. Make sure to configure ~/.caper/default.conf (instructions in the setup step) . Run caper server in a screen session and detach the screen
+3. **Make sure to configure ~/.caper/default.conf (instructions in the setup step) . Run caper server in a screen session and detach the screen**
 
 ```
 screen -RD caper_server
@@ -98,7 +98,7 @@ To detach a screen
 ```
 ctrl A + D
 ```	    
-4. Submit rna-seq workflows to caper server
+4. **Submit rna-seq workflows to caper server**
 
 ```
 caper submit rnaseq_pipeline_scatter.wdl -i test_json/test/test_b1aa.json --docker gcr.io/***REMOVED***/motrpac_rnaseq:v0.1_04_20_19
