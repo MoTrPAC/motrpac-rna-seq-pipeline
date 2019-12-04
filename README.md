@@ -42,7 +42,7 @@ docker rm <CONTAINER ID>
 ```
 caper init gcp
 ```
-* Change <out-gcs-bucket> , <tmp-gcs-bucket> , make sure the tmp_dir specified below exists if it doesn't make one using `mkdir -p <dir_name>` , mysql-db-port should match the port number specified in the `docker ps` command
+* Change `out-gcs-bucket , tmp-gcs-bucket` , make sure the tmp_dir specified below exists if it doesn't make one using `mkdir -p <dir_name>` , mysql-db-port should match the port number specified in the `docker ps` command
 
 ```
 cromwell=/home/araja7/tools/cromwell-47.jar
