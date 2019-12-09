@@ -1,9 +1,10 @@
 {
     "default_runtime_attributes" : {
-        "failOnStderr" : false,
-        "continueOnReturnCode" : 0,
         "preemptible": "0",
-        "bootDiskSizeGb": "10",
-        "noAddress": "false"
+        "zones": "us-central1-c us-central1-b us-west1-b us-west1-a us-west1-c",
+        "workflow-log-temporary": "true",
+        "final_workflow_log_dir": "gs://***REMOVED***/PASS1A/mtsinai/batch1/set3/log/",
+        "final_call_logs_dir": "gs://***REMOVED***/PASS1A/mtsinai/batch1/set3/call-log/"
     }
 }
+

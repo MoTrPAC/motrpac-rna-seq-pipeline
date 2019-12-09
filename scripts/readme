@@ -1,0 +1,2 @@
+#java -Dconfig.file=google_prod.conf -jar /Users/archanaraja/work/tools/cromwell-38.jar run scripts/compute_md5sum.wdl -i scripts/compute_md5sum_inputs.json
+java -Dconfig.file=google_prod.conf -jar /Users/archanaraja/work/tools/cromwell-38.jar run scripts/compute_md5sum.wdl -i sample_lists/sinaib1aa.json
