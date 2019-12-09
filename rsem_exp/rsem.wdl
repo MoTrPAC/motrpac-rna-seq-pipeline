@@ -2,7 +2,7 @@ task rsem {
 
     File transcriptome_bam
     File rsem_reference
-    String prefix
+    String SID
 
     Int memory
     Int disk_space
@@ -10,11 +10,6 @@ task rsem {
     Int num_preempt
     String docker
 
-#    Int? max_frag_len
-#    String? estimate_rspd
-#    String? is_stranded
-#    String? paired_end
-#    String? seed
 
     command {
         set -euo pipefail
@@ -37,7 +32,7 @@ task rsem {
             --seed 12345 \
             ${transcriptome_bam}\
             rsem_reference \
-            ${prefix}
+            ${SID}
         echo "--- Done: rsem-calculate-expression --- "
         echo "--- Running: ls --- "
         ls
@@ -45,8 +40,11 @@ task rsem {
     }
 
     output {
-        File genes="rsem_reference/${prefix}.genes.results"
-        File isoforms="rsem_reference/${prefix}.isoforms.results"
+        File genes="rsem_reference/${SID}.genes.results"
+        File isoforms="rsem_reference/${SID}.isoforms.results"
+        File stat_cnt="rsem_reference/${SID}.stat/${SID}.cnt"
+        File stat_model="rsem_reference/${SID}.stat/${SID}.model"
+        File stat_theta="rsem_reference/${SID}.stat/${SID}.theta"
     }
 
     runtime {

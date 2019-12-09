@@ -1,10 +1,10 @@
 {
   "UMI_qc.UMI_dup.num_threads": "8",
-  "UMI_qc.UMI_dup.star_align": "gs://archanaraja/rnaseq/test_data/Aligned.sortedByCoord.out.bam",
-  "UMI_qc.UMI_dup.sample_prefix": "Con_BL_1",
+  "UMI_qc.UMI_dup.star_align": "gs://archanaraja/rnaseq/test/harmony/stanford/cromwell-execution/rnaseq_pipeline/1c6b3560-6691-401e-813b-fdf79ebe336a/call-star_align/star_out/8019468197.Aligned.sortedByCoord.out.bam",
+  "UMI_qc.UMI_dup.sample_prefix": "8019468197",
   "UMI_qc.UMI_dup.num_preempt": "0",
   "UMI_qc.UMI_dup.memory": "30",
   "UMI_qc.UMI_dup.disk_space": "50",
-  "UMI_qc.UMI_dup.docker": "akre96/motrpac_rnaseq:v0.1"
+  "UMI_qc.UMI_dup.docker": "gcr.io/motrpac-portal-dev/motrpac_rnaseq:v0.1_03_08_19"
 }
 

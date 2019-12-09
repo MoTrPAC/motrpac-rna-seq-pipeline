@@ -10,6 +10,8 @@ import "mark_duplicates/markduplicates.wdl" as markdup
 import "rnaseq_metrics/collectrnaseqmetrics.wdl" as metrics
 import "dup_umi/UMI_dup.wdl" as umi_dup
 import "compute_mapped/mapped.wdl" as mapped
+import "MultiQC/multiqc_postalign.wdl" as mqc_postalign
+import "collect_qc_metrics/collect_qc.wdl" as collect_qc 
 
 workflow rnaseq_pipeline{
   # Default values for runtime, changed in individual calls according to requirements
@@ -26,6 +28,7 @@ workflow rnaseq_pipeline{
   String index_adapter
   String univ_adapter
   Int minimumLength
+  File script
 
   call fastqc.fastQC as preTrimFastQC {
     input:
@@ -116,7 +119,7 @@ workflow rnaseq_pipeline{
     num_threads=10,
     num_preempt=0,
     docker=docker,
-    prefix=SID,
+    SID=SID,
     transcriptome_bam=star_align.transcriptome_bam
  }
 
@@ -166,7 +169,7 @@ call bowtie2_align.bowtie2_align as bowtie2_phix {
   SID=SID,
   input_bam=star_align.bam_file
 }
-  call metrics.collectrnaseqmetrics as rnametrics {
+  call metrics.collectrnaseqmetrics as rnaqc {
   input :
   num_threads=10,
   memory=40,
@@ -187,14 +190,47 @@ call bowtie2_align.bowtie2_align as bowtie2_phix {
   star_align=star_align.bam_file
 }
 call mapped.samtools_mapped as sm {
+  input :
+  num_threads=1,
+  memory=30,
+  disk_space=30,
+  num_preempt=0,
+  docker=docker,
+  SID=SID,
+  input_bam=star_align.bam_file
+}
+call mqc_postalign.multiQC_postalign as mqc_pa {
 input :
-num_threads=1,
-memory=30,
-disk_space=30,
-num_preempt=0,
-docker=docker,
-SID=SID,
-input_bam=star_align.bam_file
+   memory=30,
+   disk_space=40,
+   num_threads=1,
+   num_preempt=0,
+   docker=docker,
+   fastQCReport=[postTrimFastQC.fastQC_report],
+   trim_report=cutadapt.report,
+   rnametric_report=rnaqc.rnaseqmetrics,
+   md_report=md.metrics,
+   star_report=star_align.logs[0],
+   rsem_report=rsem_quant.stat_cnt,
+   fc_report=featurecounts.fc_summary
+}
+call collect_qc.rnaseqQC as qc_report {
+input :
+   memory=10,
+   disk_space=20,
+   num_threads=1,
+   num_preempt=0,
+   docker=docker,
+   script=script,
+   SID=SID,
+   multiQCReports=[mqc.multiQC_report,mqc_pa.multiQC_report],
+   globin_report=bowtie2_globin.bowtie2_report,
+   phix_report=bowtie2_phix.bowtie2_report,
+   rRNA_report=bowtie2_rrna.bowtie2_report,
+   trim_summary=cutadapt.summary,
+   mapped_report=sm.report,
+   star_log=star_align.logs[0],
+   umi_report=udup.umi_report
 }
 }
 
