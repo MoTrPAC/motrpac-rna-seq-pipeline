@@ -30,5 +30,8 @@ git clone -b pipeline_test https://github.com/AshleyLab/motrpac-rna-seq-pipeline
 #Install Python
 sudo apt-get install -y python3-pip
 
+#Install simplejson
+pip3 install simplejson
+
 #Install Pandas
 pip3 install pandas

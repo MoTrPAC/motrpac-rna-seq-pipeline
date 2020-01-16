@@ -83,8 +83,8 @@ git clone -b pipeline_test https://github.com/AshleyLab/motrpac-rna-seq-pipeline
 	* run python script to generate input.json config files for the split batches above
 	
 	```
-	python scripts/make_json_rnaseq.py <comma-separated-filelists-including-paths> <complete-path-of-the-output-dir> 
-	python scripts/make_json_rnaseq.py test_json/test/test_b1aa,test_json/test/test_b1ab,test_json/test/test_b1ac,test_json/test/test_b1ad test_json/test/
+	python3 scripts/make_json_rnaseq.py <comma-separated-filelists-including-paths> <complete-path-of-the-output-dir> 
+	python3 scripts/make_json_rnaseq.py test_json/test/test_b1aa,test_json/test/test_b1ab,test_json/test/test_b1ac,test_json/test/test_b1ad test_json/test/
 	```
 	
 3. **Make sure to configure ~/.caper/default.conf (instructions in the setup step) . Run caper server in a screen session and detach the screen**
