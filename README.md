@@ -42,7 +42,7 @@ docker rm <CONTAINER ID>
 ```
 caper init gcp
 ```
-* Change `out-gcs-bucket , tmp-gcs-bucket` , make sure the tmp_dir specified below exists if it doesn't make one using `mkdir -p <dir_name>` , mysql-db-port should match the port number specified in the `docker ps` command
+* Change `cromwell` to the path where cromwell was locally installed `out-gcs-bucket , tmp-gcs-bucket` , make sure the tmp_dir specified below exists if it doesn't make one using `mkdir -p <dir_name>` , mysql-db-port should match the port number specified in the `docker ps` command
 
 ```
 cromwell=/home/araja7/tools/cromwell-47.jar
@@ -62,7 +62,8 @@ ip=localhost
 port=8000
 
 ```
-
+**NOTE : When you update the out-gcs-bucket paths , you have to stop the docker and the caper server and restart for the new changes to be updated otherwise the output location of the workflows will be the previous location in the default.conf
+ 
 ### Run the pipeline
 
 1. **If you haven't cloned the rna-seq repo as part of requirements step. Clone the repo using the below command.**
