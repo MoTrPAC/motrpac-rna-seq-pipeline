@@ -89,20 +89,67 @@ git clone -b pipeline_test https://github.com/AshleyLab/motrpac-rna-seq-pipeline
 	
 3. **Make sure to configure ~/.caper/default.conf (instructions in the setup step) . Run caper server in a screen session and detach the screen**
 
-```
-screen -RD caper_server
-caper server 2>caper.err 1>caper.out
+	```
+	screen -RD caper_server
+	caper server 2>caper.err 1>caper.out
 
-```
-To detach a screen
-```
-ctrl A + D
-```	    
+	```
+ To detach a screen
+ ```
+ ctrl A + D
+ ```	    
 4. **Submit rna-seq workflows to caper server**
 
+ ```
+ caper submit rnaseq_pipeline_scatter.wdl -i test_json/test/test_b1aa.json --docker gcr.io/motrpac-portal/motrpac_rnaseq:v0.1_04_20_19
+ ```
+ A typical workflow for rat samples takes ~4 hours. Check the status of workflows and make sure they have succeeded by typing `caper list` on the VM instance that's running the job and look for `Succeeded`
+ 
+Merge rna-seq results
+-------------------------------------------------
+
+1. Copy rsem ,featurecounts and qc reports to a VM instance.
+
+   ```
+   mkdir -p rsem_results
+   gsutil -m cp -n -r gs://rna-seq_araja/rna-seq/test-pipeline/rnaseq_pipeline/*/call-rsem_quant/shard-*/rsem_reference/*.*.results rsem_results/
+   mkdir -p featureCounts
+   gsutil -m cp -n -r gs://rna-seq_araja/rna-seq/test-pipeline/rnaseq_pipeline/*/call-featurecounts/shard-*/*.out featureCounts/
+   mkdir -p qc_report
+   gsutil -m cp -n -r gs://rna-seq_araja/rna-seq/test-pipeline/rnaseq_pipeline/*/call-qc_report/shard-*/*_qc_info.csv qc_report/
+   ```
+   
+2. Merge the results to generate consolidated table
+	   
+	   a. Merge RSEM raw gene count
+	   
+	   ```
+	   Make sure your in the parent directory of rsem_results 
+		python merge_rsem.py
+		Output : rsem_genes_count.txt,rsem_genes_tpm.txt,rsem_genes_fpkm.txt
+       ```
+      
+      b. Merge FeatureCounts
+      
+      ```
+      Make sure your in the parent directory of rsem_results 
+      python3 merge_fc.py 
+      Output : featureCounts.txt
+      ```
+      
+      c. Merge QC report
+         
+         Make sure your in the parent directory of qc_report
+         python3 consolidate_qc_report.py --qc_dir qc_report rnaseq_pipeline_qc_metrics_batch4.csv
+         Output : qc_report/naseq_pipeline_qc_metrics_batch4.csv
+3. Copy the results to the desired location on GCP
+
 ```
-caper submit rnaseq_pipeline_scatter.wdl -i test_json/test/test_b1aa.json --docker gcr.io/motrpac-portal/motrpac_rnaseq:v0.1_04_20_19
+gsutil -m cp -r rsem_genes_* gs://motrpac-portal-transfer-stanford/Output/PASS1B/RNA-SEQ/batch4_20200106/results/
+gsutil -m cp -r featureCounts.txt gs://motrpac-portal-transfer-stanford/Output/PASS1B/RNA-SEQ/batch4_20200106/results/
+gsutil -m cp -r rnaseq_pipeline_qc_metrics_batch4.csv gs://motrpac-portal-transfer-stanford/Output/PASS1B/RNA-SEQ/batch4_20200106/results/
 ```
+
 
 Output
 ---------------------------------------------------
