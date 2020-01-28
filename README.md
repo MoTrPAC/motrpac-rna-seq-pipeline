@@ -42,7 +42,7 @@ docker rm <CONTAINER ID>
 ```
 caper init gcp
 ```
-* Change `cromwell` to the path where cromwell was locally installed `out-gcs-bucket , tmp-gcs-bucket` , make sure the tmp_dir specified below exists if it doesn't make one using `mkdir -p <dir_name>` , mysql-db-port should match the port number specified in the `docker ps` command
+* Change `out-gcs-bucket , tmp-gcs-bucket` , make sure the tmp_dir specified below exists if it doesn't make one using `mkdir -p <dir_name>` , mysql-db-port should match the port number specified in the `docker ps` command
 
 ```
 cromwell=/home/araja7/tools/cromwell-40.jar
@@ -62,8 +62,7 @@ ip=localhost
 port=8000
 
 ```
-**NOTE : When you update the out-gcs-bucket paths , you have to stop the docker and the caper server and restart for the new changes to be updated otherwise the output location of the workflows will be the previous location in the default.conf
- 
+
 ### Run the pipeline
 
 1. **If you haven't cloned the rna-seq repo as part of requirements step. Clone the repo using the below command.**
@@ -85,10 +84,8 @@ git clone -b pipeline_test https://github.com/AshleyLab/motrpac-rna-seq-pipeline
 	* run python script to generate input.json config files for the split batches above
 	
 	```
-
 	python scripts/make_json_rnaseq.py <comma-separated-filelists-including-paths> <complete-path-of-the-output-dir> 
 	python scripts/make_json_rnaseq.py input_json/test_batchaa input_json/
-
 	```
 	
 3. **Make sure to configure ~/.caper/default.conf (instructions in the setup step) . Run caper server in a screen session and detach the screen**
@@ -148,11 +145,11 @@ Merge rna-seq results
          Output : qc_report/naseq_pipeline_qc_metrics_batch4.csv
 3. Copy the results to the desired location on GCP
 
-```
-gsutil -m cp -r rsem_genes_* gs://***REMOVED***-transfer-stanford/Output/PASS1B/RNA-SEQ/batch4_20200106/results/
-gsutil -m cp -r featureCounts.txt gs://***REMOVED***-transfer-stanford/Output/PASS1B/RNA-SEQ/batch4_20200106/results/
-gsutil -m cp -r rnaseq_pipeline_qc_metrics_batch4.csv gs://***REMOVED***-transfer-stanford/Output/PASS1B/RNA-SEQ/batch4_20200106/results/
-```
+	```
+	gsutil -m cp -r rsem_genes_* gs://***REMOVED***-transfer-stanford/Output/PASS1B/RNA-SEQ/batch4_20200106/results/
+	gsutil -m cp -r featureCounts.txt gs://***REMOVED***-transfer-stanford/Output/PASS1B/RNA-SEQ/batch4_20200106/results/
+	gsutil -m cp -r rnaseq_pipeline_qc_metrics_batch4.csv gs://***REMOVED***-transfer-stanford/Output/PASS1B/RNA-SEQ/batch4_20200106/results/
+	```
 
 
 Output
