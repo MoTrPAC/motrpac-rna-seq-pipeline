@@ -145,11 +145,11 @@ Merge rna-seq results
          Output : qc_report/naseq_pipeline_qc_metrics_batch4.csv
 3. Copy the results to the desired location on GCP
 
-```
-gsutil -m cp -r rsem_genes_* gs://***REMOVED***-transfer-stanford/Output/PASS1B/RNA-SEQ/batch4_20200106/results/
-gsutil -m cp -r featureCounts.txt gs://***REMOVED***-transfer-stanford/Output/PASS1B/RNA-SEQ/batch4_20200106/results/
-gsutil -m cp -r rnaseq_pipeline_qc_metrics_batch4.csv gs://***REMOVED***-transfer-stanford/Output/PASS1B/RNA-SEQ/batch4_20200106/results/
-```
+	```
+	gsutil -m cp -r rsem_genes_* gs://***REMOVED***-transfer-stanford/Output/PASS1B/RNA-SEQ/batch4_20200106/results/
+	gsutil -m cp -r featureCounts.txt gs://***REMOVED***-transfer-stanford/Output/PASS1B/RNA-SEQ/batch4_20200106/results/
+	gsutil -m cp -r rnaseq_pipeline_qc_metrics_batch4.csv gs://***REMOVED***-transfer-stanford/Output/PASS1B/RNA-SEQ/batch4_20200106/results/
+	```
 
 
 Output
