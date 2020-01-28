@@ -7,7 +7,7 @@ This repo contains WDL implementation of the MotrPAC RNA-seq pipeline based on h
 
 Requirements
 --------------------------------------------------
-Follow instructions in the [VM requirements](https://github.com/AshleyLab/motrpac-rna-seq-pipeline/blob/pipeline_test/vm_requirements.txt) file to create a new VM and install all the dependencies to run the pipeline
+Follow instructions in the [VM requirements](https://github.com/AshleyLab/motrpac-rna-seq-pipeline/blob/pipeline_test/vm_requirements.txt) file to create a new VM and install all the dependencies to run the pipeline. Test data to run the pipeline can be found here : `gs://rna-seq_araja/rna-seq/test_data`
 
 Setup
 --------------------------------------------------
@@ -45,7 +45,7 @@ caper init gcp
 * Change `out-gcs-bucket , tmp-gcs-bucket` , make sure the tmp_dir specified below exists if it doesn't make one using `mkdir -p <dir_name>` , mysql-db-port should match the port number specified in the `docker ps` command
 
 ```
-cromwell=/home/araja7/tools/cromwell-47.jar
+cromwell=/home/araja7/tools/cromwell-40.jar
 backend=gcp
 gcp-prj=motrpac-portal
 out-gcs-bucket=gs://rna-seq_araja/rna-seq/sinai/batch5_20191031/
@@ -72,19 +72,20 @@ git clone -b pipeline_test https://github.com/AshleyLab/motrpac-rna-seq-pipeline
 2. **Generate input configuration files. These files are necessary to run the pipeline.**
 
 	* split the raw files into 4 batches assuming a batch has 320 samples. If the batch count is lesser we can make fewer batches. (this step might not be necessary if we decide to submit only 1 batch)
+	* Below is an example to generate only 1 batch.
 	
 	```
 	cd <rna-seq-repo>   
    mkdir -p input_json
    bash scripts/make_filelist.sh <gcp_fastq_dir> <batch_size> <outdir_for_split_file_list> <batch_name>
-   bash scripts/make_filelist.sh gs://motrpac-portal-transfer-stanford/rna-seq/rat/batch1_20190503/fastq_raw 80 test test_b1
+   bash scripts/make_filelist.sh gs://rna-seq_araja/rna-seq/test_data 1 input_json test_batch
    
    ```
 	* run python script to generate input.json config files for the split batches above
 	
 	```
 	python scripts/make_json_rnaseq.py <comma-separated-filelists-including-paths> <complete-path-of-the-output-dir> 
-	python scripts/make_json_rnaseq.py test_json/test/test_b1aa,test_json/test/test_b1ab,test_json/test/test_b1ac,test_json/test/test_b1ad test_json/test/
+	python scripts/make_json_rnaseq.py input_json/test_batchaa input_json/
 	```
 	
 3. **Make sure to configure ~/.caper/default.conf (instructions in the setup step) . Run caper server in a screen session and detach the screen**
