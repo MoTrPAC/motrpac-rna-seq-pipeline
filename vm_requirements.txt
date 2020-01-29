@@ -19,10 +19,10 @@ docker run hello-world
 #Above command shold work successfully without any permission denied errors.
 
 #INSTALL CROMWELL
-wget https://github.com/broadinstitute/cromwell/releases/download/47/cromwell-47.jar
+wget https://github.com/broadinstitute/cromwell/releases/download/42/cromwell-42.jar
 
 #INSTALL WOMTOOLS
-wget https://github.com/broadinstitute/cromwell/releases/download/47/womtool-47.jar
+wget https://github.com/broadinstitute/cromwell/releases/download/42/womtool-42.jar
 
 #CLONE PIPELINE REPO
 git clone -b pipeline_test https://github.com/AshleyLab/motrpac-rna-seq-pipeline.git 
