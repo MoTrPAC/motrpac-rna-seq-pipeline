@@ -45,7 +45,8 @@ caper init gcp
 * Change `out-gcs-bucket , tmp-gcs-bucket` , make sure the tmp_dir specified below exists if it doesn't make one using `mkdir -p <dir_name>` , mysql-db-port should match the port number specified in the `docker ps` command
 
 ```
-cromwell=/home/araja7/tools/cromwell-40.jar
+cromwell=/home/araja7/tools/cromwell-42.jar
+womtool=/home/araja7/tools/womtool-42.jar
 backend=gcp
 gcp-prj=motrpac-portal
 out-gcs-bucket=gs://rna-seq_araja/rna-seq/sinai/batch5_20191031/
@@ -102,7 +103,7 @@ git clone -b pipeline_test https://github.com/AshleyLab/motrpac-rna-seq-pipeline
 4. **Submit rna-seq workflows to caper server**
 
  ```
- caper submit rnaseq_pipeline_scatter.wdl -i test_json/test/test_b1aa.json --docker gcr.io/motrpac-portal/motrpac_rnaseq:v0.1_04_20_19
+ caper submit rnaseq_pipeline_scatter.wdl -i input_json/test_batchaa_rnaseq.json --docker gcr.io/motrpac-portal/motrpac_rnaseq:v0.1_04_20_19
  ```
  A typical workflow for rat samples takes ~4 hours. Check the status of workflows and make sure they have succeeded by typing `caper list` on the VM instance that's running the job and look for `Succeeded`
  
