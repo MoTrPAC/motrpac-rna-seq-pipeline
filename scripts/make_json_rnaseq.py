@@ -2,8 +2,8 @@ import os, sys, argparse, json
 
 def main(filelist, output_path):
     for i in filelist:
-      print(i)
-      f=open(os.path.join(output_path, i+"_rnaseq.json"),"w")
+      base_name=os.path.basename(i)
+      f=open(os.path.join(output_path, base_name+"_rnaseq.json"),"w")
       r1 = [line.strip("\n") for line in open(i)]
       r2 = [line.strip("\n").replace("_R1.fastq","_R2.fastq") for line in open(i)]
       i1 = [line.strip("\n").replace("_R1.fastq","_I1.fastq") for line in open(i)]
@@ -36,11 +36,12 @@ def main(filelist, output_path):
           "rnaseq_pipeline.disk_space" : "100"}
       json.dump(d, f)
       f.close()
+      print("Success! Finished generating input jsons")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description = 'This script is used to generate input json files from filelists for running rna-seq pipeline on GCP')
     parser.add_argument('filelist', help='comma separated list of files to generate input_json(full path of the file containing only *_R1.fastq.gz)', type=str)
-    parser.add_argument('output_path', help='output path', type=str)
+    parser.add_argument('output_path', help='output path, where you want the input jsons to be written', type=str)
     args = parser.parse_args()
 
     filelist = args.filelist.split(',')
