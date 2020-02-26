@@ -9,6 +9,8 @@ import argparse
 import pandas as pd
 import os
 from functools import reduce
+from pandas.api.types import is_string_dtype
+from pandas.api.types import is_numeric_dtype
 
 parser = argparse.ArgumentParser(description='Script to collect rna-seq qc metrics')
 parser.add_argument('--multiqc_prealign',help='path to multiqc prealign directory')
@@ -138,11 +140,18 @@ df_mapped=df_mapped.round({'pct_chrX': 3, 'pct_chrY': 5, 'pct_chrM' : 3,'pct_chr
 #Merging data frames
 dfs=[df1,df_star,df_mapped,df_rnametrics]
 df_final = reduce(lambda left,right:pd.merge(left,right,on='sample'), dfs)
+print (df_final['sample'].dtype)
 print ("Merging successful")
 print (df_final)
+print (df_final['sample'][0])
+
 #df_final=df_final.round(2)
-name=df_final['sample'][0].astype('str')+"_qc_info.csv"
-print (name)
+
+if(df_final['sample'].dtype)=='O':
+   name=df_final['sample'][0]+"_qc_info.csv"
+   print (name)
+else :
+   name=df_final['sample'][0].astype('str')+"_qc_info.csv"
 
 #Wrting qc_report to a csv file
 df_final.to_csv(name,sep=",",index=False)
