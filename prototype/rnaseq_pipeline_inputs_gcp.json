@@ -1,0 +1,28 @@
+{
+  "rnaseq_pipeline.fastqr1": "gs://archanaraja/rnaseq/test/pilot/fastq_raw/Con_BL_1_R1.fastq.gz",
+  "rnaseq_pipeline.fastqr2": "gs://archanaraja/rnaseq/test/pilot/fastq_raw/Con_BL_1_R2.fastq.gz",
+  "rnaseq_pipeline.fastqi1": "gs://archanaraja/rnaseq/test/pilot/fastq_raw/Con_BL_1_I1.fastq.gz",
+  "rnaseq_pipeline.SID": "Con_BL_1",
+  "rnaseq_pipeline.preTrimFastQC.outdir": "fastqc_raw",
+  "rnaseq_pipeline.index_adapter": "AGATCGGAAGAGC",
+  "rnaseq_pipeline.univ_adapter": "AGATCGGAAGAGC",
+  "rnaseq_pipeline.minimumLength": "20",
+  "rnaseq_pipeline.postTrimFastQC.outdir": "fastqc_trim",
+  "rnaseq_pipeline.star_align.star_index": "gs://archanaraja/rnaseq/references/rat/STAR_reference/star_2.7.0d_03-20-19/Rnor6_v95_star_index.tar.gz",
+  "rnaseq_pipeline.rsem_quant.rsem_reference": "gs://archanaraja/rnaseq/references/rat/rsem_reference/rn6_rsem_reference.tar.gz",
+  "rnaseq_pipeline.rnaqc.ref_flat": "gs://archanaraja/rnaseq/references/rat/genome/refFlat_rn6_v95.txt",
+  "rnaseq_pipeline.featurecounts.gtf_file": "gs://archanaraja/rnaseq/references/rat/genome/Rattus_norvegicus.Rnor_6.0.95.gtf",
+  "rnaseq_pipeline.bowtie2_globin.genome_dir": "rn_globin",
+  "rnaseq_pipeline.bowtie2_globin.genome_dir_tar": "gs://archanaraja/rnaseq/references/rat/bowtie2_index/rn_globin.tar.gz",
+  "rnaseq_pipeline.bowtie2_rrna.genome_dir": "rn_rRNA",
+  "rnaseq_pipeline.bowtie2_rrna.genome_dir_tar": "gs://archanaraja/rnaseq/references/rat/bowtie2_index/rn_rRNA.tar.gz",
+  "rnaseq_pipeline.bowtie2_phix.genome_dir":"phix",
+  "rnaseq_pipeline.bowtie2_phix.genome_dir_tar": "gs://archanaraja/rnaseq/references/rat/bowtie2_index/phix.tar.gz",
+  "rnaseq_pipeline.num_threads": "1",
+  "rnaseq_pipeline.num_preempt": "0",
+  "rnaseq_pipeline.memory": "20",
+  "rnaseq_pipeline.cpus": "1",
+  "rnaseq_pipeline.docker": "gcr.io/***REMOVED***-dev/motrpac_rnaseq:v0.1_03_08_19",
+  "rnaseq_pipeline.disk_space": "30"
+}
+
