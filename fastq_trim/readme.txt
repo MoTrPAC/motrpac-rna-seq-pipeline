@@ -1,4 +1,0 @@
-cutadapt -a $INDEXED_ADAPTER_PREFIX -A $UNIVERSAL_ADAPTER -o out1.fastq -p out2.fastq -m 20 /Users/archanaraja/work/repo/RNAseq_v1/test_data/Lung_Powder_S10_R1_001.head.fastq.gz /Users/archanaraja/work/repo/RNAseq_v1/test_data/Lung_Powder_S10_R2_001.head.fastq.gz
-cutadapt -a AGATCGGAAGAGC -A AGATCGGAAGAGC -o Lung_Powder_S10_R1.fastq -p Lung_Powder_S10_R2.fastq -m 20 --too-short-output Lung_Powder_S10_R1.fastq --too-short-paired-output Lung_Powder_S10_R2.fastq /Users/archanaraja/work/repo/RNAseq/test_data/Lung_Powder_S10_R1_001.head.fastq.gz /Users/archanaraja/work/repo/RNAseq/test_data/Lung_Powder_S10_R2_001.head.fastq.gz
-java -jar /Users/archanaraja/work/tools/cromwell/cromwell-36.jar run cutadapt.wdl -i cutadapt_inputs.json
-java -Dconfig.file=google.conf -jar /Users/archanaraja/work/tools/cromwell/cromwell-36.jar run cutadapt/cutadapt.wdl -i cutadapt/cutadapt_inputs_gcp.json
