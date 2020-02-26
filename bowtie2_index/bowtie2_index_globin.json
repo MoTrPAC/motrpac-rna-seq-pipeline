@@ -1,9 +1,0 @@
-{
-  "bowtie2_index_workflow.bowtie2_index.memory": "30",
-  "bowtie2_index_workflow.bowtie2_index.prefix": "rn_globin",
-  "bowtie2_index_workflow.bowtie2_index.num_threads": "1",
-  "bowtie2_index_workflow.bowtie2_index.disk_space": "40",
-  "bowtie2_index_workflow.bowtie2_index.reference_fasta": "gs://archanaraja/rnaseq/references/rat/bowtie2_index/rn_globin.fa",
-  "bowtie2_index_workflow.bowtie2_index.num_preempt": "0"
-}
-
