@@ -68,7 +68,7 @@ port=8000
 
 1. **If you haven't cloned the rna-seq repo as part of requirements step. Clone the repo using the below command.**
 ```
-git clone -b pipeline_test https://github.com/AshleyLab/motrpac-rna-seq-pipeline.git 
+git clone https://github.com/AshleyLab/motrpac-rna-seq-pipeline.git 
 ```
 2. **Generate input configuration files. These files are necessary to run the pipeline.**
 
