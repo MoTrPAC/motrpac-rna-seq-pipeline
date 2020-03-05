@@ -42,7 +42,7 @@ docker rm <CONTAINER ID>
 ```
 caper init gcp
 ```
-* Change `out-gcs-bucket , tmp-gcs-bucket` , make sure the tmp_dir specified below exists if it doesn't make one using `mkdir -p <dir_name>` , mysql-db-port should match the port number specified in the `docker ps` command
+* Change `out-gcs-bucket , tmp-gcs-bucket` , make sure the tmp_dir specified below exists if it doesn't make one using `mkdir <dir_name>` , mysql-db-port should match the port number specified in the `docker ps` command
 
 ```
 cromwell=/home/araja7/tools/cromwell-42.jar
@@ -78,9 +78,9 @@ git clone https://github.com/AshleyLab/motrpac-rna-seq-pipeline.git
 	
 	```
 	cd <rna-seq-repo>   
-   mkdir -p input_json
-   python3 scripts/make_json_rnaseq.py <gcp_path_fastq_dir_without_trailing_slash and gs:// prefix> <outdir_for_split_file_list> <num_of_batches_to_split>
-   python3 scripts/make_json_rnaseq.py ***REMOVED***/rna-seq/test_data input_json/ 1
+   mkdir input_json
+   python3 scripts/make_json_rnaseq.py <gcp_path_fastq_dir_without_trailing_slash> <outdir_for_split_file_list> <num_of_batches_to_split>
+   python3 scripts/make_json_rnaseq.py gs://***REMOVED***/rna-seq/test_data input_json/ 1
    
    ```
 	
