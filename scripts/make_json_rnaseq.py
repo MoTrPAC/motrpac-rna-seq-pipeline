@@ -1,5 +1,5 @@
-#Usage example : python3 scripts/make_json_rnaseq.py motrpac-portal-transfer-stanford/rna-seq/rat/batch4_20200106/fastq_raw input_json/test3/ 4
-
+#Usage example : python3 scripts/make_json_rnaseq.py gs://motrpac-portal-transfer-stanford/rna-seq/rat/batch4_20200106/fastq_raw input_json/test3/ 4
+#To do : Add an exception to stop execution with a reason if the number of chunks >number of files in the directory
 import os, sys, argparse, json
 import gcsfs
 import numpy as np
@@ -9,18 +9,25 @@ def main(gcp_path,output_path,num_chunks):
   batch_num=1
   gcp_path=gcp_path+"/*_R1.fastq.gz"
   gcp_prefix="gs://"
-  split_r1=np.array_split(fs.glob(gcp_path),num_chunks)
-  sname=[[os.path.basename(i).split("_R1.fastq.gz")[0] for i in l] for l in split_r1]
-  split_r1=list(list(map(lambda orig_path: gcp_prefix+orig_path, l))for l in split_r1)
-  split_r2=[[sub.replace('_R1.fastq.gz', '_R2.fastq.gz') for sub in l] for l in split_r1]
-  split_i1=[[sub.replace('_R1.fastq.gz', '_I1.fastq.gz') for sub in l] for l in split_r1]
-  for (r1,r2,i1,prefix_list) in zip(split_r1,split_r2,split_i1,sname) :
-    f=open(os.path.join(output_path, "set"+str(batch_num)+"_rnaseq.json"),"w")
-    json_dict=make_json_dict(r1,r2,i1,prefix_list)
-    json.dump(json_dict,f)
-    batch_num=batch_num+1
-    f.close() 
-  print("Success! Finished generating input jsons")
+  print ("Number of batches to split:" + "\t" + str(num_chunks))
+  # Verify if the number of batches to split is <= the total number of input files
+  if (num_chunks > len(fs.glob(gcp_path))):   
+    print("Script exited. Reason : num_chunks exceeded the number of files in the bucket, please enter a value that's <= the total number of input *_R1.fastq.gz")
+  
+  else :
+    split_r1=np.array_split(fs.glob(gcp_path),num_chunks)
+    sname=[[os.path.basename(i).split("_R1.fastq.gz")[0] for i in l] for l in split_r1]
+# gcsfs chops off the gs:// hence i have to do append gs:// to each path as below
+    split_r1=list(list(map(lambda orig_path: gcp_prefix+orig_path, l))for l in split_r1)
+    split_r2=[[sub.replace('_R1.fastq.gz', '_R2.fastq.gz') for sub in l] for l in split_r1]
+    split_i1=[[sub.replace('_R1.fastq.gz', '_I1.fastq.gz') for sub in l] for l in split_r1]
+    for (r1,r2,i1,prefix_list) in zip(split_r1,split_r2,split_i1,sname) :
+      f=open(os.path.join(output_path, "set"+str(batch_num)+"_rnaseq.json"),"w")
+      json_dict=make_json_dict(r1,r2,i1,prefix_list)
+      json.dump(json_dict,f)
+      batch_num=batch_num+1
+      f.close() 
+    print("Success! Finished generating input jsons")
       
 def make_json_dict(r1=[],r2=[],i1=[],prefix_list=[]):
   d = {"rnaseq_pipeline.fastq1": r1 ,\
@@ -57,6 +64,6 @@ if __name__ == '__main__':
   parser = argparse.ArgumentParser(description = 'This script is used to generate input json files from the fastq_raw dir on gcp for running rna-seq pipeline on GCP')
   parser.add_argument('gcp_path',help='location of the submission batch directory in gcp that contains the fastq_raw dir',type=str) 
   parser.add_argument('output_path', help='output path, where you want the input jsons to be written', type=str)
-  parser.add_argument('num_chunks', help='number of chunks to split the input files', type=int) 
+  parser.add_argument('num_chunks', help='number of chunks to split the input files, should always be <= number of input files', type=int) 
   args = parser.parse_args()
   main(args.gcp_path,args.output_path,args.num_chunks)
