@@ -42,7 +42,7 @@ docker rm <CONTAINER ID>
 ```
 caper init gcp
 ```
-* Change `out-gcs-bucket , tmp-gcs-bucket` , make sure the tmp_dir specified below exists if it doesn't make one using `mkdir -p <dir_name>` , mysql-db-port should match the port number specified in the `docker ps` command
+* Change `out-gcs-bucket , tmp-gcs-bucket` , make sure the tmp_dir specified below exists if it doesn't make one using `mkdir <dir_name>` , mysql-db-port should match the port number specified in the `docker ps` command
 
 ```
 cromwell=/home/araja7/tools/cromwell-42.jar
@@ -68,26 +68,21 @@ port=8000
 
 1. **If you haven't cloned the rna-seq repo as part of requirements step. Clone the repo using the below command.**
 ```
-git clone -b pipeline_test https://github.com/AshleyLab/motrpac-rna-seq-pipeline.git 
+git clone https://github.com/AshleyLab/motrpac-rna-seq-pipeline.git 
 ```
 2. **Generate input configuration files. These files are necessary to run the pipeline.**
 
-	* split the raw files into 4 batches assuming a batch has 320 samples. If the batch count is lesser we can make fewer batches. (this step might not be necessary if we decide to submit only 1 batch)
-	* Below is an example to generate only 1 batch.
+    * run python script to generate input.json config files from the raw fastq directory on gcp
+	* split the raw files into 4 batches assuming a batch has 320 samples. If the batch count is lesser we can make fewer batches.
+	* Below is an example to generate input.json file for 1 batch.
 	
 	```
 	cd <rna-seq-repo>   
-   mkdir -p input_json
-   bash scripts/make_filelist.sh <gcp_fastq_dir> <batch_size> <outdir_for_split_file_list> <batch_name>
-   bash scripts/make_filelist.sh gs://rna-seq_araja/rna-seq/test_data 1 input_json test_batch
+   mkdir input_json
+   python3 scripts/make_json_rnaseq.py <gcp_path_fastq_dir_without_trailing_slash> <outdir_for_split_file_list> <num_of_batches_to_split>
+   python3 scripts/make_json_rnaseq.py gs://rna-seq_araja/rna-seq/test_data input_json/ 1
    
    ```
-	* run python script to generate input.json config files for the split batches above
-	
-	```
-	python scripts/make_json_rnaseq.py <comma-separated-filelists-including-paths> <complete-path-of-the-output-dir> 
-	python scripts/make_json_rnaseq.py input_json/test_batchaa input_json/
-	```
 	
 3. **Make sure to configure ~/.caper/default.conf (instructions in the setup step) . Run caper server in a screen session and detach the screen**
 
@@ -103,14 +98,14 @@ git clone -b pipeline_test https://github.com/AshleyLab/motrpac-rna-seq-pipeline
 4. **Submit rna-seq workflows to caper server**
 
  ```
- caper submit rnaseq_pipeline_scatter.wdl -i input_json/test_batchaa_rnaseq.json --docker gcr.io/motrpac-portal/motrpac_rnaseq:v0.1_04_20_19
+ caper submit rnaseq_pipeline_scatter.wdl -i input_json/set1_rnaseq.json --docker gcr.io/motrpac-portal/motrpac_rnaseq:v0.1_04_20_19
  ```
  A typical workflow for rat samples takes ~4 hours. Check the status of workflows and make sure they have succeeded by typing `caper list` on the VM instance that's running the job and look for `Succeeded`
  
 Merge rna-seq results
 -------------------------------------------------
 
-1. Copy rsem ,featurecounts and qc reports to a VM instance.
+1. Copy rsem,featurecounts and qc reports to a VM instance.
 
    ```
    mkdir -p rsem_results
@@ -156,7 +151,7 @@ Merge rna-seq results
 Output
 ---------------------------------------------------
 
-* Results can be found here `gs://rna-seq_araja/rna-seq/sinai/batch5_20191031/cromwell-execution/rnaseq_pipeline`
+* Results can be found here `gs://rna-seq_araja/rna-seq/test-42/rnaseq_pipeline/c62db449-3b65-4eeb-831e-1e411eace6bd/`
 
 Maintainer
 ----------------------------------------------------
