@@ -20,7 +20,7 @@ task bowtie2_index {
     }
 
     runtime {
-        docker: "akre96/motrpac_rrbs:v0.1"
+        docker: "gcr.io/motrpac-portal/motrpac_rnaseq:v0.1_04_20_19"
 	memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${num_threads}"
