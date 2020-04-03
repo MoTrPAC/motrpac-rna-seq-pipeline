@@ -8,6 +8,7 @@ Author : Archana Raja
 import argparse
 import pandas as pd
 import os
+import re
 from functools import reduce
 from pandas.api.types import is_string_dtype
 from pandas.api.types import is_numeric_dtype
@@ -62,7 +63,9 @@ pct_adapter_detected=df_cutadapt["pct_adapter_detected"][0]
 
 #get mean raw read count
 reads_raw=(df_raw["FastQC_mqc-generalstats-fastqc-total_sequences"][1]+df_raw["FastQC_mqc-generalstats-fastqc-total_sequences"][2])/2
-sample_name=df_raw["Sample"][0].split("_")[0]
+
+# Below expression extracts the sample_name by splitting the first value in the Sample column by _R1.fastq.gz or _R2.fastq.gz
+sample_name=re.split('_R[1,2]',(df_raw["Sample"][0]))[0]
 
 #get read counts after trimming (reads)
 reads_trim=(df_raw["FastQC_mqc-generalstats-fastqc-total_sequences"][3]+df_raw["FastQC_mqc-generalstats-fastqc-total_sequences"][4])/2
