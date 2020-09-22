@@ -1,0 +1,126 @@
+#!/bin/python3
+
+__author__ = 'nicolerg'
+__date__ = '8 Sept 2020'
+# leafcutter pipeline 
+# run on one tissue at a time 
+
+import os
+import subprocess
+
+base = config['base']
+tissue = config['tissue']
+fastq_dir = config['fastq_dir']
+
+# change working directory 
+os.chdir(base)
+
+# get viallabels from FASTQ files. expected format: {viallabel}_R?.fastq.gz
+VIAL_LABELS = subprocess.check_output('ls {}/ | sed "s/_.*//" | sort | uniq | sed -e "/^8/d"'.format(fastq_dir), shell=True).decode().split()
+
+rule all:
+	input: 
+		'intron_cluster/' + tissue + '_perind.counts.gz',
+		'intron_cluster/' + tissue + '_perind_numers.counts.gz'
+
+rule trim:
+	input: 
+		R1 = fastq_dir + '/{viallabel}_R1.fastq.gz', 
+		R2 = fastq_dir + '/{viallabel}_R2.fastq.gz' 
+	output:
+		trimmed_R1 = 'fastq_trim/{viallabel}_R1.fastq.gz',
+		trimmed_R2 = 'fastq_trim/{viallabel}_R2.fastq.gz',
+		tooshort_R1 = 'fastq_trim/tooshort/{viallabel}_R1.fastq.gz',
+		tooshort_R2 = 'fastq_trim/tooshort/{viallabel}_R2.fastq.gz'
+	resources:
+		mem_mb = 45000
+	log:
+		'log/cutadapt/{viallabel}.log'
+	shell:
+		'''
+		cutadapt \
+			-a AGATCGGAAGAGC \
+			-A AGATCGGAAGAGC \
+			-o {output.trimmed_R1} \
+			-p {output.trimmed_R2} \
+			-m 20 \
+			--too-short-output {output.tooshort_R1} \
+			--too-short-paired-output {output.tooshort_R2} \
+			{input.R1} {input.R2} > {log} 2>&1
+		'''
+
+rule star_second_pass:
+	input:
+		trimmed_R1 = 'fastq_trim/{viallabel}_R1.fastq.gz',
+		trimmed_R2 = 'fastq_trim/{viallabel}_R2.fastq.gz'
+	output:
+		'second_pass/{viallabel}.Aligned.out.bam'
+	params:
+		genome_index = config['genome_index'],
+		prefix = 'second_pass/{viallabel}.',
+		sjdb_dir = config['sj_tab_dir']
+	threads: 
+		workflow.cores
+	resources:
+		mem_mb = 60000
+	shell:
+		'''
+		STAR --genomeDir {params.genome_index} \
+			--outSAMstrandField intronMotif \
+			--readFilesCommand zcat \
+			--outSAMtype BAM Unsorted \
+			--sjdbFileChrStartEnd {params.sjdb_dir}/*SJ.out.tab \
+			--readFilesIn {input.trimmed_R1} {input.trimmed_R2} \
+			--outFileNamePrefix {params.prefix} \
+			--limitSjdbInsertNsj 2000000 \
+			--runThreadN {threads} 
+		'''
+
+rule bam_to_junc:
+	input:
+		bam = 'second_pass/{viallabel}.Aligned.out.bam'
+	output:
+		junc = 'junc/{viallabel}.junc',
+		bam_bed = temp('second_pass/{viallabel}.Aligned.out.bam.bed')
+	log:
+		'log/bam_to_junc/{viallabel}.log'
+	params:
+		srcdir = config['leafcutter_src'],
+		base = base
+	shell:
+		'''
+		# add leafcutter to path 
+		export PATH={params.srcdir}/scripts:{params.srcdir}/clustering:$PATH
+		bash bam2junc.sh {params.base}/{input.bam} {params.base}/{output.junc} > {params.base}/{log} 2>&1
+		'''
+
+rule junc_to_intron_cluster:
+	input:
+		junc = expand('junc/{viallabel}.junc', viallabel = VIAL_LABELS)
+	output:
+		junclist = 'junc/juncfiles.txt',
+		out1 = 'intron_cluster/' + tissue + '_perind.counts.gz',
+		out2 = 'intron_cluster/' + tissue + '_perind_numers.counts.gz',
+		sorted_junc = temp(expand('intron_cluster/{viallabel}.junc.sorted.gz', viallabel = VIAL_LABELS))
+	log:
+		'log/intron_cluster.log'
+	params:
+		srcdir = config['leafcutter_src'],
+		base = base,
+		tissue = tissue
+	shell:
+		'''
+		# add leafcutter to path 
+		export PATH={params.srcdir}/scripts:{params.srcdir}/clustering:$PATH
+
+		# make a list of junc files
+		for file in $(ls junc/*.junc); do echo $file >> {output.junclist}; done
+		sed -i "s:^:{params.base}/:" {output.junclist}
+		# run leafcutter clustering
+		python2 {params.srcdir}/clustering/leafcutter_cluster.py -j \
+			{params.base}/{output.junclist} \
+			-m 50 \
+			-r {params.base}/intron_cluster \
+			-o {params.tissue} \
+			-l 500000 > {params.base}/{log} 2>&1
+		'''
