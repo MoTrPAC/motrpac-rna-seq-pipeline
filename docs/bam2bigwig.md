@@ -15,4 +15,4 @@ outdir=/path/to/bigwig
 bash bam2bigwig.sh ${bam} ${outdir}
 ```
 
-This will output the bigwig files in `${outdir}`. Each job requires <1G of memory. 
+This will generate `${outdir}/${viallabel}.bw`. Each job requires <1G of memory. 
