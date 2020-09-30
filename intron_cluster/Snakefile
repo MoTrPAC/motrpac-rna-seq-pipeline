@@ -16,7 +16,7 @@ fastq_dir = config['fastq_dir'] # path to directory in which trimmed FASTQ files
 os.chdir(base)
 
 # get viallabels from FASTQ files. expected format: {viallabel}_R?.fastq.gz
-VIAL_LABELS = subprocess.check_output('ls {}/ | sed "s/_.*//" | sort | uniq | sed -e "/^8/d"'.format(fastq_dir), shell=True).decode().split()
+VIAL_LABELS = subprocess.check_output('ls {}/ | sed "s/_.*//" | sort | uniq | sed -e "/^8/d"'.format(config['sj_tab_dir']), shell=True).decode().split()
 
 rule all:
 	input: 
