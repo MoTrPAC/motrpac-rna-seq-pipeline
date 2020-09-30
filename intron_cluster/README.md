@@ -53,8 +53,9 @@ See the example `config/gastrocnemius.config`. Config files are in JSON format, 
 	vastus_lateralis
 	white_adipose
   ```
-- `"fastq_dir"`: Path to a directory with raw FASTQ files **just for this tissue**, e.g. `/path/to/fastq_raw/gastrocnemius`. The BIC can modify this code to skip the `cudadapt` trimming step and instead input the path to the trimmed FASTQ files for this tissue.  
-- `"sj_tab_dir"`: Path to a directory with `*SJ.tab.out` files **just for this tissue**. It is not necessary or ideal to use the `*SJ.tab.out` files from other tissues since other tissues will express different genes and detect junctions that are not relevant for the tissue of interest.  
+- `"fastq_dir"`: Path to a directory with trimmed FASTQ files, e.g. `/path/to/fastq_trim`. 
+- `"sj_tab_dir"`: Path to a directory with `*SJ.tab.out` files **just for this tissue**. It is not necessary or ideal to use the `*SJ.tab.out` files from other tissues since other tissues will express different genes and detect junctions that are not relevant for the tissue of interest. 
+  > NOTE: The BIC will probably need to modify how viallabels for a given tissue are defined (currently line 19 of the Snakefile). 
 - `"genome_index"`: Path to the rn6 STAR index already used in the MoTrPAC RNA-seq pipeline, e.g. `path/to/to/rn6_ensembl_r96/star_index`.  
 
 ## 3. Run the pipeline  
