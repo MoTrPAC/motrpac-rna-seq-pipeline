@@ -10,7 +10,7 @@ import subprocess
 
 base = config['base']
 tissue = config['tissue']
-fastq_dir = config['fastq_dir']
+fastq_dir = config['fastq_dir'] # path to directory in which trimmed FASTQ files are located
 
 # change working directory 
 os.chdir(base)
@@ -23,36 +23,10 @@ rule all:
 		'intron_cluster/' + tissue + '_perind.counts.gz',
 		'intron_cluster/' + tissue + '_perind_numers.counts.gz'
 
-rule trim:
-	input: 
-		R1 = fastq_dir + '/{viallabel}_R1.fastq.gz', 
-		R2 = fastq_dir + '/{viallabel}_R2.fastq.gz' 
-	output:
-		trimmed_R1 = 'fastq_trim/{viallabel}_R1.fastq.gz',
-		trimmed_R2 = 'fastq_trim/{viallabel}_R2.fastq.gz',
-		tooshort_R1 = 'fastq_trim/tooshort/{viallabel}_R1.fastq.gz',
-		tooshort_R2 = 'fastq_trim/tooshort/{viallabel}_R2.fastq.gz'
-	resources:
-		mem_mb = 45000
-	log:
-		'log/cutadapt/{viallabel}.log'
-	shell:
-		'''
-		cutadapt \
-			-a AGATCGGAAGAGC \
-			-A AGATCGGAAGAGC \
-			-o {output.trimmed_R1} \
-			-p {output.trimmed_R2} \
-			-m 20 \
-			--too-short-output {output.tooshort_R1} \
-			--too-short-paired-output {output.tooshort_R2} \
-			{input.R1} {input.R2} > {log} 2>&1
-		'''
-
 rule star_second_pass:
 	input:
-		trimmed_R1 = 'fastq_trim/{viallabel}_R1.fastq.gz',
-		trimmed_R2 = 'fastq_trim/{viallabel}_R2.fastq.gz'
+		trimmed_R1 = fastq_dir + '/{viallabel}_R1.fastq.gz', 
+		trimmed_R2 = fastq_dir + '/{viallabel}_R2.fastq.gz' 
 	output:
 		'second_pass/{viallabel}.Aligned.out.bam'
 	params:
