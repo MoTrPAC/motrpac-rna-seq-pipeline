@@ -19,3 +19,6 @@ vm_requirements_orig.txt
 testing
 # MacOS Files
 .DS_Store
+
+venv/
+.idea/
