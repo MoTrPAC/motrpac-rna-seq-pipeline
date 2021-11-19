@@ -17,21 +17,22 @@ task star {
     String docker
     command {
         set -euo pipefail
-        ${"fastq1_abs=" + fastq1 +"\n"+ "fastq2_abs="+fastq2}
+        FASTQ_1_ABS=${fastq1}
+        FASTQ_2_ABS=${fastq2}
 
         echo "FASTQs:"
-        echo $fastq1_abs
-        echo $fastq2_abs
+        echo "$FASTQ_1_ABS"
+        echo "$FASTQ_2_ABS"
 
         # extract index
-        echo "$(date +"[%b %d %H:%M:%S] Extracting STAR index")"
+        echo "$(date "+[%b %d %H:%M:%S]")" Extracting STAR index
         mkdir star_index
         tar -xvvf ${star_index} -C star_index --strip-components=1
-        echo "Done extracting index"
+        echo "$(date "+[%b %d %H:%M:%S]")" Done extracting index
 
         mkdir star_out
         STAR  --genomeDir star_index \
-            --readFilesIn $fastq1_abs $fastq2_abs \
+            --readFilesIn "$FASTQ_1_ABS" "$FASTQ_2_ABS" \
             --outFileNamePrefix star_out/${prefix}. \
             --readFilesCommand zcat \
             --outSAMattributes ${outSAMattributes} \
@@ -44,10 +45,7 @@ task star {
         ls
 
         samtools index ${prefix}.Aligned.sortedByCoord.out.bam
-
         ls
-
-
     }
 
     output {
@@ -69,9 +67,4 @@ task star {
     meta {
         author: "Archana Raja"
     }
-}
-
-
-workflow star_workflow {
-    call star
 }

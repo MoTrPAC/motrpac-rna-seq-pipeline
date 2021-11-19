@@ -34,8 +34,3 @@ task featurecounts {
         author: "Archana Raja"
     }
 }
-
-
-workflow featurecounts_workflow {
-    call featurecounts
-}

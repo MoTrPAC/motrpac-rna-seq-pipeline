@@ -59,8 +59,3 @@ task rsem {
         author: "Archana Raja"
     }
 }
-
-
-workflow rsem_workflow {
-    call rsem
-}
