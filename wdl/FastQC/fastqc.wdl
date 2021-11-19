@@ -26,28 +26,3 @@ task fastQC {
         preemptible: "${num_preempt}"
     }
 }
-
-workflow fastqc_report {
-    File fastqr1
-    File fastqr2
-    Int memory
-    String outdir
-    Int disk_space
-    Int num_threads
-    Int num_preempt
-    String docker
-    call fastQC {
-        input:
-            fastqr1 = fastqr1,
-            fastqr2 = fastqr2,
-            outdir=outdir,
-            memory=memory,
-            disk_space=disk_space,
-            num_threads=num_threads,
-            num_preempt=num_preempt,
-            docker=docker
-    }
-    output {
-        fastQC.fastQC_report
-    }
-}

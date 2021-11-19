@@ -45,6 +45,3 @@ task Cutadapt {
 
     }
 }
-workflow Cutadapt_workflow {
-    call Cutadapt
-}

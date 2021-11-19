@@ -16,13 +16,13 @@ task markduplicates {
         set -euo pipefail
         ulimit -c unlimited
         java -Xmx${memory}g -jar /src/picard/picard.jar  MarkDuplicates \
-            I=${input_bam} \
-            O= ${output_bam} \
-            CREATE_INDEX=true \
-            VALIDATION_STRINGENCY=SILENT \
-            ASSUME_SORT_ORDER=coordinate \
-            M=${SID}.marked_dup_metrics.txt \
-            REMOVE_DUPLICATES=false
+        I=${input_bam} \
+        O= ${output_bam} \
+        CREATE_INDEX=true \
+        VALIDATION_STRINGENCY=SILENT \
+        ASSUME_SORT_ORDER=coordinate \
+        M=${SID}.marked_dup_metrics.txt \
+        REMOVE_DUPLICATES=false
 
         samtools index ${output_bam}
     }
@@ -35,7 +35,7 @@ task markduplicates {
 
     runtime {
         docker: "${docker}"
-	memory: "${memory}GB"
+        memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${num_threads}"
         preemptible: "${num_preempt}"
@@ -44,9 +44,4 @@ task markduplicates {
     meta {
         author: "Archana Raja"
     }
-}
-
-
-workflow markduplicates_workflow {
-    call markduplicates
 }

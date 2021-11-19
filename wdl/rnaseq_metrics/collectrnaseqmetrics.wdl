@@ -43,8 +43,3 @@ task collectrnaseqmetrics {
         author: "Archana Raja"
     }
 }
-
-
-workflow collectrnaseqmetrics_workflow {
-    call collectrnaseqmetrics
-}

@@ -10,7 +10,8 @@ task rsem_reference {
     Int num_preempt
 
     command {
-        mkdir ${prefix} && cd ${prefix}
+        mkdir ${prefix}
+        cd ${prefix} || exit 126
         rsem-prepare-reference --gtf ${annotation_gtf} --num-threads ${num_threads} ${reference_fasta} rsem_reference
         cd .. && tar -cvzf ${prefix}.tar.gz ${prefix}
     }
