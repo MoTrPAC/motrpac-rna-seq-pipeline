@@ -8,9 +8,8 @@ task star {
     # STAR options
     String outFilterType = "BySJout"
     String outSAMtype = "BAM SortedByCoordinate"
-    String? quantMode = "TranscriptomeSAM"
-    String? outSAMattrRGline
-    String? outSAMattributes
+    String quantMode = "TranscriptomeSAM"
+    String outSAMattributes = "NH HI AS NM MD nM"
     Int memory
     Int disk_space
     Int num_threads
@@ -25,7 +24,7 @@ task star {
         echo $fastq2_abs
 
         # extract index
-        echo $(date +"[%b %d %H:%M:%S] Extracting STAR index")
+        echo "$(date +"[%b %d %H:%M:%S] Extracting STAR index")"
         mkdir star_index
         tar -xvvf ${star_index} -C star_index --strip-components=1
         echo "Done extracting index"
@@ -35,7 +34,7 @@ task star {
             --readFilesIn $fastq1_abs $fastq2_abs \
             --outFileNamePrefix star_out/${prefix}. \
             --readFilesCommand zcat \
-            --outSAMattributes NH HI AS NM MD nM \
+            --outSAMattributes ${outSAMattributes} \
             --outFilterType ${outFilterType} \
             --runThreadN ${num_threads} \
             --outSAMtype ${outSAMtype} \
@@ -61,7 +60,7 @@ task star {
 
     runtime {
         docker: "${docker}"	
-	memory: "${memory}GB"
+	    memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${num_threads}"
         preemptible: "${num_preempt}"

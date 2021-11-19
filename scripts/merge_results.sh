@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 mkdir featureCounts rsem_results qc_report
 gsutil -m cp -r gs://rna-seq_araja/rna-seq/sinai/batch5_20191031/rnaseq_pipeline/*/call-rsem_quant/shard-*/rsem_reference/*.genes.results rsem_results/
 gsutil -m cp -r gs://rna-seq_araja/rna-seq/sinai/batch5_20191031/rnaseq_pipeline/*/call-featurecounts/shard-*/*.out featureCounts/
@@ -8,4 +10,4 @@ python3 consolidate_qc_report.py --qc_dir qc_report rnaseq_pipeline_qc_metrics.c
 python merge_fc.py
 python merge_rsem.py
 #Copy the merged results to gcp
-gsutil -m cp -r *.txt gs://motrpac-portal-transfer-sinai/Output/rna-seq/rat/batch5_20191031/results/
+gsutil -m cp -r ./*.txt gs://motrpac-portal-transfer-sinai/Output/rna-seq/rat/batch5_20191031/results/
