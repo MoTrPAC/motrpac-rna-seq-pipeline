@@ -1,16 +1,16 @@
-import "FastQC/fastqc.wdl" as fastqc
-import "fastq_attach/attach_umi.wdl" as attach_umi
+import "fastqc/fastqc.wdl" as fastqc
+import "attach_umi/attach_umi.wdl" as attach_umi
 import "fastq_trim/cutadapt.wdl" as ca
-import "MultiQC/multiqc.wdl" as multiqc
+import "multiqc/multiqc.wdl" as multiqc
 import "star_align/star.wdl" as star
 import "FeatureCounts/fc.wdl" as fc
 import "rsem_exp/rsem.wdl" as rsem
 import "bowtie2_align/bowtie2_align.wdl" as bowtie2_align
 import "mark_duplicates/markduplicates.wdl" as markdup
-import "rnaseq_metrics/collectrnaseqmetrics.wdl" as metrics
-import "dup_umi/UMI_dup.wdl" as umi_dup
+import "rnaseq_metrics/collect_rnaseq_metrics.wdl" as metrics
+import "umi_dup/umi_dup.wdl" as umi_dup
 import "compute_mapped/mapped.wdl" as mapped
-import "MultiQC/multiqc_postalign.wdl" as mqc_postalign
+import "multiqc/multiqc_postalign.wdl" as mqc_postalign
 import "collect_qc_metrics/collect_qc.wdl" as collect_qc
 
 workflow rnaseq_pipeline {

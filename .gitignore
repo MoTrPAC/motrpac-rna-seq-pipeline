@@ -8,10 +8,10 @@ cromwell-workflow-logs
 rsem/README.md
 star_index/README
 wdl/fastq_trim/readme.txt
-wdl/FastQC/readme.md
-wdl/FeatureCounts/readme.md
+wdl/fastqc/readme.md
+wdl/feature_counts/readme.md
 wdl/mark_duplicates/readme.md
-wdl/MultiQC/readme.txt
+wdl/multiqc/readme.txt
 wdl/star_align/readme.md
 umi_dup/readme.txt
 README_orig.md
