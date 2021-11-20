@@ -1,57 +1,61 @@
+version 1.0
+
 import "fastqc/fastqc.wdl" as fastqc
 import "attach_umi/attach_umi.wdl" as attach_umi
 import "fastq_trim/cutadapt.wdl" as ca
 import "multiqc/multiqc.wdl" as multiqc
 import "star_align/star.wdl" as star
-import "FeatureCounts/fc.wdl" as fc
+import "feature_counts/fc.wdl" as fc
 import "rsem_exp/rsem.wdl" as rsem
 import "bowtie2_align/bowtie2_align.wdl" as bowtie2_align
-import "mark_duplicates/markduplicates.wdl" as markdup
-import "rnaseq_metrics/collect_rnaseq_metrics.wdl" as metrics
+import "mark_duplicates/mark_duplicates.wdl" as markdup
+import "collect_rnaseq_metrics/collect_rnaseq_metrics.wdl" as metrics
 import "umi_dup/umi_dup.wdl" as umi_dup
 import "compute_mapped/mapped.wdl" as mapped
 import "multiqc/multiqc_postalign.wdl" as mqc_postalign
 import "collect_qc_metrics/collect_qc.wdl" as collect_qc
 
 workflow rnaseq_pipeline {
-    # Input files/values
-    Array[File] fastq1=[]
-    Array[File] fastq2=[]
-    Array[File] fastq_index=[]
-    Array[String] sample_prefix=[]
+    input {
+        # Input files/values
+        Array[File] fastq1=[]
+        Array[File] fastq2=[]
+        Array[File] fastq_index=[]
+        Array[String] sample_prefix=[]
 
-    # FastQC Output Directories
-    String pre_trim_out_dir
-    String post_trim_out_dir
+        # FastQC Output Directories
+        String pre_trim_out_dir
+        String post_trim_out_dir
 
-    # CutAdapt Parameters
-    Int minimumLength
-    String index_adapter
-    String univ_adapter
+        # CutAdapt Parameters
+        Int minimumLength
+        String index_adapter
+        String univ_adapter
 
-    # StarAlign Parameters
-    File star_index
+        # StarAlign Parameters
+        File star_index
 
-    # FeatureCounts Parameters
-    File gtf_file
+        # FeatureCounts Parameters
+        File gtf_file
 
-    # RSEM Parameters
-    File rsem_reference
+        # RSEM Parameters
+        File rsem_reference
 
-    # Bowtie2 Parameters
-    String globin_genome_dir
-    File globin_genome_dir_tar
-    String rrna_genome_dir
-    File rrna_genome_dir_tar
-    String phix_genome_dir
-    File phix_genome_dir_tar
+        # Bowtie2 Parameters
+        String globin_genome_dir
+        File globin_genome_dir_tar
+        String rrna_genome_dir
+        File rrna_genome_dir_tar
+        String phix_genome_dir
+        File phix_genome_dir_tar
 
-    # RNAQC Parameters
-    File ref_flat
+        # RNAQC Parameters
+        File ref_flat
 
-    String docker
+        String docker
 
-    File script
+        File script
+    }
 
     scatter (i in range(length(fastq1))) {
         call fastqc.fastQC as preTrimFastQC {
