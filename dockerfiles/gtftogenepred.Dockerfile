@@ -1,9 +1,18 @@
-FROM ubuntu:20.04
+FROM ubuntu:20.04 as compiler
 
 RUN apt-get update && \
-    apt-get install -y wget libkrb5-dev && \
+    apt-get install -y --no-install-recommends wget && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
-WORKDIR /usr/local/bin
-RUN wget https://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/gtfToGenePred && \
-    chmod 755 gtfToGenePred
+WORKDIR /usr/gtfToGenePred
+RUN wget --progress=dot:giga https://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/gtfToGenePred
+
+FROM ubuntu:20.04 as build
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends libkrb5-dev && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+
+COPY --from=compiler /usr/gtfToGenePred/gtfToGenePred /usr/local/bin/
+
+RUN chmod 755 /usr/local/bin/gtfToGenePred

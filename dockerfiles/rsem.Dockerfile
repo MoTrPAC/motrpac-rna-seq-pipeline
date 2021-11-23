@@ -24,6 +24,4 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends r-base perl perl-modules && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
-WORKDIR /usr/local/bin
-
-COPY --from=compiler /usr/local/bin/rsem* ./
+COPY --from=compiler /usr/rsem/rsem* /usr/local/bin/

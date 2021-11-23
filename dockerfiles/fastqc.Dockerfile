@@ -1,16 +1,16 @@
-FROM openjdk:8-jre-slim-buster
+FROM ubuntu:20.04 as compiler
 
 RUN apt-get update && \
-    apt-get install -y wget zip && \
+    apt-get install -y --no-install-recommends wget zip && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
-WORKDIR /usr/local/bin
+WORKDIR /usr/fastqc
 # Install FastQC-0.11.8
-RUN wget https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.8.zip && \
-    unzip fastqc_v0.11.8.zip && \
-    rm fastqc_v0.11.8.zip && \
-    mv FastQC/fastqc ./ && \
-    chmod 755 fastqc && \
-    rm -rf FastQC \
+RUN wget --progress=dot:giga https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.8.zip && \
+    unzip fastqc_v0.11.8.zip
 
-WORKDIR /home
+FROM openjdk:8-jre-slim-buster as build
+
+COPY --from=compiler /usr/fastqc/FastQC/fastqc /usr/local/bin/
+
+RUN chmod 755 /usr/local/bin/fastqc
