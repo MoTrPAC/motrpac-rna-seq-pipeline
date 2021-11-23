@@ -18,6 +18,5 @@
     "rnaseq_pipeline.rrna_genome_dir_tar": "gs://mihir-test/references/rn/bowtie2_index/rn_rRNA.tar.gz",
     "rnaseq_pipeline.phix_genome_dir" : "phix",
     "rnaseq_pipeline.phix_genome_dir_tar": "gs://mihir-test/references/rn/bowtie2_index/phix.tar.gz",
-    "rnaseq_pipeline.script": "gs://mihir-test/scripts/rnaseq_qc.py",
     "rnaseq_pipeline.docker" : "gcr.io/motrpac-portal-dev/motrpac_rnaseq:v0.1_04_20_19"
 }

@@ -1,3 +1,0 @@
-#java -Dconfig.file=google_prod.conf -jar /Users/archanaraja/work/tools/cromwell-38.jar run scripts/compute_md5sum.wdl -i scripts/compute_md5sum_inputs.json
-java -Dconfig.file=google_prod.conf -jar /Users/archanaraja/work/tools/cromwell-38.jar run scripts/compute_md5sum.wdl -i sample_lists/sinaib1aa.json
-for i in `ls checksum/sinai/rrbs/*.json`;do echo java -Dconfig.file=google_prod_PAPI.conf -jar ../../tools/cromwell-40.jar run checksum/compute_md5sum.wdl -i $i "&";done
