@@ -2,7 +2,7 @@ version 1.0
 
 import "fastqc/fastqc.wdl" as fastqc
 import "attach_umi/attach_umi.wdl" as attach_umi
-import "fastq_trim/cutadapt.wdl" as ca
+import "cutadapt/cutadapt.wdl" as ca
 import "multiqc/multiqc.wdl" as multiqc
 import "star_align/star.wdl" as star
 import "feature_counts/fc.wdl" as fc

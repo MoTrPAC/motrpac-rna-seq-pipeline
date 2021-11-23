@@ -20,14 +20,15 @@ task collectrnaseqmetrics {
         mkdir -p qc53
         mkdir -p qc53/log
         java -Xmx~{memory}g -jar /src/picard/picard.jar CollectRnaSeqMetrics \
-        I=~{input_bam} \
-        O=qc53/~{SID}.RNA_Metrics \
-        REF_FLAT=~{ref_flat}\
-        STRAND=FIRST_READ_TRANSCRIPTION_STRAND \
-        MINIMUM_LENGTH=50 \
-        RRNA_FRAGMENT_PERCENTAGE=0.3 >& qc53/log/~{SID}.log
+            I=~{input_bam} \
+            O=qc53/~{SID}.RNA_Metrics \
+            REF_FLAT=~{ref_flat}\
+            STRAND=FIRST_READ_TRANSCRIPTION_STRAND \
+            MINIMUM_LENGTH=50 \
+            RRNA_FRAGMENT_PERCENTAGE=0.3 >& qc53/log/~{SID}.log
 
-        ls -ltr
+        ls -la
+        ls -la qc53
     >>>
 
     output {
