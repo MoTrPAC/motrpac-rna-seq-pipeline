@@ -7,7 +7,7 @@ cromwell-workflow-logs
 #old codes
 rsem/README.md
 star_index/README
-wdl/fastq_trim/readme.txt
+wdl/cutadapt/readme.txt
 wdl/fastqc/readme.md
 wdl/feature_counts/readme.md
 wdl/mark_duplicates/readme.md
