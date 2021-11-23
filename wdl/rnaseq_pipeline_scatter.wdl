@@ -54,7 +54,6 @@ workflow rnaseq_pipeline {
 
         String docker
 
-        File script
     }
 
     scatter (i in range(length(fastq1))) {
@@ -310,7 +309,6 @@ workflow rnaseq_pipeline {
                 num_threads=8,
                 num_preempt=0,
                 docker=docker,
-                script=script
         }
 
     }

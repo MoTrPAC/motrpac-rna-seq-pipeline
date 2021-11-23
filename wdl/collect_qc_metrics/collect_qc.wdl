@@ -8,7 +8,7 @@ task rnaseqQC {
         Int num_threads
         Int num_preempt
         String docker
-        File script
+
         File trim_summary
         File mapped_report
         File rRNA_report
@@ -21,18 +21,13 @@ task rnaseqQC {
 
     command <<<
         set -eou pipefail
-        #    mkdir reports
-        #    cd reports
+
         for file in ~{sep=' ' multiQCReports}  ; do
-        tar -zxvf $file
-        rm $file
+            tar -zxvf $file
+            rm $file
         done
 
-
-        #    cd ..
-        #    ls reports
-
-        python3 ~{script} --multiqc_prealign multiQC_prealign_report \
+        python3 rnaseq_pc.py --multiqc_prealign multiQC_prealign_report \
         --multiqc_postalign multiQC_postalign_report \
             ~{trim_summary} \
             ~{mapped_report} \
@@ -41,6 +36,7 @@ task rnaseqQC {
             ~{phix_report} \
             ~{umi_report} \
             ~{star_log}
+
         touch ~{SID}_qc_info.csv
     >>>
 
