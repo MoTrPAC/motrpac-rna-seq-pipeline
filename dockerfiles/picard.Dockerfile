@@ -3,8 +3,6 @@ FROM adoptopenjdk:8 as builder
 # Install ant, git for building
 RUN apt-get update && \
     apt-get --no-install-recommends install -y git r-base ant && \
-    apt-get clean && \
-    apt-get purge && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 ARG VERSION=2.18.16
@@ -16,7 +14,7 @@ WORKDIR ${BUILD_DIR}
 
 # Build the distribution jar
 RUN ./gradlew shadowJar
-RUN ls -la
 
 FROM openjdk:8-jre-slim-buster
+
 COPY --from=builder  /usr/picard/build/libs/picard.jar /usr/local/bin/picard.jar
