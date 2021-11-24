@@ -19,7 +19,7 @@ task collectrnaseqmetrics {
         #filename="$(basename -s .bam ~{input_bam})"
         mkdir -p qc53
         mkdir -p qc53/log
-        java -Xmx~{memory}g -jar /src/picard/picard.jar CollectRnaSeqMetrics \
+        java -Xmx~{memory}g -jar /usr/local/bin/picard.jar CollectRnaSeqMetrics \
             I=~{input_bam} \
             O=qc53/~{SID}.RNA_Metrics \
             REF_FLAT=~{ref_flat}\
