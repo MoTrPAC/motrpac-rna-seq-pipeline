@@ -17,4 +17,9 @@ RUN ./gradlew shadowJar
 
 FROM openjdk:8-jre-slim-buster
 
+# Install R
+RUN apt-get update && \
+    apt-get --no-install-recommends install -y r-base && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+
 COPY --from=builder  /usr/picard/build/libs/picard.jar /usr/local/bin/picard.jar
