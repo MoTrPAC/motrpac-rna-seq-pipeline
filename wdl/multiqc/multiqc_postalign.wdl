@@ -20,12 +20,17 @@ task multiQC_postalign {
 
     command <<<
         set -eou pipefail
+        echo "--- $(date "+[%b %d %H:%M:%S]") Beginning task, creating output directory ---"
         mkdir -p reports
         cd reports/
-        for file in ~{sep=' ' fastQCReport}  ; do
-        tar -zxvf $file
-        rm $file
+
+        echo "--- $(date "+[%b %d %H:%M:%S]") Extracting fastQC report files from input tarball ---"
+        for FILE in ~{sep=' ' fastQCReport}  ; do
+            tar -zxvf $FILE
+            rm $FILE
         done
+
+        echo "--- $(date "+[%b %d %H:%M:%S]") Copying input files to working directory ---"
         cp ~{trim_report} ./
         cp ~{rsem_report} ./
         cp ~{star_report} ./
@@ -34,16 +39,20 @@ task multiQC_postalign {
         cp ~{rnametric_report} ./
         cd ..
 
-        echo "ls-------"
         ls reports
         mkdir multiQC_report
+
+        echo "--- $(date "+[%b %d %H:%M:%S]") Running multiQC ---"
         multiqc \
             -f \
             -o multiQC_postalign_report \
             reports/*
-        echo "success"
+        echo "--- $(date "+[%b %d %H:%M:%S]")Finished running multiQC ---"
 
+        echo "--- $(date "+[%b %d %H:%M:%S]") Creating output tarball ---"
         tar -czvf multiqc_postalign_report.tar.gz ./multiQC_postalign_report
+
+        echo "--- $(date "+[%b %d %H:%M:%S]") Finished creating output tarball, finished task ---"
     >>>
 
     output {

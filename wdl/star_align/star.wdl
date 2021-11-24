@@ -28,12 +28,13 @@ task star {
         echo "$FASTQ_2_ABS"
 
         # extract index
-        echo "$(date "+[%b %d %H:%M:%S]")" Extracting STAR index
+        echo "--- $(date "+[%b %d %H:%M:%S]") Extracting STAR index ---"
         mkdir star_index
         tar -xvvf ~{star_index} -C star_index --strip-components=1
-        echo "$(date "+[%b %d %H:%M:%S]")" Done extracting index
+        echo "--- $(date "+[%b %d %H:%M:%S]")" Done extracting index
 
         mkdir star_out
+        echo "--- $(date "+[%b %d %H:%M:%S]") Running STAR ---"
         STAR  --genomeDir star_index \
             --readFilesIn "$FASTQ_1_ABS" "$FASTQ_2_ABS" \
             --outFileNamePrefix star_out/~{prefix}. \
@@ -47,8 +48,12 @@ task star {
         cd star_out
         ls
 
+        echo "--- $(date "+[%b %d %H:%M:%S]") Running samtools index ---"
         samtools index ~{prefix}.Aligned.sortedByCoord.out.bam
+
+        echo "--- $(date "+[%b %d %H:%M:%S]") Finished running samtools index ---"
         ls
+        echo "--- $(date "+[%b %d %H:%M:%S]") Completed task ---"
     >>>
 
     output {

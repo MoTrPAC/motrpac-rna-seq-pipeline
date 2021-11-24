@@ -16,9 +16,11 @@ task collectrnaseqmetrics {
 
     command <<<
         set -euo pipefail
-        #filename="$(basename -s .bam ~{input_bam})"
+        echo "--- $(date "+[%b %d %H:%M:%S]") Beginning task, making output directories ---"
         mkdir -p qc53
         mkdir -p qc53/log
+
+        echo "--- $(date "+[%b %d %H:%M:%S]") Running Picard collect metrics ---"
         java -Xmx~{memory}g -jar /usr/local/bin/picard.jar CollectRnaSeqMetrics \
             I=~{input_bam} \
             O=qc53/~{SID}.RNA_Metrics \
@@ -27,8 +29,9 @@ task collectrnaseqmetrics {
             MINIMUM_LENGTH=50 \
             RRNA_FRAGMENT_PERCENTAGE=0.3 >& qc53/log/~{SID}.log
 
-        ls -la
         ls -la qc53
+
+        echo "--- $(date "+[%b %d %H:%M:%S]") Task complete ---"
     >>>
 
     output {
