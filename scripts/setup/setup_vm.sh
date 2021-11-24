@@ -32,7 +32,7 @@ pip3 install caper
 sudo groupadd docker
 sudo usermod -a -G docker "$USER"
 #shutdown and restart the instance after doing the above
-docker run hello-world
+docker run --rm hello-world
 #Above command should work successfully without any permission denied errors.
 
 #INSTALL CROMWELL
