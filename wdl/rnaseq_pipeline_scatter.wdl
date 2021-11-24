@@ -23,23 +23,34 @@ workflow rnaseq_pipeline {
         Array[File] fastq_index=[]
         Array[String] sample_prefix=[]
 
-        # FastQC Output Directories
+        # FastQC Parameters
         String pre_trim_out_dir
         String post_trim_out_dir
+        String fastqc_docker
+
+        # Attach UMI Parameters
+        String umi_attach_docker
 
         # CutAdapt Parameters
         Int minimumLength
         String index_adapter
         String univ_adapter
+        String cutadapt_docker
 
-        # StarAlign Parameters
+        # MultiQC Parameters
+        String multiqc_docker
+
+        # Star Align Parameters
         File star_index
+        String star_docker
 
         # FeatureCounts Parameters
         File gtf_file
+        String feature_counts_docker
 
         # RSEM Parameters
         File rsem_reference
+        String rsem_docker
 
         # Bowtie2 Parameters
         String globin_genome_dir
@@ -48,11 +59,20 @@ workflow rnaseq_pipeline {
         File rrna_genome_dir_tar
         String phix_genome_dir
         File phix_genome_dir_tar
+        String bowtie_docker
 
-        # RNAQC Parameters
+        # Picard Docker Image
+        String picard_docker
+
+        # UMI Duplication Parameters
+        String umi_dup_docker
+
+        # Collect QC Parameters
         File ref_flat
+        String collect_qc_docker
 
-        String docker
+        # Samtools Parameters
+        String samtools_docker
 
     }
 
@@ -68,7 +88,7 @@ workflow rnaseq_pipeline {
                 disk_space=100,
                 num_threads=8,
                 num_preempt=0,
-                docker=docker
+                docker=fastqc_docker
         }
 
         call attach_umi.attachUMI as aumi {
@@ -83,7 +103,7 @@ workflow rnaseq_pipeline {
                 disk_space=100,
                 num_threads=8,
                 num_preempt=0,
-                docker=docker
+                docker=umi_attach_docker
         }
 
         call ca.Cutadapt as cutadapt {
@@ -100,7 +120,7 @@ workflow rnaseq_pipeline {
                 disk_space=100,
                 cpus=8,
                 num_preempt=0,
-                docker=docker,
+                docker=cutadapt_docker,
         }
 
         call fastqc.fastQC as postTrimFastQC {
@@ -114,7 +134,7 @@ workflow rnaseq_pipeline {
                 disk_space=100,
                 num_threads=8,
                 num_preempt=0,
-                docker=docker
+                docker=fastqc_docker
         }
 
         call multiqc.multiQC as mqc {
@@ -127,7 +147,7 @@ workflow rnaseq_pipeline {
                 disk_space=100,
                 num_threads=8,
                 num_preempt=0,
-                docker=docker,
+                docker=multiqc_docker,
 
         }
 
@@ -143,7 +163,7 @@ workflow rnaseq_pipeline {
                 disk_space=200,
                 num_threads=10,
                 num_preempt=0,
-                docker=docker,
+                docker=star_docker,
         }
 
         call fc.featurecounts as featurecounts {
@@ -157,7 +177,7 @@ workflow rnaseq_pipeline {
                 disk_space=100,
                 num_threads=8,
                 num_preempt=0,
-                docker=docker
+                docker=feature_counts_docker
         }
 
         call rsem.rsem as rsem_quant {
@@ -171,7 +191,7 @@ workflow rnaseq_pipeline {
                 disk_space=150,
                 num_threads=10,
                 num_preempt=0,
-                docker=docker,
+                docker=rsem_docker,
         }
 
         call bowtie2_align.bowtie2_align as bowtie2_globin {
@@ -187,7 +207,7 @@ workflow rnaseq_pipeline {
                 disk_space=200,
                 num_threads=10,
                 num_preempt=0,
-                docker=docker,
+                docker=bowtie_docker,
 
         }
 
@@ -204,7 +224,7 @@ workflow rnaseq_pipeline {
                 disk_space=200,
                 num_threads=10,
                 num_preempt=0,
-                docker=docker,
+                docker=bowtie_docker,
 
         }
 
@@ -221,7 +241,7 @@ workflow rnaseq_pipeline {
                 disk_space=200,
                 num_threads=10,
                 num_preempt=0,
-                docker=docker,
+                docker=bowtie_docker,
 
         }
 
@@ -235,7 +255,7 @@ workflow rnaseq_pipeline {
                 memory=45,
                 disk_space=150,
                 num_preempt=0,
-                docker=docker
+                docker=picard_docker
         }
         call metrics.collectrnaseqmetrics as rnaqc {
             input:
@@ -248,7 +268,7 @@ workflow rnaseq_pipeline {
                 memory=40,
                 disk_space=100,
                 num_preempt=0,
-                docker=docker
+                docker=picard_docker
         }
         call umi_dup.UMI_dup as udup {
             input:
@@ -260,7 +280,7 @@ workflow rnaseq_pipeline {
                 memory=50,
                 disk_space=100,
                 num_preempt=0,
-                docker=docker
+                docker=umi_dup_docker
         }
         call mapped.samtools_mapped as sm {
             input:
@@ -272,7 +292,7 @@ workflow rnaseq_pipeline {
                 memory=30,
                 disk_space=200,
                 num_preempt=0,
-                docker=docker
+                docker=samtools_docker
         }
         call mqc_postalign.multiQC_postalign as mqc_pa {
             input:
@@ -289,7 +309,7 @@ workflow rnaseq_pipeline {
                 disk_space=50,
                 num_threads=8,
                 num_preempt=0,
-                docker=docker
+                docker=multiqc_docker
         }
         call collect_qc.rnaseqQC as qc_report {
             input:
@@ -308,8 +328,7 @@ workflow rnaseq_pipeline {
                 disk_space=50,
                 num_threads=8,
                 num_preempt=0,
-                docker=docker,
+                docker=collect_qc_docker,
         }
-
     }
 }

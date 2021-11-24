@@ -18,7 +18,7 @@ task markduplicates {
     command <<<
         set -euo pipefail
         ulimit -c unlimited
-        java -Xmx~{memory}g -jar /src/picard/picard.jar  MarkDuplicates \
+        java -Xmx~{memory}g -jar /usr/local/bin/picard.jar  MarkDuplicates \
             I=~{input_bam} \
             O= ~{output_bam} \
             CREATE_INDEX=true \
