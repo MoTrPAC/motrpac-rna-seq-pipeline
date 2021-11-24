@@ -21,13 +21,15 @@ task rnaseqQC {
 
     command <<<
         set -eou pipefail
-
-        for file in ~{sep=' ' multiQCReports}  ; do
-            tar -zxvf $file
-            rm $file
+        echo "--- $(date "+[%b %d %H:%M:%S]") Beginning task, unzipping files ---"
+        for FILE in ~{sep=' ' multiQCReports}  ; do
+            echo "--- $(date "+[%b %d %H:%M:%S]") Unzipping $FILE ---"
+            tar -zxvf $FILE
+            rm $FILE
         done
 
-        python3 rnaseq_pc.py --multiqc_prealign multiQC_prealign_report \
+        echo "--- $(date "+[%b %d %H:%M:%S]") Running rnaseq_qc.py script ---"
+        python3 /usr/local/src/rnaseq_pc.py --multiqc_prealign multiQC_prealign_report \
         --multiqc_postalign multiQC_postalign_report \
             ~{trim_summary} \
             ~{mapped_report} \
@@ -38,6 +40,8 @@ task rnaseqQC {
             ~{star_log}
 
         touch ~{SID}_qc_info.csv
+
+        echo "--- $(date "+[%b %d %H:%M:%S]") Finished running script, task complete ---"
     >>>
 
     output {

@@ -16,10 +16,16 @@ task attachUMI {
     }
 
     command <<<
+        echo "--- $(date "+[%b %d %H:%M:%S]") Beginning task, making output directories ---"
         mkdir fastq_attach
 
-        zcat ~{fastqr1} | UMI_attach.awk -v Ifq=~{fastqi1} | gzip -c > "fastq_attach/~{SID}_R1.fastq.gz"
-        zcat ~{fastqr2}| UMI_attach.awk -v Ifq=~{fastqi1} | gzip -c > "fastq_attach/~{SID}_R2.fastq.gz"
+        echo "--- $(date "+[%b %d %H:%M:%S]") Running attachUMI for ~{fastqr1} ---"
+        zcat ~{fastqr1} | /usr/local/src/UMI_attach.awk -v Ifq=~{fastqi1} | gzip -c > "fastq_attach/~{SID}_R1.fastq.gz"
+
+        echo "--- $(date "+[%b %d %H:%M:%S]") Running attachUMI for ~{fastqr2} ---"
+        zcat ~{fastqr2}| /usr/local/src/UMI_attach.awk -v Ifq=~{fastqi1} | gzip -c > "fastq_attach/~{SID}_R2.fastq.gz"
+
+        echo "--- $(date "+[%b %d %H:%M:%S]") Finished task ---"
     >>>
 
     output {

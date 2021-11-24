@@ -15,15 +15,14 @@ task rsem {
     command <<<
         set -euo pipefail
         mkdir rsem_reference
-        echo "--- tar -xzvf of rsem_reference --- "
+        echo "$(date "+[%b %d %H:%M:%S]") Extracting rsem_reference"
         tar -xzvf ~{rsem_reference} -C rsem_reference --strip-components=1
-        echo "--- Done tar --- "
+        echo "$(date "+[%b %d %H:%M:%S]") Done tar"
 
         cd rsem_reference
         echo "--- Running: ls --- "
         ls
-        echo "--- Done: ls--- "
-        echo "--- Running: rsem-calculate-expression --- "
+        echo "--- $(date "+[%b %d %H:%M:%S]") Running: rsem-calculate-expression --- "
         rsem-calculate-expression \
             -p ~{num_threads} \
             --bam \
@@ -34,10 +33,9 @@ task rsem {
             ~{transcriptome_bam}\
             rsem_reference \
             ~{SID}
-        echo "--- Done: rsem-calculate-expression --- "
-        echo "--- Running: ls --- "
+        echo "--- $(date "+[%b %d %H:%M:%S]") Done: rsem-calculate-expression --- "
         ls
-        echo "--- Done: ls --- "
+        echo "--- $(date "+[%b %d %H:%M:%S]") Finished task --- "
     >>>
 
     output {

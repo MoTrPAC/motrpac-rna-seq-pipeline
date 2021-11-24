@@ -16,8 +16,13 @@ task featurecounts {
 
     command <<<
         set -euo pipefail
+        echo "--- $(date "+[%b %d %H:%M:%S]") Beginning task, running featurecounts ---"
         featureCounts -a ~{gtf_file} -o ~{SID}.out -p -M --fraction ~{input_bam}
+
+        echo "$(date "+[%b %d %H:%M:%S]") Finished featurecounts"
         ls -ltr
+
+        echo "--- $(date "+[%b %d %H:%M:%S]") Finished task ---"
     >>>
 
     output {
