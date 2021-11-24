@@ -1,7 +1,7 @@
 FROM ubuntu:20.04 as compiler
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends wget && \
+    apt-get install -y --no-install-recommends wget ca-certificates && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 WORKDIR /usr/gtfToGenePred
