@@ -10,7 +10,7 @@ RUN wget --progress=dot:giga https://hgdownload.cse.ucsc.edu/admin/exe/linux.x86
 FROM ubuntu:20.04 as build
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends libkrb5-dev && \
+    apt-get install -y --no-install-recommends libkrb5-dev procps && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 COPY --from=compiler /usr/gtfToGenePred/gtfToGenePred /usr/local/bin/
