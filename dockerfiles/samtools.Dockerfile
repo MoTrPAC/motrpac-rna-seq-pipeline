@@ -1,5 +1,6 @@
 FROM ubuntu:20.04 as compiler
 
+# SAMTools requirements for building
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
       autoconf automake make gcc perl zlib1g-dev libbz2-dev liblzma-dev \
@@ -21,12 +22,13 @@ RUN autoheader && \
     ./configure && \
     make
 
+# Final minimal build image
 FROM ubuntu:20.04 as build
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
       zlib1g-dev libbz2-dev liblzma-dev libcurl4-gnutls-dev  \
-      libssl-dev libncurses5-dev && \
+      libssl-dev libncurses5-dev gawk procps && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 COPY --from=compiler /usr/samtools/samtools /usr/local/bin/

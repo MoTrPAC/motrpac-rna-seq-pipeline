@@ -21,7 +21,7 @@ FROM ubuntu:20.04 as build
 ENV DEBIAN_FRONTEND="noninteractive"
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends r-base perl perl-modules && \
+    apt-get install -y --no-install-recommends r-base perl perl-modules procps && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 COPY --from=compiler /usr/rsem/rsem* /usr/local/bin/
