@@ -20,7 +20,7 @@ task markduplicates {
         echo "--- $(date "+[%b %d %H:%M:%S]") Running ulimit ---"
         ulimit -c unlimited
 
-        echo "$(date "+[%b %d %H:%M:%S]") Done with ulimit, running markduplicates"
+        echo "--- $(date "+[%b %d %H:%M:%S]") Done with ulimit, running markduplicates ---"
         java -Xmx~{memory}g -jar /usr/local/bin/picard.jar  MarkDuplicates \
             I=~{input_bam} \
             O= ~{output_bam} \
