@@ -12,7 +12,8 @@ RUN wget --progress=dot:giga https://www.bioinformatics.babraham.ac.uk/projects/
 FROM openjdk:8-jre-slim-bullseye as build
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends perl perl-modules procps libfreetype6 && \
+    apt-get install -y --no-install-recommends \
+      perl perl-modules fontconfig procps libfreetype6 && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 COPY --from=compiler /usr/fastqc /usr/fastqc
