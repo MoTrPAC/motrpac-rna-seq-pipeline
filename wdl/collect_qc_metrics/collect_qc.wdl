@@ -30,7 +30,7 @@ task rnaseqQC {
 
         echo "--- $(date "+[%b %d %H:%M:%S]") Running rnaseq_qc.py script ---"
         python3 /usr/local/src/rnaseq_qc.py --multiqc_prealign multiQC_prealign_report \
-        --multiqc_postalign multiQC_postalign_report \
+            --multiqc_postalign multiQC_postalign_report \
             ~{trim_summary} \
             ~{mapped_report} \
             ~{rRNA_report} \

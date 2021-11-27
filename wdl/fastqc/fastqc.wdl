@@ -20,7 +20,7 @@ task fastQC {
         fastqc -o ~{outdir} ~{fastqr1}
         fastqc -o ~{outdir} ~{fastqr2}
 
-        echo "$(date "+[%b %d %H:%M:%S]") Finished fastqc on fastq files, creating output tarball"
+        echo "--- $(date "+[%b %d %H:%M:%S]") Finished fastqc on fastq files, creating output tarball ---"
         tar -cvzf ~{outdir}.tar.gz ./~{outdir}
 
         echo "--- $(date "+[%b %d %H:%M:%S]") Finished creating output tarball, task complete ---"

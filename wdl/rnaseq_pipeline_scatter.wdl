@@ -257,6 +257,7 @@ workflow rnaseq_pipeline {
                 num_preempt=0,
                 docker=picard_docker
         }
+
         call metrics.collectrnaseqmetrics as rnaqc {
             input:
             # Inputs
@@ -270,6 +271,7 @@ workflow rnaseq_pipeline {
                 num_preempt=0,
                 docker=picard_docker
         }
+
         call umi_dup.UMI_dup as udup {
             input:
             # Inputs
@@ -282,6 +284,7 @@ workflow rnaseq_pipeline {
                 num_preempt=0,
                 docker=umi_dup_docker
         }
+
         call mapped.samtools_mapped as sm {
             input:
             # Inputs
@@ -294,6 +297,7 @@ workflow rnaseq_pipeline {
                 num_preempt=0,
                 docker=samtools_docker
         }
+
         call mqc_postalign.multiQC_postalign as mqc_pa {
             input:
             # Inputs
@@ -311,6 +315,7 @@ workflow rnaseq_pipeline {
                 num_preempt=0,
                 docker=multiqc_docker
         }
+
         call collect_qc.rnaseqQC as qc_report {
             input:
             # Inputs
