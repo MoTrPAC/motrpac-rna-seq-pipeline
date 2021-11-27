@@ -22,8 +22,8 @@ task checksum {
     input {
         Int memory
         Int disk_space
-        Int num_threads
-        Int num_preempt
+        Int ncpu
+
         String docker
         File fastq
     }
@@ -42,8 +42,8 @@ task checksum {
         docker: "${docker}"
         memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
-        cpu: "${num_threads}"
-        preemptible: "${num_preempt}"
+        cpu: "${ncpu}"
+
     }
 
     meta {
@@ -56,8 +56,8 @@ task gather_checksums {
         Array[File] files
         Int memory = 8
         Int disk_space = 8
-        Int num_threads = 1
-        Int num_preempt = 0
+        Int ncpu = 1
+         = 0
     }
 
     command <<<
@@ -76,7 +76,7 @@ task gather_checksums {
         docker: "gcr.io/***REMOVED***/motrpac_rnaseq:v0.1_04_20_19"
         memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
-        cpu: "${num_threads}"
-        preemptible: "${num_preempt}"
+        cpu: "${ncpu}"
+
     }
 }

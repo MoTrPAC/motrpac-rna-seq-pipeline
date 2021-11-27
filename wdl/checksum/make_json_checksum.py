@@ -17,10 +17,9 @@ def main():
             my_list = [line.strip("\n") for line in file]
 
         json_d = {
-            "checksum_workflow.checksum.num_preempt": "0",
             "checksum_workflow.checksum.memory": "20",
             "checksum_workflow.checksum.disk_space": "30",
-            "checksum_workflow.checksum.num_threads": "4",
+            "checksum_workflow.checksum.ncpu": "4",
             "checksum_workflow.checksum.docker": "gcr.io/***REMOVED***/motrpac_rnaseq:v0.1_04_20_19",
             "checksum_workflow.sample_files": my_list,
         }

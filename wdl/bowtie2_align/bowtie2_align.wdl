@@ -11,8 +11,8 @@ task bowtie2_align {
         String SID
         Int memory
         Int disk_space
-        Int num_threads
-        Int num_preempt
+        Int ncpu
+
         String docker
     }
 
@@ -24,7 +24,7 @@ task bowtie2_align {
         tar -zxvf ~{genome_dir_tar} -C ./genome
 
         echo "--- $(date "+[%b %d %H:%M:%S]") Indexing genome ---"
-        bowtie2 -p ~{num_threads} -1 ~{fastqr1} -2 ~{fastqr2} -x genome/~{genome_dir}/~{index_prefix} --local -S ~{SID}.sam 2> ~{SID}.log
+        bowtie2 -p ~{ncpu} -1 ~{fastqr1} -2 ~{fastqr2} -x genome/~{genome_dir}/~{index_prefix} --local -S ~{SID}.sam 2> ~{SID}.log
 
         echo "--- $(date "+[%b %d %H:%M:%S]") Transforming text ---"
         type=$(echo ~{genome_dir}|sed 's/rn_//1')
@@ -45,8 +45,8 @@ task bowtie2_align {
         docker: "${docker}"
         memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
-        cpu: "${num_threads}"
-        preemptible: "${num_preempt}"
+        cpu: "${ncpu}"
+
     }
 
     meta {

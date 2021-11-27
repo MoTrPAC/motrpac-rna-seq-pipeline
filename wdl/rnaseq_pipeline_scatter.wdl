@@ -86,8 +86,8 @@ workflow rnaseq_pipeline {
             # Runtime Parameters
                 memory=40,
                 disk_space=100,
-                num_threads=8,
-                num_preempt=0,
+                ncpu=8,
+
                 docker=fastqc_docker
         }
 
@@ -101,8 +101,8 @@ workflow rnaseq_pipeline {
             # Runtime Parameters
                 memory=40,
                 disk_space=100,
-                num_threads=8,
-                num_preempt=0,
+                ncpu=8,
+
                 docker=umi_attach_docker
         }
 
@@ -119,7 +119,7 @@ workflow rnaseq_pipeline {
                 memory=45,
                 disk_space=100,
                 cpus=8,
-                num_preempt=0,
+
                 docker=cutadapt_docker,
         }
 
@@ -132,8 +132,8 @@ workflow rnaseq_pipeline {
             # Runtime Parameters
                 memory=30,
                 disk_space=100,
-                num_threads=8,
-                num_preempt=0,
+                ncpu=8,
+
                 docker=fastqc_docker
         }
 
@@ -145,8 +145,8 @@ workflow rnaseq_pipeline {
             # Runtime Parameters
                 memory=20,
                 disk_space=100,
-                num_threads=8,
-                num_preempt=0,
+                ncpu=8,
+
                 docker=multiqc_docker,
 
         }
@@ -161,8 +161,8 @@ workflow rnaseq_pipeline {
             # Runtime Parameters
                 memory=100,
                 disk_space=200,
-                num_threads=10,
-                num_preempt=0,
+                ncpu=10,
+
                 docker=star_docker,
         }
 
@@ -175,8 +175,8 @@ workflow rnaseq_pipeline {
             # Runtime Parameters
                 memory=40,
                 disk_space=100,
-                num_threads=8,
-                num_preempt=0,
+                ncpu=8,
+
                 docker=feature_counts_docker
         }
 
@@ -189,8 +189,8 @@ workflow rnaseq_pipeline {
             # Runtime Parameters
                 memory=50,
                 disk_space=150,
-                num_threads=10,
-                num_preempt=0,
+                ncpu=10,
+
                 docker=rsem_docker,
         }
 
@@ -205,8 +205,8 @@ workflow rnaseq_pipeline {
             # Runtime Parameters
                 memory=80,
                 disk_space=200,
-                num_threads=10,
-                num_preempt=0,
+                ncpu=10,
+
                 docker=bowtie_docker,
 
         }
@@ -222,8 +222,8 @@ workflow rnaseq_pipeline {
             # Runtime Parameters
                 memory=80,
                 disk_space=200,
-                num_threads=10,
-                num_preempt=0,
+                ncpu=10,
+
                 docker=bowtie_docker,
 
         }
@@ -239,8 +239,8 @@ workflow rnaseq_pipeline {
             # Runtime Parameters
                 memory=80,
                 disk_space=200,
-                num_threads=10,
-                num_preempt=0,
+                ncpu=10,
+
                 docker=bowtie_docker,
 
         }
@@ -251,10 +251,10 @@ workflow rnaseq_pipeline {
                 SID=sample_prefix[i],
                 input_bam=star_align.bam_file,
             # Runtime Parameters
-                num_threads=10,
+                ncpu=10,
                 memory=45,
                 disk_space=150,
-                num_preempt=0,
+
                 docker=picard_docker
         }
 
@@ -265,10 +265,10 @@ workflow rnaseq_pipeline {
                 input_bam=star_align.bam_file,
                 ref_flat=ref_flat,
             # Runtime Parameters
-                num_threads=10,
+                ncpu=10,
                 memory=40,
                 disk_space=100,
-                num_preempt=0,
+
                 docker=picard_docker
         }
 
@@ -278,10 +278,10 @@ workflow rnaseq_pipeline {
                 sample_prefix=sample_prefix[i],
                 star_align=star_align.bam_file,
             # Runtime Parameters
-                num_threads=8,
+                ncpu=8,
                 memory=50,
                 disk_space=100,
-                num_preempt=0,
+
                 docker=umi_dup_docker
         }
 
@@ -291,10 +291,10 @@ workflow rnaseq_pipeline {
                 SID=sample_prefix[i],
                 input_bam=star_align.bam_file,
             # Runtime Parameters
-                num_threads=8,
+                ncpu=8,
                 memory=30,
                 disk_space=200,
-                num_preempt=0,
+
                 docker=samtools_docker
         }
 
@@ -311,8 +311,8 @@ workflow rnaseq_pipeline {
             # Runtime Parameters
                 memory=30,
                 disk_space=50,
-                num_threads=8,
-                num_preempt=0,
+                ncpu=8,
+
                 docker=multiqc_docker
         }
 
@@ -331,8 +331,8 @@ workflow rnaseq_pipeline {
             # Runtime Parameters
                 memory=10,
                 disk_space=50,
-                num_threads=8,
-                num_preempt=0,
+                ncpu=8,
+
                 docker=collect_qc_docker,
         }
     }

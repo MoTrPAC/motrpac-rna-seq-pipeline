@@ -11,7 +11,7 @@ task Cutadapt {
         Int cpus
         Int disk_space
         Int memory
-        Int num_preempt
+
         String docker
     }
 
@@ -54,6 +54,6 @@ task Cutadapt {
         memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${cpus}"
-        preemptible: "${num_preempt}"
+
     }
 }
