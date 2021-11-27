@@ -8,8 +8,8 @@ task UMI_dup {
         # Runtime Attributes
         Int memory
         Int disk_space
-        Int num_threads
-        Int num_preempt
+        Int ncpu
+
     }
 
     command <<<
@@ -38,8 +38,8 @@ task UMI_dup {
         docker: "${docker}"
         memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
-        cpu: "${num_threads}"
-        preemptible: "${num_preempt}"
+        cpu: "${ncpu}"
+
     }
 
     meta {

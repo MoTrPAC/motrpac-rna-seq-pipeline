@@ -8,8 +8,8 @@ task star_index {
         Int overhang
         Int memory
         Int disk_space
-        Int num_threads
-        Int num_preempt
+        Int ncpu
+
     }
 
     command <<<
@@ -20,7 +20,7 @@ task star_index {
         --genomeFastaFiles ~{reference_fasta} \
         --sjdbGTFfile ~{annotation_gtf} \
         --sjdbOverhang ~{overhang} \
-        --runThreadN ~{num_threads}
+        --runThreadN ~{ncpu}
         tar -cvzf ~{prefix}.tar.gz ~{prefix}
     >>>
 
@@ -33,8 +33,8 @@ task star_index {
         docker: "gcr.io/motrpac-portal/motrpac_rnaseq:v0.1_04_20_19"
         memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
-        cpu: "${num_threads}"
-        preemptible: "${num_preempt}"
+        cpu: "${ncpu}"
+
     }
 
     meta {
