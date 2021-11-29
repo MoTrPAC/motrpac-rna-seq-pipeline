@@ -14,6 +14,7 @@ import "umi_dup/umi_dup.wdl" as umi_dup
 import "compute_mapped/mapped.wdl" as mapped
 import "multiqc/multiqc_postalign.wdl" as mqc_postalign
 import "collect_qc_metrics/collect_qc.wdl" as collect_qc
+import "merge_results/merge_results.wdl" as final_merge
 
 workflow rnaseq_pipeline {
     input {
@@ -74,6 +75,9 @@ workflow rnaseq_pipeline {
         # Samtools Parameters
         String samtools_docker
 
+        # Merge Results Parameters
+        String output_report_name
+        String merge_results_docker
     }
 
     scatter (i in range(length(fastq1))) {
@@ -335,5 +339,28 @@ workflow rnaseq_pipeline {
 
                 docker=collect_qc_docker,
         }
+    }
+
+    call final_merge.merge_results as merge_results {
+        input:
+        # Inputs
+            output_report_name=output_report_name,
+            rsem_files=rsem_quant.genes,
+            feature_counts_files=featurecounts.fc_out,
+            qc_report_files=qc_report.rnaseq_report,
+        # Runtime Parameters
+            memory=10,
+            disk_space=50,
+            ncpu=8,
+
+            docker=merge_results_docker,
+    }
+
+    output {
+        File rsem_genes_count = merge_results.rsem_genes_count
+        File rsem_genes_tpm = merge_results.rsem_genes_tpm
+        File rsem_genes_fpkm = merge_results.rsem_genes_fpkm
+        File feature_counts = merge_results.feature_counts
+        File qc_report = merge_results.qc_report
     }
 }

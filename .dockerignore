@@ -5,3 +5,4 @@ examples/
 README.md
 .gitignore
 *.jar
+*.wdl
