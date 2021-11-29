@@ -37,5 +37,6 @@
   "rnaseq_pipeline.umi_dup_docker": "gcr.io/motrpac-portal-dev/motrpac-rna-seq-pipeline/umi_dup:latest",
   "rnaseq_pipeline.ref_flat": "gs://mihir-test/references/rn/v96/refFlat_rn6_v96.txt",
   "rnaseq_pipeline.collect_qc_docker": "gcr.io/motrpac-portal-dev/motrpac-rna-seq-pipeline/collect_qc:latest",
-  "rnaseq_pipeline.samtools_docker": "gcr.io/motrpac-portal-dev/motrpac-rna-seq-pipeline/samtools:latest"
+  "rnaseq_pipeline.samtools_docker": "gcr.io/motrpac-portal-dev/motrpac-rna-seq-pipeline/samtools:latest",
+  "rnaseq_pipeline.merge_results_docker": "gcr.io/motrpac-portal-dev/motrpac-rna-seq-pipeline/merge_results:latest"
 }
