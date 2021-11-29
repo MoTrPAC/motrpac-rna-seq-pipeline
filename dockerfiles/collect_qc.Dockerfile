@@ -7,7 +7,8 @@ RUN apt-get update && \
 RUN pip install --upgrade pip setuptools wheel && \
     pip install --no-cache-dir pandas==1.0.5
 
-# be sure to create this Docker image outside the `dockerfiles` directory (i.e docker build -t dockerfiles/collect_qc .)
+# be sure to create this Docker image outside the `dockerfiles` directory \
+# (i.e docker build -t motrpac-rna-seq-pipeline/collect_qc -f dockerfiles/collect_qc.Dockerfile .)
 # in order to be able to copy the script into the Docker image
 COPY wdl/collect_qc_metrics/rnaseq_qc.py /usr/local/src/rnaseq_qc.py
 
