@@ -2,7 +2,7 @@ version 1.0
 
 #Use version v1.6.3 , currently uses v1.6.2 as specified in the MOP , subtle changes in .out file
 
-task featurecounts {
+task feature_counts {
     input {
         File input_bam
         File gtf_file
