@@ -1,0 +1,79 @@
+digraph rnaseq_pipeline {
+  #rankdir=LR;
+  compound=true;
+
+  # Links
+  CALL_star_align -> CALL_feature_counts
+  CALL_feature_counts -> CALL_merge_results
+  CALL_pretrim_fastqc -> CALL_mqc
+  SCATTER_0_VARIABLE_i -> CALL_bowtie2_phix
+  CALL_aumi -> CALL_cutadapt
+  CALL_mqc_pa -> CALL_qc_report
+  CALL_star_align -> CALL_md
+  CALL_cutadapt -> CALL_bowtie2_phix
+  CALL_cutadapt -> CALL_star_align
+  CALL_mqc -> CALL_qc_report
+  CALL_md -> CALL_mqc_pa
+  CALL_bowtie2_rrna -> CALL_qc_report
+  CALL_cutadapt -> CALL_posttrim_fastqc
+  CALL_rsem_quant -> CALL_mqc_pa
+  CALL_star_align -> CALL_udup
+  CALL_star_align -> CALL_sm
+  SCATTER_0_VARIABLE_i -> CALL_udup
+  SCATTER_0_VARIABLE_i -> CALL_rsem_quant
+  SCATTER_0_VARIABLE_i -> CALL_feature_counts
+  SCATTER_0_VARIABLE_i -> CALL_rnaqc
+  CALL_qc_report -> CALL_merge_results
+  CALL_posttrim_fastqc -> CALL_mqc_pa
+  CALL_rsem_quant -> CALL_merge_results
+  CALL_udup -> CALL_qc_report
+  CALL_star_align -> CALL_mqc_pa
+  SCATTER_0_VARIABLE_i -> CALL_pretrim_fastqc
+  CALL_bowtie2_globin -> CALL_qc_report
+  SCATTER_0_VARIABLE_i -> CALL_aumi
+  CALL_bowtie2_phix -> CALL_qc_report
+  CALL_star_align -> CALL_rsem_quant
+  SCATTER_0_VARIABLE_i -> CALL_sm
+  SCATTER_0_VARIABLE_i -> CALL_bowtie2_globin
+  CALL_sm -> CALL_qc_report
+  CALL_star_align -> CALL_qc_report
+  SCATTER_0_VARIABLE_i -> CALL_bowtie2_rrna
+  CALL_cutadapt -> CALL_bowtie2_rrna
+  CALL_feature_counts -> CALL_mqc_pa
+  CALL_cutadapt -> CALL_qc_report
+  CALL_star_align -> CALL_rnaqc
+  SCATTER_0_VARIABLE_i -> CALL_star_align
+  CALL_cutadapt -> CALL_mqc
+  CALL_posttrim_fastqc -> CALL_mqc
+  CALL_rnaqc -> CALL_mqc_pa
+  SCATTER_0_VARIABLE_i -> CALL_qc_report
+  CALL_cutadapt -> CALL_mqc_pa
+  CALL_cutadapt -> CALL_bowtie2_globin
+  SCATTER_0_VARIABLE_i -> CALL_md
+  SCATTER_0_VARIABLE_i -> CALL_cutadapt
+
+  # Nodes
+  subgraph cluster_0 {
+    style="filled,solid";
+    fillcolor=white;
+    CALL_md [label="call md"]
+    CALL_rnaqc [label="call rnaqc"]
+    CALL_sm [label="call sm"]
+    CALL_bowtie2_rrna [label="call bowtie2_rrna"]
+    CALL_feature_counts [label="call feature_counts"]
+    SCATTER_0_VARIABLE_i [shape="hexagon" label="scatter over Int as i"]
+    CALL_aumi [label="call aumi"]
+    CALL_mqc [label="call mqc"]
+    CALL_star_align [label="call star_align"]
+    CALL_bowtie2_phix [label="call bowtie2_phix"]
+    CALL_posttrim_fastqc [label="call posttrim_fastqc"]
+    CALL_qc_report [label="call qc_report"]
+    CALL_cutadapt [label="call cutadapt"]
+    CALL_rsem_quant [label="call rsem_quant"]
+    CALL_pretrim_fastqc [label="call pretrim_fastqc"]
+    CALL_udup [label="call udup"]
+    CALL_mqc_pa [label="call mqc_pa"]
+    CALL_bowtie2_globin [label="call bowtie2_globin"]
+  }
+  CALL_merge_results [label="call merge_results"]
+}
