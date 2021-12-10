@@ -19,10 +19,10 @@ import "merge_results/merge_results.wdl" as final_merge
 workflow rnaseq_pipeline {
     input {
         # Input files/values
-        Array[File] fastq1=[]
-        Array[File] fastq2=[]
-        Array[File] fastq_index=[]
-        Array[String] sample_prefix=[]
+        Array[File]+ fastq1
+        Array[File]+ fastq2
+        Array[File]+ fastq_index
+        Array[String]+ sample_prefix
 
         # FastQC Parameters
         String pre_trim_out_dir
@@ -79,19 +79,19 @@ workflow rnaseq_pipeline {
         String rsem_docker
 
         # Bowtie2 Parameters
-        String globin_genome_dir
+        String globin_genome_dir = "rn_globin"
         File globin_genome_dir_tar
         Int bowtie2_globin_ncpu
         Int bowtie2_globin_ramGB
         Int bowtie2_globin_disk
 
-        String rrna_genome_dir
+        String rrna_genome_dir = "rn_rRNA"
         File rrna_genome_dir_tar
         Int bowtie2_rrna_ncpu
         Int bowtie2_rrna_ramGB
         Int bowtie2_rrna_disk
 
-        String phix_genome_dir
+        String phix_genome_dir = "phix"
         File phix_genome_dir_tar
         Int bowtie2_phix_ncpu
         Int bowtie2_phix_ramGB
