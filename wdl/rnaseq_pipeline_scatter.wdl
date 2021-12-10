@@ -25,11 +25,11 @@ workflow rnaseq_pipeline {
         Array[String]+ sample_prefix
 
         # FastQC Parameters
-        String pre_trim_out_dir
+        String pre_trim_out_dir = "fastqc_raw"
         Int pretrim_fastqc_ncpu
         Int pretrim_fastqc_ramGB
         Int pretrim_fastqc_disk
-        String post_trim_out_dir
+        String post_trim_out_dir = "fastqc_trim"
         Int posttrim_fastqc_ncpu
         Int posttrim_fastqc_ramGB
         Int posttrim_fastqc_disk
