@@ -7,15 +7,19 @@ cromwell-workflow-logs
 #old codes
 rsem/README.md
 star_index/README
-fastq_trim/readme.txt
-fastqc/readme.md
-featureCounts/readme.md
-mark_duplicates/readme.md
-multiqc/readme.txt
-star_align/readme.md
+wdl/cutadapt/readme.txt
+wdl/fastqc/readme.md
+wdl/feature_counts/readme.md
+wdl/mark_duplicates/readme.md
+wdl/multiqc/readme.txt
+wdl/star_align/readme.md
 umi_dup/readme.txt
 README_orig.md
 vm_requirements_orig.txt
 testing
 # MacOS Files
 .DS_Store
+
+venv/
+.idea/
+*.jar

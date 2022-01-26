@@ -1,0 +1,8 @@
+venv/
+config/
+docs/
+examples/
+README.md
+.gitignore
+*.jar
+*.wdl
