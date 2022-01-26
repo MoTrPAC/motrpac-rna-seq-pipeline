@@ -9,6 +9,6 @@
 bam=$1
 outdir=$2
 
-prefix=$(basename ${bam} | sed "s/\.Aligned.*//")
-samtools index ${bam}
-bamCoverage -b ${bam} -o ${outdir}/${prefix}.bw
+prefix=$(basename "${bam}" | sed "s/\.Aligned.*//")
+samtools index "${bam}"
+bamCoverage -b "${bam}" -o "${outdir}"/"${prefix}".bw
