@@ -44,10 +44,15 @@ def main(command_args: argparse.Namespace):
         docker_repo = command_args.docker_repo.rstrip("/").strip()
 
         for (r1, r2, i1, prefix_list) in zip(split_r1, split_r2, split_i1, s_name):
-            json_dict = make_json_dict(docker_repo, r1, r2, i1, prefix_list)
+            json_dict = make_json_dict(
+                command_args.organism, docker_repo, args.output_report_name, r1, r2, i1,
+                prefix_list,
+            )
             batch_num = batch_num + 1
             with open(
-                os.path.join(command_args.output_path, f"set{str(batch_num)}_rnaseq.json"),
+                os.path.join(
+                    command_args.output_path, f"set{str(batch_num)}_rnaseq.json"
+                ),
                 "w",
                 encoding="utf-8",
             ) as file:
@@ -56,7 +61,9 @@ def main(command_args: argparse.Namespace):
         print("Success! Finished generating input jsons")
 
 
-def make_json_dict(docker_repo, r1=None, r2=None, i1=None, prefix_list=None):
+def make_json_dict(
+    organism, docker_repo, output_report_name, r1=None, r2=None, i1=None, prefix_list=None
+):
     if r1 is None:
         r1 = []
     if r2 is None:
@@ -66,7 +73,38 @@ def make_json_dict(docker_repo, r1=None, r2=None, i1=None, prefix_list=None):
     if prefix_list is None:
         prefix_list = []
 
-    d = {
+    if organism == "rat":
+        organism_references = {
+            "rnaseq_pipeline.star_index": "gs://***REMOVED***/references/rn/v96/star_2.7.0d_04-20-19/sorted/Rnor6_v96_star_index.tar.gz",
+            "rnaseq_pipeline.gtf_file": "gs://***REMOVED***/references/rn/v96/sorted/Rattus_norvegicus.Rnor_6.0.96.gtf",
+            "rnaseq_pipeline.rsem_reference": "gs://***REMOVED***/references/rn/v96/rsem/sorted/rn6_rsem_reference.tar.gz",
+            "rnaseq_pipeline.globin_genome_dir": "rn_globin",
+            "rnaseq_pipeline.globin_genome_dir_tar": "gs://***REMOVED***/references/rn/bowtie2_index/rn_globin.tar.gz",
+            "rnaseq_pipeline.rrna_genome_dir": "rn_rRNA",
+            "rnaseq_pipeline.rrna_genome_dir_tar": "gs://***REMOVED***/references/rn/bowtie2_index/rn_rRNA.tar.gz",
+            "rnaseq_pipeline.phix_genome_dir": "phix",
+            "rnaseq_pipeline.phix_genome_dir_tar": "gs://***REMOVED***/references/rn/bowtie2_index/phix.tar.gz",
+            "rnaseq_pipeline.ref_flat": "gs://***REMOVED***/references/rn/v96/sorted/refFlat_rn6_v96.txt",
+        }
+    elif organism == "human":
+        organism_references = {
+            "rnaseq_pipeline.star_index": "gs://motrpac-data-processed-get-cas/references/human/v39/star_index/hg38_v39_star_index.tar.gz",
+            "rnaseq_pipeline.gtf_file": "gs://motrpac-data-processed-get-cas/references/human/v39/GRCh38.v39.primary_assembly.annotation.gtf",
+            "rnaseq_pipeline.rsem_reference": "gs://motrpac-data-processed-get-cas/references/human/v39/rsem/hg38_rsem_reference.tar.gz",
+            "rnaseq_pipeline.globin_genome_dir": "hs_globin",
+            "rnaseq_pipeline.globin_genome_dir_tar": "gs://motrpac-data-processed-get-cas/references/human/bowtie2_index/hs_globin.tar.gz",
+            "rnaseq_pipeline.rrna_genome_dir": "hs_rRNA",
+            "rnaseq_pipeline.rrna_genome_dir_tar": "gs://motrpac-data-processed-get-cas/references/human/bowtie2_index/hs_rRNA.tar.gz",
+            "rnaseq_pipeline.phix_genome_dir": "phix",
+            "rnaseq_pipeline.phix_genome_dir_tar": "gs://motrpac-data-processed-get-cas/references/human/bowtie2_index/phix.tar.gz",
+            "rnaseq_pipeline.ref_flat": "gs://motrpac-data-processed-get-cas/references/human/v39/refFlat_hg38_v39.txt",
+
+        }
+    else:
+        print("Invalid organism")
+        sys.exit(1)
+
+    filled_dict = {
         "rnaseq_pipeline.fastq1": r1,
         "rnaseq_pipeline.fastq2": r2,
         "rnaseq_pipeline.fastq_index": i1,
@@ -93,30 +131,24 @@ def make_json_dict(docker_repo, r1=None, r2=None, i1=None, prefix_list=None):
         "rnaseq_pipeline.multiqc_ramGB": 20,
         "rnaseq_pipeline.multiqc_disk": 100,
         "rnaseq_pipeline.multiqc_docker": f"{docker_repo}/multiqc:latest",
-        "rnaseq_pipeline.star_index": "gs://my-bucket/references/rn/v96/star_2.7.0d_04-20-19/Rnor6_v96_star_index.tar.gz",
         "rnaseq_pipeline.star_ncpu": 10,
         "rnaseq_pipeline.star_ramGB": 96,
         "rnaseq_pipeline.star_disk": 200,
         "rnaseq_pipeline.star_docker": f"{docker_repo}/star:latest",
-        "rnaseq_pipeline.gtf_file": "gs://my-bucket/references/rn/v96/Rattus_norvegicus.Rnor_6.0.96.gtf",
         "rnaseq_pipeline.feature_counts_ncpu": 8,
         "rnaseq_pipeline.feature_counts_ramGB": 48,
         "rnaseq_pipeline.feature_counts_disk": 100,
         "rnaseq_pipeline.feature_counts_docker": f"{docker_repo}/feature_counts:latest",
-        "rnaseq_pipeline.rsem_reference": "gs://my-bucket/references/rn/v96/rsem/rn6_rsem_reference.tar.gz",
         "rnaseq_pipeline.rsem_ncpu": 10,
         "rnaseq_pipeline.rsem_ramGB": 48,
         "rnaseq_pipeline.rsem_disk": 150,
         "rnaseq_pipeline.rsem_docker": f"{docker_repo}/rsem:latest",
-        "rnaseq_pipeline.globin_genome_dir_tar": "gs://my-bucket/references/rn/bowtie2_index/rn_globin.tar.gz",
         "rnaseq_pipeline.bowtie2_globin_ncpu": 12,
         "rnaseq_pipeline.bowtie2_globin_ramGB": 80,
         "rnaseq_pipeline.bowtie2_globin_disk": 200,
-        "rnaseq_pipeline.rrna_genome_dir_tar": "gs://my-bucket/references/rn/bowtie2_index/rn_rRNA.tar.gz",
         "rnaseq_pipeline.bowtie2_rrna_ncpu": 12,
         "rnaseq_pipeline.bowtie2_rrna_ramGB": 80,
         "rnaseq_pipeline.bowtie2_rrna_disk": 200,
-        "rnaseq_pipeline.phix_genome_dir_tar": "gs://my-bucket/references/rn/bowtie2_index/phix.tar.gz",
         "rnaseq_pipeline.bowtie2_phix_ncpu": 12,
         "rnaseq_pipeline.bowtie2_phix_ramGB": 80,
         "rnaseq_pipeline.bowtie2_phix_disk": 200,
@@ -124,7 +156,6 @@ def make_json_dict(docker_repo, r1=None, r2=None, i1=None, prefix_list=None):
         "rnaseq_pipeline.markdup_ncpu": 10,
         "rnaseq_pipeline.markdup_ramGB": 48,
         "rnaseq_pipeline.markdup_disk": 150,
-        "rnaseq_pipeline.ref_flat": "gs://my-bucket/references/rn/v96/refFlat_rn6_v96.txt",
         "rnaseq_pipeline.rnaqc_ncpu": 10,
         "rnaseq_pipeline.rnaqc_ramGB": 48,
         "rnaseq_pipeline.rnaqc_disk": 100,
@@ -144,12 +175,14 @@ def make_json_dict(docker_repo, r1=None, r2=None, i1=None, prefix_list=None):
         "rnaseq_pipeline.collect_qc_ramGB": 16,
         "rnaseq_pipeline.collect_qc_disk": 50,
         "rnaseq_pipeline.collect_qc_docker": f"{docker_repo}/collect_qc:latest",
-        "rnaseq_pipeline.output_report_name": "ms_pipeline_test",
+        "rnaseq_pipeline.output_report_name": output_report_name,
         "rnaseq_pipeline.merge_results_ncpu": 4,
         "rnaseq_pipeline.merge_results_ramGB": 16,
         "rnaseq_pipeline.merge_results_disk": 10,
         "rnaseq_pipeline.merge_results_docker": f"{docker_repo}/merge_results:latest",
     }
+
+    d = {**filled_dict, **organism_references}
 
     return d
 
@@ -160,27 +193,38 @@ if __name__ == "__main__":
                     "fastq_raw dir on gcp for running rna-seq pipeline on GCP "
     )
     parser.add_argument(
-        "gcp_path",
+        "-g", "--gcp_path",
         help="location of the submission batch directory in gcp that contains the "
              "fastq_raw dir",
         type=str,
     )
     parser.add_argument(
-        "output_path",
+        "-o", "--output_path",
         help="output path, where you want the input jsons to be written",
         type=str,
     )
     parser.add_argument(
-        "num_chunks",
+        "-r", "--output_report_name",
+        help="name of the output report to be written",
+        type=str,
+    )
+    parser.add_argument(
+        "-a", "--organism",
+        help="organism name, e.g. rat or human",
+        choices=["rat", "human"],
+        default="rat",
+    )
+    parser.add_argument(
+        "-n", "--num_chunks",
         help="number of chunks to split the input files, should always be <= number of "
              "input files",
         type=int,
     )
     parser.add_argument(
-        "docker_repo",
+        "-d", "--docker_repo",
         help="Docker repository prefix containing the images used in the workflow",
         type=str,
-        default="gcr.io/***REMOVED***-dev/motrpac-rna-seq-pipeline"
+        default="gcr.io/***REMOVED***/motrpac-rna-seq-pipeline"
     )
     args = parser.parse_args()
     main(args)
