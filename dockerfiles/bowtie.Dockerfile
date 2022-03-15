@@ -14,7 +14,9 @@ RUN wget --progress=dot:giga -O bowtie2.zip \
 FROM ubuntu:20.04 as build
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends gawk perl perl-modules procps && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+    apt-get install -y --no-install-recommends gawk perl perl-modules procps python3 && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/* && \
+    ln -s /usr/bin/python3 /usr/bin/python && \
+    ln -s /usr/bin/pip3 /usr/bin/pip
 
 COPY --from=compiler /usr/bowtie/bowtie2* /usr/local/bin/
