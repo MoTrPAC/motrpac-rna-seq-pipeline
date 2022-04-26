@@ -1,7 +1,4 @@
-# Usage example : python3 scripts/make_json_rnaseq.py
-# gs://***REMOVED***-transfer-stanford/rna-seq/rat/batch4_20200106/fastq_raw
-# input_json/test3/ 4 To do : Add an exception to stop execution with a reason if the
-# number of chunks >number of files in the directory
+# Usage example : python3 make_json_rnaseq.py -g gs://xyz/rna-seq/human/batch7_20220316/fastq_raw -o `pwd` -r batch7_qc_metrics.csv -a human -n 1 -d gcr.io/***REMOVED***/motrpac-rna-seq-pipeline/
 import argparse
 import json
 import os
@@ -131,9 +128,9 @@ def make_json_dict(
         "rnaseq_pipeline.multiqc_ramGB": 20,
         "rnaseq_pipeline.multiqc_disk": 100,
         "rnaseq_pipeline.multiqc_docker": f"{docker_repo}/multiqc:latest",
-        "rnaseq_pipeline.star_ncpu": 10,
-        "rnaseq_pipeline.star_ramGB": 96,
-        "rnaseq_pipeline.star_disk": 200,
+        "rnaseq_pipeline.star_ncpu": 12,
+        "rnaseq_pipeline.star_ramGB": 120,
+        "rnaseq_pipeline.star_disk": 400,
         "rnaseq_pipeline.star_docker": f"{docker_repo}/star:latest",
         "rnaseq_pipeline.feature_counts_ncpu": 8,
         "rnaseq_pipeline.feature_counts_ramGB": 48,
@@ -154,8 +151,8 @@ def make_json_dict(
         "rnaseq_pipeline.bowtie2_phix_disk": 200,
         "rnaseq_pipeline.bowtie_docker": f"{docker_repo}/bowtie:latest",
         "rnaseq_pipeline.markdup_ncpu": 10,
-        "rnaseq_pipeline.markdup_ramGB": 48,
-        "rnaseq_pipeline.markdup_disk": 150,
+        "rnaseq_pipeline.markdup_ramGB": 96,
+        "rnaseq_pipeline.markdup_disk": 300,
         "rnaseq_pipeline.rnaqc_ncpu": 10,
         "rnaseq_pipeline.rnaqc_ramGB": 48,
         "rnaseq_pipeline.rnaqc_disk": 100,
@@ -173,12 +170,12 @@ def make_json_dict(
         "rnaseq_pipeline.mqc_postalign_disk": 50,
         "rnaseq_pipeline.collect_qc_ncpu": 8,
         "rnaseq_pipeline.collect_qc_ramGB": 16,
-        "rnaseq_pipeline.collect_qc_disk": 50,
+        "rnaseq_pipeline.collect_qc_disk": 100,
         "rnaseq_pipeline.collect_qc_docker": f"{docker_repo}/collect_qc:latest",
         "rnaseq_pipeline.output_report_name": output_report_name,
         "rnaseq_pipeline.merge_results_ncpu": 4,
         "rnaseq_pipeline.merge_results_ramGB": 16,
-        "rnaseq_pipeline.merge_results_disk": 10,
+        "rnaseq_pipeline.merge_results_disk": 200,
         "rnaseq_pipeline.merge_results_docker": f"{docker_repo}/merge_results:latest",
     }
 
