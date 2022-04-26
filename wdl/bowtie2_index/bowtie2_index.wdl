@@ -22,7 +22,9 @@ task bowtie2_index {
     }
 
     runtime {
-        docker: "gcr.io/motrpac-portal/motrpac_rnaseq:v0.1_04_20_19"
+	#requires python in the image for this step to run successfully
+	#docker: "gcr.io/motrpac-portal/motrpac_rnaseq:v0.1_04_20_19"
+        docker: "gcr.io/motrpac-portal/motrpac-rna-seq-pipeline/bowtie:latest"
         memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${ncpu}"

@@ -79,19 +79,24 @@ workflow rnaseq_pipeline {
         String rsem_docker
 
         # Bowtie2 Parameters
-        String globin_genome_dir
+        #String globin_genome_dir = "rn_globin"
+	#String globin_genome_dir = "hs_globin"
+	String globin_genome_dir
         File globin_genome_dir_tar
         Int bowtie2_globin_ncpu
         Int bowtie2_globin_ramGB
         Int bowtie2_globin_disk
 
-        String rrna_genome_dir
+        #String rrna_genome_dir = "rn_rRNA"
+	#String rrna_genome_dir = "hs_rRNA"
+	String rrna_genome_dir
         File rrna_genome_dir_tar
         Int bowtie2_rrna_ncpu
         Int bowtie2_rrna_ramGB
         Int bowtie2_rrna_disk
 
-        String phix_genome_dir
+        #String phix_genome_dir = "phix"
+	String phix_genome_dir
         File phix_genome_dir_tar
         Int bowtie2_phix_ncpu
         Int bowtie2_phix_ramGB

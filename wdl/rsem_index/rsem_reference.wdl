@@ -23,7 +23,7 @@ task rsem_reference {
     }
 
     runtime {
-        docker: "gcr.io/motrpac-portal/motrpac_rnaseq:v0.1_04_20_19"
+        docker: "gcr.io/motrpac-portal/motrpac-rna-seq-pipeline/rsem:latest"
         memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${ncpu}"

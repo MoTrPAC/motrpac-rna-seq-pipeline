@@ -26,11 +26,10 @@ task star_index {
 
     output {
         File star_index = "${prefix}.tar.gz"
-        # File star_index = "${prefix}/Genome"
     }
 
     runtime {
-        docker: "gcr.io/motrpac-portal/motrpac_rnaseq:v0.1_04_20_19"
+        docker: "gcr.io/motrpac-portal/motrpac-rna-seq-pipeline/star:latest"
         memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${ncpu}"
