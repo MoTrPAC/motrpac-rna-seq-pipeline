@@ -25,13 +25,15 @@ def main(command_args: argparse.Namespace):
 
     else:
         split_r1 = np.array_split(fs.glob(gcp_path), command_args.num_chunks)
+        if not command_args.undetermined:
+            split_r1 = list(filter(lambda x: "Undetermined_" not in x, split_r1))
         s_name = [
             [os.path.basename(i).split("_R1.fastq.gz")[0] for i in l] for l in split_r1
         ]
         # gcsfs chops off the gs:// hence i have to do append gs:// to each path as below
-        split_r1 = list(
+        split_r1 = [
             list(map(lambda orig_path: gcp_prefix + orig_path, l)) for l in split_r1
-        )
+        ]
         split_r2 = [
             [sub.replace("_R1.fastq.gz", "_R2.fastq.gz") for sub in l] for l in split_r1
         ]
@@ -42,7 +44,12 @@ def main(command_args: argparse.Namespace):
 
         for (r1, r2, i1, prefix_list) in zip(split_r1, split_r2, split_i1, s_name):
             json_dict = make_json_dict(
-                command_args.organism, docker_repo, args.output_report_name, r1, r2, i1,
+                command_args.organism,
+                docker_repo,
+                args.output_report_name,
+                r1,
+                r2,
+                i1,
                 prefix_list,
             )
             batch_num = batch_num + 1
@@ -59,7 +66,13 @@ def main(command_args: argparse.Namespace):
 
 
 def make_json_dict(
-    organism, docker_repo, output_report_name, r1=None, r2=None, i1=None, prefix_list=None
+    organism,
+    docker_repo,
+    output_report_name,
+    r1=None,
+    r2=None,
+    i1=None,
+    prefix_list=None,
 ):
     if r1 is None:
         r1 = []
@@ -95,7 +108,6 @@ def make_json_dict(
             "rnaseq_pipeline.phix_genome_dir": "phix",
             "rnaseq_pipeline.phix_genome_dir_tar": "gs://motrpac-data-processed-get-cas/references/human/bowtie2_index/phix.tar.gz",
             "rnaseq_pipeline.ref_flat": "gs://motrpac-data-processed-get-cas/references/human/v39/refFlat_hg38_v39.txt",
-
         }
     else:
         print("Invalid organism")
@@ -187,41 +199,56 @@ def make_json_dict(
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="This script is used to generate input json files from the "
-                    "fastq_raw dir on gcp for running rna-seq pipeline on GCP "
+        "fastq_raw dir on gcp for running rna-seq pipeline on GCP "
     )
     parser.add_argument(
-        "-g", "--gcp_path",
+        "-g",
+        "--gcp_path",
         help="location of the submission batch directory in gcp that contains the "
-             "fastq_raw dir",
+        "fastq_raw dir",
         type=str,
     )
     parser.add_argument(
-        "-o", "--output_path",
+        "-o",
+        "--output_path",
         help="output path, where you want the input jsons to be written",
         type=str,
     )
     parser.add_argument(
-        "-r", "--output_report_name",
+        "-r",
+        "--output_report_name",
         help="name of the output report to be written",
         type=str,
     )
     parser.add_argument(
-        "-a", "--organism",
+        "-u",
+        "--undetermined",
+        help="Adding this flag will process undetermined FastQ files if they exist. "
+        "These are fastq files with prefix \"Undetermined_\". If this flag isn't "
+        "passed, items with prefix \"Undetermined_\" will be removed",
+        default=False,
+        action="store_true",
+    )
+    parser.add_argument(
+        "-a",
+        "--organism",
         help="organism name, e.g. rat or human",
         choices=["rat", "human"],
         default="rat",
     )
     parser.add_argument(
-        "-n", "--num_chunks",
+        "-n",
+        "--num_chunks",
         help="number of chunks to split the input files, should always be <= number of "
-             "input files",
+        "input files",
         type=int,
     )
     parser.add_argument(
-        "-d", "--docker_repo",
+        "-d",
+        "--docker_repo",
         help="Docker repository prefix containing the images used in the workflow",
         type=str,
-        default="gcr.io/***REMOVED***/motrpac-rna-seq-pipeline"
+        default="gcr.io/***REMOVED***/motrpac-rna-seq-pipeline",
     )
     args = parser.parse_args()
     main(args)
