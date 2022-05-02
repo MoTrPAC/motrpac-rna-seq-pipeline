@@ -24,9 +24,14 @@ def main(command_args: argparse.Namespace):
         sys.exit(1)
 
     else:
-        split_r1 = np.array_split(fs.glob(gcp_path), command_args.num_chunks)
+        np_split_r1 = np.array_split(fs.glob(gcp_path), command_args.num_chunks)
+        split_r1 = [splitted_list.tolist() for splitted_list in np_split_r1]
+
         if not command_args.undetermined:
-            split_r1 = list(filter(lambda x: "Undetermined_" not in x, split_r1))
+            split_r1 = [
+                list(filter(lambda x: "Undetermined_" not in x, l)) for l in split_r1
+            ]
+
         s_name = [
             [os.path.basename(i).split("_R1.fastq.gz")[0] for i in l] for l in split_r1
         ]
