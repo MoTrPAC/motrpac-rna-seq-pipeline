@@ -1,0 +1,8 @@
+{
+  "annotation_gtf": "gs://rna-seq_araja/references/human/gencode_v39/GRCh38.v39.primary_assembly.annotation.gtf",
+  "disk_space": "100",
+  "prefix": "hg38_rsem_reference",
+  "reference_fasta": "gs://rna-seq_araja/references/human/gencode_v39/GRCh38.primary_assembly.genome.fa",
+  "ncpu": "10",
+  "memory": "100"
+}

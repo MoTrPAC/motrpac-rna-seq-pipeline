@@ -1,0 +1,8 @@
+{
+  "disk_space": "100",
+  "prefix": "hs_globin",
+  "reference_fasta": "gs://rna-seq_araja/references/human/bowtie2_index/hs_globin.fa",
+  "ncpu": "4",
+  "memory": "60"
+}
+

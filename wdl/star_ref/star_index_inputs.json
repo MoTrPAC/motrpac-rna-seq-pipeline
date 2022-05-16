@@ -1,0 +1,10 @@
+{
+  "annotation_gtf": "gs://motrpac-data-processed-get-cas/references/human/GRCh38.v39.primary_assembly.annotation.gtf",
+  "disk_space": "120",
+  "prefix": "hg38_v39_star_index",
+  "reference_fasta": "gs://motrpac-data-processed-get-cas/references/human/GRCh38.primary_assembly.genome.fa",
+  "overhang": "100",
+  "ncpu": "10",
+  "memory": "100"
+}
+
