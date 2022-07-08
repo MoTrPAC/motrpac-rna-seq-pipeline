@@ -79,24 +79,16 @@ workflow rnaseq_pipeline {
         String rsem_docker
 
         # Bowtie2 Parameters
-        #String globin_genome_dir = "rn_globin"
-	#String globin_genome_dir = "hs_globin"
-	String globin_genome_dir
         File globin_genome_dir_tar
         Int bowtie2_globin_ncpu
         Int bowtie2_globin_ramGB
         Int bowtie2_globin_disk
 
-        #String rrna_genome_dir = "rn_rRNA"
-	#String rrna_genome_dir = "hs_rRNA"
-	String rrna_genome_dir
         File rrna_genome_dir_tar
         Int bowtie2_rrna_ncpu
         Int bowtie2_rrna_ramGB
         Int bowtie2_rrna_disk
 
-        #String phix_genome_dir = "phix"
-	String phix_genome_dir
         File phix_genome_dir_tar
         Int bowtie2_phix_ncpu
         Int bowtie2_phix_ramGB
@@ -272,7 +264,6 @@ workflow rnaseq_pipeline {
                 SID=sample_prefix[i],
                 fastqr1=cutadapt.fastq_trimmed_R1,
                 fastqr2=cutadapt.fastq_trimmed_R2,
-                genome_dir=globin_genome_dir,
                 genome_dir_tar=globin_genome_dir_tar,
             # Runtime Parameters
                 ncpu=bowtie2_globin_ncpu,
@@ -289,7 +280,6 @@ workflow rnaseq_pipeline {
                 SID=sample_prefix[i],
                 fastqr1=cutadapt.fastq_trimmed_R1,
                 fastqr2=cutadapt.fastq_trimmed_R2,
-                genome_dir=rrna_genome_dir,
                 genome_dir_tar=rrna_genome_dir_tar,
             # Runtime Parameters
                 ncpu=bowtie2_rrna_ncpu,
@@ -306,7 +296,6 @@ workflow rnaseq_pipeline {
                 SID=sample_prefix[i],
                 fastqr1=cutadapt.fastq_trimmed_R1,
                 fastqr2=cutadapt.fastq_trimmed_R2,
-                genome_dir=phix_genome_dir,
                 genome_dir_tar=phix_genome_dir_tar,
             # Runtime Parameters
                 ncpu=bowtie2_phix_ncpu,
@@ -428,7 +417,7 @@ workflow rnaseq_pipeline {
         File rsem_genes_count = merge_results.rsem_genes_count
         File rsem_genes_tpm = merge_results.rsem_genes_tpm
         File rsem_genes_fpkm = merge_results.rsem_genes_fpkm
-        File feature_counts = merge_results.feature_counts
-        File qc_report = merge_results.qc_report
+        File feature_counts_file = merge_results.feature_counts
+        File qc_report_file = merge_results.qc_report
     }
 }
