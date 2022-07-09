@@ -29,15 +29,16 @@ task rnaseqQC {
         done
 
         echo "--- $(date "+[%b %d %H:%M:%S]") Running rnaseq_qc.py script ---"
-        python3 /usr/local/src/rnaseq_qc.py --multiqc_prealign multiQC_prealign_report \
+        python3 /usr/local/src/rnaseq_qc.py \
+            --multiqc_prealign multiQC_prealign_report \
             --multiqc_postalign multiQC_postalign_report \
-            ~{trim_summary} \
-            ~{mapped_report} \
-            ~{rRNA_report} \
-            ~{globin_report} \
-            ~{phix_report} \
-            ~{umi_report} \
-            ~{star_log}
+            --cutadapt_report ~{trim_summary} \
+            --mapped_report ~{mapped_report} \
+            --rRNA_report ~{rRNA_report} \
+            --globin_report ~{globin_report} \
+            --phix_report ~{phix_report} \
+            --umi_report ~{umi_report} \
+            --star_log ~{star_log}
 
         touch ~{SID}_qc_info.csv
 
@@ -53,6 +54,34 @@ task rnaseqQC {
         memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${ncpu}"
+
+    }
+
+    parameter_meta {
+        SID: {
+            type: "id"
+     }
+        trim_summary: {
+           label: "Trimmed Summary"
+        }
+        mapped_report: {
+           label: "Mapped Reads Report"
+        }
+        rRNA_report: {
+           label: "rRNA Report"
+        }
+        globin_report: {
+           label: "Globin Report"
+        }
+        phix_report: {
+           label: "Phix Report"
+        }
+        umi_report: {
+           label: "UMI Report"
+        }
+        star_log: {
+           label: "STAR Log"
+        }
 
     }
 }
