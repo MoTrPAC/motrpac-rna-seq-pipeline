@@ -45,6 +45,18 @@ task merge_results {
         File qc_report = "${output_report_name}.csv"
     }
 
+    parameter_meta {
+        rsem_files: {
+            label: "RSEM Gene Count Files"
+        }
+        feature_counts_files: {
+            label: "Feature Counts Files"
+        }
+        qc_report_files: {
+            label: "QC Report Files"
+        }
+    }
+
     runtime {
         docker: "${docker}"
         memory: "${memory}GB"

@@ -2,12 +2,14 @@ version 1.0
 
 task Cutadapt {
     input {
-        String index_adapter
-        String univ_adapter
+        String SID
         File fastqr1
         File fastqr2
-        String SID
+
+        String index_adapter
+        String univ_adapter
         Int? minimumLength
+        
         Int cpus
         Int disk_space
         Int memory
@@ -49,11 +51,19 @@ task Cutadapt {
         File tooShortPairedOutput = "fastq_trim/tooshort/${SID}_R2.fastq.gz"
     }
 
+    parameter_meta {
+        fastqr1: {
+            label: "Forward End Read FASTQ File"
+        }
+        fastqr2: {
+            type: "Reverse End Read FASTQ File"
+        }
+    }
+
     runtime {
         docker: "${docker}"
         memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${cpus}"
-
     }
 }

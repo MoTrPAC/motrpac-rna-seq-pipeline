@@ -47,7 +47,18 @@ task bowtie2_align {
         memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${ncpu}"
+    }
 
+    parameter_meta {
+        fastqr1: {
+            label: "Forward End Read FASTQ File"
+        }
+        fastqr2: {
+            type: "Reverse End Read FASTQ File"
+        }
+        genome_dir_tar: {
+            label: "Bowtie2 Reference Tarball File"
+        }
     }
 
     meta {

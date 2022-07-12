@@ -60,27 +60,27 @@ task rnaseqQC {
     parameter_meta {
         SID: {
             type: "id"
-     }
+        }
         trim_summary: {
-           label: "Trimmed Summary"
+           label: "CutAdapt Trim Summary Report File"
         }
         mapped_report: {
            label: "Mapped Reads Report"
         }
         rRNA_report: {
-           label: "rRNA Report"
+           label: "Bowtie2 rRNA Sequence Mapping Report"
         }
         globin_report: {
-           label: "Globin Report"
+           label: "Bowtie2 Globin Sequence Mapping Report"
         }
         phix_report: {
-           label: "Phix Report"
+           label: "Bowtie2 Phix Sequence Mapping Report"
         }
         umi_report: {
-           label: "UMI Report"
+           label: "UMI Duplicate Rate Detection Report"
         }
         star_log: {
-           label: "STAR Log"
+           label: "STAR Align Log"
         }
 
     }

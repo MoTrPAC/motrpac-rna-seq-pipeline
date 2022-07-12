@@ -3,12 +3,13 @@ version 1.0
 task multiQC {
     input {
         Array[File] fastQCReports
+        File trim_report
+        
         Int memory
         Int disk_space
         Int ncpu
 
         String docker
-        File trim_report
     }
 
     command <<<
@@ -51,5 +52,14 @@ task multiQC {
         disks: "local-disk ${disk_space} HDD"
         cpu: "${ncpu}"
 
+    }
+
+    parameter_meta {
+        fastQCReports: {
+            label: "FastQC reports"
+        }
+        trim_report: {
+            label: "Trim report"
+        }
     }
 }
