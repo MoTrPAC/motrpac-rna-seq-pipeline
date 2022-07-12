@@ -2,10 +2,10 @@ version 1.0
 
 task attachUMI {
     input {
+        String SID
         File fastqr1
         File fastqr2
         File fastqi1
-        String SID
 
         # Runtime Attributes
         Int memory
@@ -39,6 +39,21 @@ task attachUMI {
         disks: "local-disk ${disk_space} HDD"
         cpu: "${ncpu}"
 
+    }
+
+    parameter_meta {
+        SID: {
+            type: "id"
+        }
+        fastqr1: {
+            label: "Forward End Read FASTQ File"
+        }
+        fastqr2: {
+            type: "Reverse End Read FASTQ File"
+        }
+        fastqi1: {
+            label: "UMI Read FASTQ File"
+        }
     }
 
     meta {

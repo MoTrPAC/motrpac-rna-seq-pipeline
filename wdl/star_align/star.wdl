@@ -11,6 +11,7 @@ task star {
         String outSAMtype = "BAM SortedByCoordinate"
         String quantMode = "TranscriptomeSAM"
         String outSAMattributes = "NH HI AS NM MD nM"
+        
         Int memory
         Int disk_space
         Int ncpu
@@ -35,7 +36,7 @@ task star {
 
         mkdir star_out
         echo "--- $(date "+[%b %d %H:%M:%S]") Running STAR ---"
-        STAR  --genomeDir star_index \
+        STAR --genomeDir star_index \
             --readFilesIn "$FASTQ_1_ABS" "$FASTQ_2_ABS" \
             --outFileNamePrefix star_out/~{prefix}. \
             --readFilesCommand zcat \
@@ -74,6 +75,21 @@ task star {
         disks: "local-disk ${disk_space} HDD"
         cpu: "${ncpu}"
 
+    }
+
+    parameter_meta {
+        prefix: {
+            type: "id"
+        }
+        fastq1: {
+            label: "Forward End Read FASTQ File"
+        }
+        fastq2: {
+            type: "Reverse End Read FASTQ File"
+        }
+        star_index: {
+            label: "Genome STAR Index File"
+        }
     }
 
     meta {
