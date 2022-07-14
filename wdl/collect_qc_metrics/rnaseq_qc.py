@@ -19,6 +19,7 @@ import pandas as pd
 
 def make_args():
     parser = argparse.ArgumentParser(description="Script to collect RNA-seq QC metrics")
+    parser.add_argument("--sample", help="Sample prefix")
     parser.add_argument("--multiqc_prealign", help="path to MultiQC prealign directory")
     parser.add_argument("--multiqc_postalign", help="path to MultiQC postalign directory")
     parser.add_argument("--cutadapt_report", help="Cutadapt report file")
@@ -264,11 +265,7 @@ def main():
     print(df_final)
     print(df_final["sample"][0])
 
-    if df_final["sample"].dtype == "O":
-        name = df_final["sample"][0] + "_qc_info.csv"
-        print(name)
-    else:
-        name = df_final["sample"][0].astype("str") + "_qc_info.csv"
+    name = f"{args.sample.strip()}_qc_info.csv"
 
     # Writing qc_report to a csv file
     df_final.to_csv(name, sep=",", index=False)
