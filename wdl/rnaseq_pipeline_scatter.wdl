@@ -17,6 +17,84 @@ import "collect_qc_metrics/collect_qc.wdl" as collect_qc
 import "merge_results/merge_results.wdl" as final_merge
 
 workflow rnaseq_pipeline {
+
+    meta {
+        task_labels: {
+            aumi: {
+                task_name: "AttachUMI",
+                description: "Append the UMI index from I1 file to the read names of R1 and R2 FASTQ files so that the UMI info for each read can be tracked for downstream analysis"
+            },
+            pretrim_fastqc: {
+                task_name: "Pre-Trim FastQC",
+                description: "Run FastQC on raw reads before adapter trimming to assess how the sequencing quality changes with the actual run cycle number"
+            },
+            cutadapt: {
+                task_name: "Cutadapt",
+                description: "Adapter trimming of index_adapter and index2_adapter and eliminating post-trimmed reads that are too short or have too many Ns"
+            },
+            posttrim_fastqc: {
+                task_name: "Post-Trim FastQC",
+                description: "Post-Trim FastQC to collect metrics related to the library quality such as GC content and duplicated sequences"
+            },
+            mqc: {
+                task_name: "MultiQC",
+                description: "MultiQC consolidates logs from cutadapt pre-trim and post-trim FASTQC steps"
+            },
+            star_align: {
+                task_name: "STAR",
+                description: "Align each pair of trimmed fastq files from each sample using STAR to the STAR index generated using the genome and corresponding gtf annotation"
+            },
+            feature_counts: {
+                task_name: "FeatureCounts",
+                description: "Quantify gene expression"
+            },
+            rsem_quant: {
+                task_name: "RSEM",
+                description: "Quantify counts, FPKMs and TPMs for genes and transcripts"
+            },
+            bowtie2_globin: {
+                task_name: "Bowtie2 Globin",
+                description: "Map trimmed reads to bowtie2 globin index using bowtie2 to compute percent reads mapping to globin sequence to measure contamination"
+            },
+            bowtie2_rrna: {
+                task_name: "Bowtie2 rRNA", 
+                description: "Map trimmed reads to bowtie2 rRNA index using Bowtie2 to compute percent of rRNA reads"
+            },
+            bowtie2_phix: {
+                task_name: "Bowtie2 PHIX",
+                description: "Map reads to phix using bowtie2 to compute percentage of phix"
+            },
+            md: {
+                task_name: "Mark Duplicates",
+                description: "Run MarkDuplicates function from Picard tools on STAR-aligned BAM files to assess PCR duplication based on position of the mapped reads"
+            },
+            rnaqc: {
+                task_name: "Collect RNAseq Metrics",
+                description: "Run CollectRnaSeqMetrics function from Picard tools to capture RNA-seq QC metrics like % reads mapped to coding, intron, inter-genic, UTR, % correct strand, and 5’ to 3’ bias "
+            },
+            udup: {
+                task_name: "UMI Duplication",
+                description: "Runs nudup.py python2 script to get an estimation of the PCR duplicates rate from STAR-aligned BAM file"
+            },
+            sm: {
+                task_name: "SAMTools Mapped",
+                description: "Compute mapping percentages to different chromosomes using SAMTools"
+            },
+            mqc_pa: {
+                task_name: "MultiQC PostAlign",
+                description: "Generates consolidated QC report using MultiQC by combining STAR and picard tools QC logs"
+            },
+            qc_report: {
+                task_name: "RNAseq QC Report",
+                description: "Python script that uses MultiQC reports and other log files to consolidated QC metrics report per sample"
+            },
+            merge_results: {
+                task_name: "Merge Results",
+                description: "Merges RSEM quantification outputs, FeatureCounts quantification outputs, and QC metrics files from all samples run by the pipeline"
+            }
+        }
+    }
+
     input {
         # Input files/values
         Array[File]+ fastq1
