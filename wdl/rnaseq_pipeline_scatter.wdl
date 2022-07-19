@@ -95,6 +95,12 @@ workflow rnaseq_pipeline {
         }
     }
 
+    parameter_meta {
+        sample_prefix: {
+            type: "id"
+        }
+    }
+
     input {
         # Input files/values
         Array[File]+ fastq1

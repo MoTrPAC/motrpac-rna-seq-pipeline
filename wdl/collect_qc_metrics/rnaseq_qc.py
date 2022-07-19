@@ -254,6 +254,7 @@ def main():
     dfs = [df1, df_star, df_mapped, df_rna_metrics]
 
     def rename_sample_df(df: pd.DataFrame):
+        df['sample'] = df['sample'].astype(str)
         df['sample'] = df['sample'].apply(lambda x: re.sub(r"(_R[1,2])$", "", x))
         return df
 
