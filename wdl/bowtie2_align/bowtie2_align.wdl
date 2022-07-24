@@ -54,7 +54,7 @@ task bowtie2_align {
             label: "Forward End Read FASTQ File"
         }
         fastqr2: {
-            type: "Reverse End Read FASTQ File"
+            label: "Reverse End Read FASTQ File"
         }
         genome_dir_tar: {
             label: "Bowtie2 Reference Tarball File"

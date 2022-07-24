@@ -85,7 +85,7 @@ task star {
             label: "Forward End Read FASTQ File"
         }
         fastq2: {
-            type: "Reverse End Read FASTQ File"
+            label: "Reverse End Read FASTQ File"
         }
         star_index: {
             label: "Genome STAR Index File"

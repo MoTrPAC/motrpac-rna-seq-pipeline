@@ -56,7 +56,7 @@ task Cutadapt {
             label: "Forward End Read FASTQ File"
         }
         fastqr2: {
-            type: "Reverse End Read FASTQ File"
+            label: "Reverse End Read FASTQ File"
         }
     }
 
