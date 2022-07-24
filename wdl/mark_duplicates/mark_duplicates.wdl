@@ -53,7 +53,7 @@ task markduplicates {
 
     parameter_meta {
         SID: {
-            type: "ID"
+            type: "id"
         }
         input_bam: {
             label: "Mapped/Aligned Reads BAM File"
