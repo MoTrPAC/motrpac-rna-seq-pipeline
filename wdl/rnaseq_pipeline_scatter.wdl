@@ -25,24 +25,24 @@ workflow rnaseq_pipeline {
                 description: "Append the UMI index from I1 file to the read names of R1 and R2 FASTQ files so that the UMI info for each read can be tracked for downstream analysis"
             },
             pretrim_fastqc: {
-                task_name: "Pre-Trim FastQC",
-                description: "Run FastQC on raw reads before adapter trimming to assess how the sequencing quality changes with the actual run cycle number"
+                task_name: "Pre-Trim FASTQC",
+                description: "Run FASTQC on raw reads before adapter trimming to assess how the sequencing quality changes with the actual run cycle number"
             },
             cutadapt: {
                 task_name: "Cutadapt",
                 description: "Adapter trimming of index_adapter and index2_adapter and eliminating post-trimmed reads that are too short or have too many Ns"
             },
             posttrim_fastqc: {
-                task_name: "Post-Trim FastQC",
-                description: "Post-Trim FastQC to collect metrics related to the library quality such as GC content and duplicated sequences"
+                task_name: "Post-Trim FASTQC",
+                description: "Post-Trim FASTQC to collect metrics related to the library quality such as GC content and duplicated sequences"
             },
             mqc: {
                 task_name: "MultiQC",
-                description: "MultiQC consolidates logs from cutadapt pre-trim and post-trim FASTQC steps"
+                description: "MultiQC consolidates logs from CutAdapt, Pre-Trim and Post-Trim FASTQC steps"
             },
             star_align: {
                 task_name: "STAR",
-                description: "Align each pair of trimmed fastq files from each sample using STAR to the STAR index generated using the genome and corresponding gtf annotation"
+                description: "Align each pair of trimmed FASTQ files from each sample using STAR to the STAR index generated using the genome and corresponding GTF annotation"
             },
             feature_counts: {
                 task_name: "FeatureCounts",
@@ -70,15 +70,15 @@ workflow rnaseq_pipeline {
             },
             rnaqc: {
                 task_name: "Collect RNAseq Metrics",
-                description: "Run CollectRnaSeqMetrics function from Picard tools to capture RNA-seq QC metrics like % reads mapped to coding, intron, inter-genic, UTR, % correct strand, and 5’ to 3’ bias "
+                description: "Run CollectRnaSeqMetrics function from Picard tools to capture RNA-seq QC metrics like percentage of reads mapped to coding, intron, inter-genic, UTR, % correct strand, and 5’ to 3’ bias "
             },
             udup: {
                 task_name: "UMI Duplication",
                 description: "Runs nudup.py python2 script to get an estimation of the PCR duplicates rate from STAR-aligned BAM file"
             },
-            sm: {
+            chrinfo: {
                 task_name: "SAMTools Mapped",
-                description: "Compute mapping percentages to different chromosomes using SAMTools"
+                description: "Compute mapping percentages to different chromosomes and contigs using SAMTools"
             },
             mqc_pa: {
                 task_name: "MultiQC PostAlign",
@@ -109,11 +109,9 @@ workflow rnaseq_pipeline {
         Array[String]+ sample_prefix
 
         # FastQC Parameters
-        String pre_trim_out_dir = "fastqc_raw"
         Int pretrim_fastqc_ncpu
         Int pretrim_fastqc_ramGB
         Int pretrim_fastqc_disk
-        String post_trim_out_dir = "fastqc_trim"
         Int posttrim_fastqc_ncpu
         Int posttrim_fastqc_ramGB
         Int posttrim_fastqc_disk
@@ -230,7 +228,7 @@ workflow rnaseq_pipeline {
             # Inputs
                 fastqr1=fastq1[i],
                 fastqr2=fastq2[i],
-                outdir=pre_trim_out_dir,
+                outdir="fastqc_raw",
             # Runtime Parameters
                 ncpu=pretrim_fastqc_ncpu,
                 memory=pretrim_fastqc_ramGB,
@@ -276,7 +274,7 @@ workflow rnaseq_pipeline {
             # Inputs
                 fastqr1=cutadapt.fastq_trimmed_R1,
                 fastqr2=cutadapt.fastq_trimmed_R2,
-                outdir=post_trim_out_dir,
+                outdir="fastqc_trim",
             # Runtime Parameters
                 ncpu=posttrim_fastqc_ncpu,
                 memory=posttrim_fastqc_ramGB,
@@ -430,7 +428,7 @@ workflow rnaseq_pipeline {
                 docker=umi_dup_docker
         }
 
-        call mapped.samtools_mapped as sm {
+        call mapped.samtools_mapped as chrinfo {
             input:
             # Inputs
                 SID=sample_prefix[i],
@@ -470,7 +468,7 @@ workflow rnaseq_pipeline {
                 phix_report=bowtie2_phix.bowtie2_report,
                 rRNA_report=bowtie2_rrna.bowtie2_report,
                 trim_summary=cutadapt.summary,
-                mapped_report=sm.report,
+                mapped_report=chrinfo.report,
                 star_log=star_align.logs[0],
                 umi_report=udup.umi_report,
             # Runtime Parameters

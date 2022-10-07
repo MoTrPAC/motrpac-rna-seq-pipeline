@@ -52,6 +52,9 @@ task Cutadapt {
     }
 
     parameter_meta {
+        SID: {
+            type: "id"
+        }
         fastqr1: {
             label: "Forward End Read FASTQ File"
         }
