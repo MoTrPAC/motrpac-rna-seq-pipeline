@@ -2,12 +2,12 @@ version 1.0
 
 task bowtie2_align {
     input {
+        String SID
         File fastqr1
         File fastqr2
         File genome_dir_tar
-        # name of the directory when uncompressed
+
         String index_prefix = "bowtie2_index"
-        String SID
         Int memory
         Int disk_space
         Int ncpu
@@ -50,6 +50,9 @@ task bowtie2_align {
     }
 
     parameter_meta {
+        SID: {
+            type: "id"
+        }
         fastqr1: {
             label: "Forward End Read FASTQ File"
         }
