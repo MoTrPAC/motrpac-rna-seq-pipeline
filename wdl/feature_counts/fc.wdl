@@ -4,9 +4,10 @@ version 1.0
 
 task feature_counts {
     input {
+        String SID
         File input_bam
         File gtf_file
-        String SID
+
         Int memory
         Int disk_space
         Int ncpu
@@ -35,7 +36,18 @@ task feature_counts {
         memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${ncpu}"
+    }
 
+    parameter_meta {
+        SID: {
+            type: "id"
+        }
+        input_bam: {
+            label: "Input BAM File"
+        }
+        gtf_file: {
+            label: "GTF-Format Annotation File"
+        }
     }
 
     meta {

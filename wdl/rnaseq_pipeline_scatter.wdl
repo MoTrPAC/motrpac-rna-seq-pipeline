@@ -17,6 +17,90 @@ import "collect_qc_metrics/collect_qc.wdl" as collect_qc
 import "merge_results/merge_results.wdl" as final_merge
 
 workflow rnaseq_pipeline {
+
+    meta {
+        task_labels: {
+            aumi: {
+                task_name: "AttachUMI",
+                description: "Append the UMI index from I1 file to the read names of R1 and R2 FASTQ files so that the UMI info for each read can be tracked for downstream analysis"
+            },
+            pretrim_fastqc: {
+                task_name: "Pre-Trim FASTQC",
+                description: "Run FASTQC on raw reads before adapter trimming to assess how the sequencing quality changes with the actual run cycle number"
+            },
+            cutadapt: {
+                task_name: "Cutadapt",
+                description: "Adapter trimming of index_adapter and index2_adapter and eliminating post-trimmed reads that are too short or have too many Ns"
+            },
+            posttrim_fastqc: {
+                task_name: "Post-Trim FASTQC",
+                description: "Post-Trim FASTQC to collect metrics related to the library quality such as GC content and duplicated sequences"
+            },
+            mqc: {
+                task_name: "MultiQC",
+                description: "MultiQC consolidates logs from CutAdapt, Pre-Trim and Post-Trim FASTQC steps"
+            },
+            star_align: {
+                task_name: "STAR",
+                description: "Align each pair of trimmed FASTQ files from each sample using STAR to the STAR index generated using the genome and corresponding GTF annotation"
+            },
+            feature_counts: {
+                task_name: "FeatureCounts",
+                description: "Quantify gene expression"
+            },
+            rsem_quant: {
+                task_name: "RSEM",
+                description: "Quantify counts, FPKMs and TPMs for genes and transcripts"
+            },
+            bowtie2_globin: {
+                task_name: "Bowtie2 Globin",
+                description: "Map trimmed reads to bowtie2 globin index using bowtie2 to compute percent reads mapping to globin sequence to measure contamination"
+            },
+            bowtie2_rrna: {
+                task_name: "Bowtie2 rRNA", 
+                description: "Map trimmed reads to bowtie2 rRNA index using Bowtie2 to compute percent of rRNA reads"
+            },
+            bowtie2_phix: {
+                task_name: "Bowtie2 PHIX",
+                description: "Map reads to phix using bowtie2 to compute percentage of phix"
+            },
+            md: {
+                task_name: "Mark Duplicates",
+                description: "Run MarkDuplicates function from Picard tools on STAR-aligned BAM files to assess PCR duplication based on position of the mapped reads"
+            },
+            rnaqc: {
+                task_name: "Collect RNAseq Metrics",
+                description: "Run CollectRnaSeqMetrics function from Picard tools to capture RNA-seq QC metrics like percentage of reads mapped to coding, intron, inter-genic, UTR, % correct strand, and 5’ to 3’ bias "
+            },
+            udup: {
+                task_name: "UMI Duplication",
+                description: "Runs nudup.py python2 script to get an estimation of the PCR duplicates rate from STAR-aligned BAM file"
+            },
+            chrinfo: {
+                task_name: "SAMTools Mapped",
+                description: "Compute mapping percentages to different chromosomes and contigs using SAMTools"
+            },
+            mqc_pa: {
+                task_name: "MultiQC PostAlign",
+                description: "Generates consolidated QC report using MultiQC by combining STAR and picard tools QC logs"
+            },
+            qc_report: {
+                task_name: "RNAseq QC Report",
+                description: "Python script that uses MultiQC reports and other log files to consolidated QC metrics report per sample"
+            },
+            merge_results: {
+                task_name: "Merge Results",
+                description: "Merges RSEM quantification outputs, FeatureCounts quantification outputs, and QC metrics files from all samples run by the pipeline"
+            }
+        }
+    }
+
+    parameter_meta {
+        sample_prefix: {
+            type: "id"
+        }
+    }
+
     input {
         # Input files/values
         Array[File]+ fastq1
@@ -25,11 +109,9 @@ workflow rnaseq_pipeline {
         Array[String]+ sample_prefix
 
         # FastQC Parameters
-        String pre_trim_out_dir = "fastqc_raw"
         Int pretrim_fastqc_ncpu
         Int pretrim_fastqc_ramGB
         Int pretrim_fastqc_disk
-        String post_trim_out_dir = "fastqc_trim"
         Int posttrim_fastqc_ncpu
         Int posttrim_fastqc_ramGB
         Int posttrim_fastqc_disk
@@ -79,24 +161,16 @@ workflow rnaseq_pipeline {
         String rsem_docker
 
         # Bowtie2 Parameters
-        #String globin_genome_dir = "rn_globin"
-	#String globin_genome_dir = "hs_globin"
-	String globin_genome_dir
         File globin_genome_dir_tar
         Int bowtie2_globin_ncpu
         Int bowtie2_globin_ramGB
         Int bowtie2_globin_disk
 
-        #String rrna_genome_dir = "rn_rRNA"
-	#String rrna_genome_dir = "hs_rRNA"
-	String rrna_genome_dir
         File rrna_genome_dir_tar
         Int bowtie2_rrna_ncpu
         Int bowtie2_rrna_ramGB
         Int bowtie2_rrna_disk
 
-        #String phix_genome_dir = "phix"
-	String phix_genome_dir
         File phix_genome_dir_tar
         Int bowtie2_phix_ncpu
         Int bowtie2_phix_ramGB
@@ -154,7 +228,7 @@ workflow rnaseq_pipeline {
             # Inputs
                 fastqr1=fastq1[i],
                 fastqr2=fastq2[i],
-                outdir=pre_trim_out_dir,
+                outdir="fastqc_raw",
             # Runtime Parameters
                 ncpu=pretrim_fastqc_ncpu,
                 memory=pretrim_fastqc_ramGB,
@@ -200,7 +274,7 @@ workflow rnaseq_pipeline {
             # Inputs
                 fastqr1=cutadapt.fastq_trimmed_R1,
                 fastqr2=cutadapt.fastq_trimmed_R2,
-                outdir=post_trim_out_dir,
+                outdir="fastqc_trim",
             # Runtime Parameters
                 ncpu=posttrim_fastqc_ncpu,
                 memory=posttrim_fastqc_ramGB,
@@ -272,7 +346,6 @@ workflow rnaseq_pipeline {
                 SID=sample_prefix[i],
                 fastqr1=cutadapt.fastq_trimmed_R1,
                 fastqr2=cutadapt.fastq_trimmed_R2,
-                genome_dir=globin_genome_dir,
                 genome_dir_tar=globin_genome_dir_tar,
             # Runtime Parameters
                 ncpu=bowtie2_globin_ncpu,
@@ -289,7 +362,6 @@ workflow rnaseq_pipeline {
                 SID=sample_prefix[i],
                 fastqr1=cutadapt.fastq_trimmed_R1,
                 fastqr2=cutadapt.fastq_trimmed_R2,
-                genome_dir=rrna_genome_dir,
                 genome_dir_tar=rrna_genome_dir_tar,
             # Runtime Parameters
                 ncpu=bowtie2_rrna_ncpu,
@@ -306,7 +378,6 @@ workflow rnaseq_pipeline {
                 SID=sample_prefix[i],
                 fastqr1=cutadapt.fastq_trimmed_R1,
                 fastqr2=cutadapt.fastq_trimmed_R2,
-                genome_dir=phix_genome_dir,
                 genome_dir_tar=phix_genome_dir_tar,
             # Runtime Parameters
                 ncpu=bowtie2_phix_ncpu,
@@ -357,7 +428,7 @@ workflow rnaseq_pipeline {
                 docker=umi_dup_docker
         }
 
-        call mapped.samtools_mapped as sm {
+        call mapped.samtools_mapped as chrinfo {
             input:
             # Inputs
                 SID=sample_prefix[i],
@@ -397,7 +468,7 @@ workflow rnaseq_pipeline {
                 phix_report=bowtie2_phix.bowtie2_report,
                 rRNA_report=bowtie2_rrna.bowtie2_report,
                 trim_summary=cutadapt.summary,
-                mapped_report=sm.report,
+                mapped_report=chrinfo.report,
                 star_log=star_align.logs[0],
                 umi_report=udup.umi_report,
             # Runtime Parameters
@@ -428,7 +499,7 @@ workflow rnaseq_pipeline {
         File rsem_genes_count = merge_results.rsem_genes_count
         File rsem_genes_tpm = merge_results.rsem_genes_tpm
         File rsem_genes_fpkm = merge_results.rsem_genes_fpkm
-        File feature_counts = merge_results.feature_counts
-        File qc_report = merge_results.qc_report
+        File feature_counts_file = merge_results.feature_counts
+        File qc_report_file = merge_results.qc_report
     }
 }

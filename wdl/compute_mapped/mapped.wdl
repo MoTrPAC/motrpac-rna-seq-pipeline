@@ -2,8 +2,9 @@ version 1.0
 
 task samtools_mapped {
     input {
-        File input_bam
         String SID
+        File input_bam
+
         Int memory
         Int disk_space
         Int ncpu
@@ -51,7 +52,15 @@ task samtools_mapped {
         memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${ncpu}"
+    }
 
+    parameter_meta {
+        SID: {
+            type: "id"
+        }
+        input_bam: {
+            label: "Aligned BAM File"
+        }
     }
 
     meta {

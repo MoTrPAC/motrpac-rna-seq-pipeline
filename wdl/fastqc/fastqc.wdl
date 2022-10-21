@@ -4,7 +4,9 @@ task fastQC {
     input {
         File fastqr1
         File fastqr2
+
         String outdir
+
         Int memory
         Int disk_space
         Int ncpu
@@ -30,11 +32,19 @@ task fastQC {
         File fastQC_report = '${outdir}.tar.gz'
     }
 
+    parameter_meta {
+        fastqr1: {
+            label: "Forward End Read FASTQ File"
+        }
+        fastqr2: {
+            label: "Reverse End Read FASTQ File"
+        }
+    }
+
     runtime {
         docker: "${docker}"
         memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${ncpu}"
-
     }
 }

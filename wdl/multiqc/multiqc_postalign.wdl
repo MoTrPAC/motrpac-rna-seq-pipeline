@@ -4,11 +4,6 @@ version 1.0
 
 task multiQC_postalign {
     input {
-        Int memory
-        Int disk_space
-        Int ncpu
-
-        String docker
         Array[File] fastQCReport
         File trim_report
         File rsem_report
@@ -16,6 +11,12 @@ task multiQC_postalign {
         File fc_report
         File md_report
         File rnametric_report
+
+        Int memory
+        Int disk_space
+        Int ncpu
+
+        String docker
     }
 
     command <<<
@@ -64,6 +65,29 @@ task multiQC_postalign {
         memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${ncpu}"
+    }
 
+    parameter_meta {
+        fastQCReport: {
+           label: "FastQC Report Tarball"
+        }
+        trim_report: {
+           label: "CutAdapt Report File"
+        }
+        rsem_report: {
+           label: "RSEM Report File"
+        }
+        star_report: {
+           label: "STAR Align Report File"
+        }
+        fc_report: {
+           label: "FeatureCounts Report File"
+        }
+        md_report: {
+           label: "Picard MarkDuplicates Report File"
+        }
+        rnametric_report: {
+           label: "Picard CollectRnaSeqMetrics Report File"
+        }
     }
 }
