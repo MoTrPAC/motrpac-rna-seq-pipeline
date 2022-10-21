@@ -2,9 +2,10 @@ version 1.0
 
 task rsem {
     input {
+        String SID
         File transcriptome_bam
         File rsem_reference
-        String SID
+
         Int memory
         Int disk_space
         Int ncpu
@@ -51,7 +52,18 @@ task rsem {
         memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${ncpu}"
+    }
 
+    parameter_meta {
+        SID: {
+            type: "id"
+        }
+        transcriptome_bam: {
+            label: "Aligned Transcriptome BAM File"
+        }
+        rsem_reference: {
+            label: "RSEM Genome Reference File"
+        }
     }
 
     meta {

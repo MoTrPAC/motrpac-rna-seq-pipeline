@@ -4,8 +4,9 @@ version 1.0
 
 task markduplicates {
     input {
-        File input_bam
         String SID
+        File input_bam
+
         Int memory
         Int disk_space
         Int ncpu
@@ -48,6 +49,15 @@ task markduplicates {
         disks: "local-disk ${disk_space} HDD"
         cpu: "${ncpu}"
 
+    }
+
+    parameter_meta {
+        SID: {
+            type: "id"
+        }
+        input_bam: {
+            label: "Mapped/Aligned Reads BAM File"
+        }
     }
 
     meta {

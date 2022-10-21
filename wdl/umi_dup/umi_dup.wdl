@@ -2,14 +2,14 @@ version 1.0
 
 task UMI_dup {
     input {
-        File star_align
         String sample_prefix
-        String docker
+        File star_align
         # Runtime Attributes
         Int memory
         Int disk_space
         Int ncpu
 
+        String docker
     }
 
     command <<<
@@ -39,7 +39,15 @@ task UMI_dup {
         memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${ncpu}"
+    }
 
+    parameter_meta {
+        sample_prefix: {
+            type: "id"
+        }
+        star_align: {
+            label: "Aligned BAM File"
+        }
     }
 
     meta {
