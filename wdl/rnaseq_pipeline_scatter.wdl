@@ -57,7 +57,7 @@ workflow rnaseq_pipeline {
                 description: "Map trimmed reads to bowtie2 globin index using bowtie2 to compute percent reads mapping to globin sequence to measure contamination"
             },
             bowtie2_rrna: {
-                task_name: "Bowtie2 rRNA", 
+                task_name: "Bowtie2 rRNA",
                 description: "Map trimmed reads to bowtie2 rRNA index using Bowtie2 to compute percent of rRNA reads"
             },
             bowtie2_phix: {
@@ -105,7 +105,7 @@ workflow rnaseq_pipeline {
         # Input files/values
         Array[File]+ fastq1
         Array[File]+ fastq2
-        Array[File]+ fastq_index
+        Array[File]? fastq_index
         Array[String]+ sample_prefix
 
         # FastQC Parameters
@@ -237,43 +237,69 @@ workflow rnaseq_pipeline {
                 docker=fastqc_docker
         }
 
-        call attach_umi.attachUMI as aumi {
-            input:
-            # Inputs
-                SID=sample_prefix[i],
-                fastqr1=fastq1[i],
-                fastqr2=fastq2[i],
-                fastqi1=fastq_index[i],
-            # Runtime Parameters
-                ncpu=attach_umi_ncpu,
-                memory=attach_umi_ramGB,
-                disk_space=attach_umi_disk,
+        if (defined(fastq_index)) {
+            call attach_umi.attachUMI as aumi {
+                input:
+                # Inputs
+                    SID=sample_prefix[i],
+                    fastqr1=fastq1[i],
+                    fastqr2=fastq2[i],
+                    fastqi1=fastq_index[i],
+                # Runtime Parameters
+                    ncpu=attach_umi_ncpu,
+                    memory=attach_umi_ramGB,
+                    disk_space=attach_umi_disk,
 
-                docker=attach_umi_docker
+                    docker=attach_umi_docker
+            }
+
+            call ca.Cutadapt as cutadapt_umi {
+                input:
+                # Inputs
+                    index_adapter=index_adapter,
+                    univ_adapter=univ_adapter,
+                    SID=sample_prefix[i],
+                    fastqr1=aumi.r1_umi_attached,
+                    fastqr2=aumi.r2_umi_attached,
+                    minimumLength=minimumLength,
+                # Runtime Parameters
+                    cpus=cutadapt_ncpu,
+                    memory=cutadapt_ramGB,
+                    disk_space=cutadapt_disk,
+
+                    docker=cutadapt_docker,
+            }
         }
 
-        call ca.Cutadapt as cutadapt {
-            input:
-            # Inputs
-                index_adapter=index_adapter,
-                univ_adapter=univ_adapter,
-                SID=sample_prefix[i],
-                fastqr1=aumi.r1_umi_attached,
-                fastqr2=aumi.r2_umi_attached,
-                minimumLength=minimumLength,
-            # Runtime Parameters
-                cpus=cutadapt_ncpu,
-                memory=cutadapt_ramGB,
-                disk_space=cutadapt_disk,
+        if (!defined(fastq_index)) {
+            call ca.Cutadapt as cutadapt_noumi {
+                input:
+                # Inputs
+                    index_adapter=index_adapter,
+                    univ_adapter=univ_adapter,
+                    SID=sample_prefix[i],
+                    fastqr1=fastq1[i],
+                    fastqr2=fastq2[i],
+                    minimumLength=minimumLength,
+                # Runtime Parameters
+                    cpus=cutadapt_ncpu,
+                    memory=cutadapt_ramGB,
+                    disk_space=cutadapt_disk,
 
-                docker=cutadapt_docker,
+                    docker=cutadapt_docker,
+            }
         }
+
+        File cutadapt_fastq_trimmed_R1 = if (defined(fastq_index)) then select_first([cutadapt_umi.fastq_trimmed_R1]) else select_first([cutadapt_noumi.fastq_trimmed_R1])
+        File cutadapt_fastq_trimmed_R2 = if (defined(fastq_index)) then select_first([cutadapt_umi.fastq_trimmed_R2]) else select_first([cutadapt_noumi.fastq_trimmed_R2])
+        File cutadapt_report = if (defined(fastq_index)) then select_first([cutadapt_umi.report]) else select_first([cutadapt_noumi.report])
+        File cutadapt_summary = if (defined(fastq_index)) then select_first([cutadapt_umi.summary]) else select_first([cutadapt_noumi.summary])
 
         call fastqc.fastQC as posttrim_fastqc {
             input:
             # Inputs
-                fastqr1=cutadapt.fastq_trimmed_R1,
-                fastqr2=cutadapt.fastq_trimmed_R2,
+                fastqr1=cutadapt_fastq_trimmed_R1,
+                fastqr2=cutadapt_fastq_trimmed_R2,
                 outdir="fastqc_trim",
             # Runtime Parameters
                 ncpu=posttrim_fastqc_ncpu,
@@ -287,7 +313,7 @@ workflow rnaseq_pipeline {
             input:
             # Inputs
                 fastQCReports=[pretrim_fastqc.fastQC_report,posttrim_fastqc.fastQC_report],
-                trim_report=cutadapt.report,
+                trim_report=cutadapt_report,
             # Runtime Parameters
                 ncpu=multiqc_ncpu,
                 memory=multiqc_ramGB,
@@ -302,8 +328,8 @@ workflow rnaseq_pipeline {
             # Inputs
                 star_index=star_index,
                 prefix=sample_prefix[i],
-                fastq1=cutadapt.fastq_trimmed_R1,
-                fastq2=cutadapt.fastq_trimmed_R2,
+                fastq1=cutadapt_fastq_trimmed_R1,
+                fastq2=cutadapt_fastq_trimmed_R2,
             # Runtime Parameters
                 ncpu=star_ncpu,
                 memory=star_ramGB,
@@ -344,8 +370,8 @@ workflow rnaseq_pipeline {
             input:
             # Inputs
                 SID=sample_prefix[i],
-                fastqr1=cutadapt.fastq_trimmed_R1,
-                fastqr2=cutadapt.fastq_trimmed_R2,
+                fastqr1=cutadapt_fastq_trimmed_R1,
+                fastqr2=cutadapt_fastq_trimmed_R2,
                 genome_dir_tar=globin_genome_dir_tar,
             # Runtime Parameters
                 ncpu=bowtie2_globin_ncpu,
@@ -360,8 +386,8 @@ workflow rnaseq_pipeline {
             input:
             # Inputs
                 SID=sample_prefix[i],
-                fastqr1=cutadapt.fastq_trimmed_R1,
-                fastqr2=cutadapt.fastq_trimmed_R2,
+                fastqr1=cutadapt_fastq_trimmed_R1,
+                fastqr2=cutadapt_fastq_trimmed_R2,
                 genome_dir_tar=rrna_genome_dir_tar,
             # Runtime Parameters
                 ncpu=bowtie2_rrna_ncpu,
@@ -376,8 +402,8 @@ workflow rnaseq_pipeline {
             input:
             # Inputs
                 SID=sample_prefix[i],
-                fastqr1=cutadapt.fastq_trimmed_R1,
-                fastqr2=cutadapt.fastq_trimmed_R2,
+                fastqr1=cutadapt_fastq_trimmed_R1,
+                fastqr2=cutadapt_fastq_trimmed_R2,
                 genome_dir_tar=phix_genome_dir_tar,
             # Runtime Parameters
                 ncpu=bowtie2_phix_ncpu,
@@ -415,17 +441,19 @@ workflow rnaseq_pipeline {
                 docker=picard_docker
         }
 
-        call umi_dup.UMI_dup as udup {
-            input:
-            # Inputs
-                sample_prefix=sample_prefix[i],
-                star_align=star_align.bam_file,
-            # Runtime Parameters
-                ncpu=umi_dup_ncpu,
-                memory=umi_dup_ramGB,
-                disk_space=umi_dup_disk,
+        if (defined(fastq_index)) {
+            call umi_dup.UMI_dup as udup {
+                input:
+                # Inputs
+                    sample_prefix=sample_prefix[i],
+                    star_align=star_align.bam_file,
+                # Runtime Parameters
+                    ncpu=umi_dup_ncpu,
+                    memory=umi_dup_ramGB,
+                    disk_space=umi_dup_disk,
 
-                docker=umi_dup_docker
+                    docker=umi_dup_docker
+            }
         }
 
         call mapped.samtools_mapped as chrinfo {
@@ -445,7 +473,7 @@ workflow rnaseq_pipeline {
             input:
             # Inputs
                 fastQCReport=[posttrim_fastqc.fastQC_report],
-                trim_report=cutadapt.report,
+                trim_report=cutadapt_report,
                 rnametric_report=rnaqc.rnaseqmetrics,
                 md_report=md.metrics,
                 star_report=star_align.logs[0],
@@ -467,7 +495,7 @@ workflow rnaseq_pipeline {
                 globin_report=bowtie2_globin.bowtie2_report,
                 phix_report=bowtie2_phix.bowtie2_report,
                 rRNA_report=bowtie2_rrna.bowtie2_report,
-                trim_summary=cutadapt.summary,
+                trim_summary=cutadapt_summary,
                 mapped_report=chrinfo.report,
                 star_log=star_align.logs[0],
                 umi_report=udup.umi_report,

@@ -3,8 +3,8 @@ Script to collect rna-seq qc metrics from different summary and report files fro
 pipeline
 
 Usage : python rnaseq_qc.py --multiqc_prealign multiQC_prealign_report --multiqc_postalign
-multiQC_postalign_report 8019468197_summary.txt 8019468197_mapped_report.txt 
-8019468197_rRNA_report.txt 8019468197_globin_report.txt 8019468197_phix_report.txt 
+multiQC_postalign_report 8019468197_summary.txt 8019468197_mapped_report.txt
+8019468197_rRNA_report.txt 8019468197_globin_report.txt 8019468197_phix_report.txt
 8019468197_umi_report.txt 8019468197.Log.final.out
 
 Author : Archana Raja
@@ -22,13 +22,13 @@ def make_args():
     parser.add_argument("--sample", help="Sample prefix")
     parser.add_argument("--multiqc_prealign", help="path to MultiQC prealign directory")
     parser.add_argument("--multiqc_postalign", help="path to MultiQC postalign directory")
-    parser.add_argument("--cutadapt_report", help="Cutadapt report file")
     parser.add_argument("--mapped_report", help="Alignment report")
     parser.add_argument("--rRNA_report", help="rRNA alignment report")
     parser.add_argument("--globin_report", help="globin alignment report")
     parser.add_argument("--phix_report", help="phix alignment report")
-    parser.add_argument("--umi_report", help="UMI duplication report")
     parser.add_argument("--star_log", help="STAR log file")
+    parser.add_argument("--umi_report", help="UMI duplication report", required=False)
+    parser.add_argument("--cutadapt_report", help="Cutadapt report file", required=False)
     return parser.parse_args()
 
 
@@ -54,8 +54,17 @@ def main():
     df_pa = pd.read_csv(mqc_gen, sep="\t", header=0)
     df_star_log = pd.read_csv(args.star_log, index_col=0, sep="\t")
     df_rna_metrics = pd.read_csv(mqc_rna_metrics, sep="\t", header=0)
-    df_cutadapt = pd.read_csv(args.cutadapt_report, sep="\t", header=0)
-    df_umi = pd.read_csv(args.umi_report, sep="\t", header=0)
+
+    if args.cutadapt_report:
+        df_cutadapt = pd.read_csv(args.cutadapt_report, sep="\t", header=0)
+    else:
+        df_cutadapt = None
+
+    if args.umi_report:
+        df_umi = pd.read_csv(args.umi_report, sep="\t", header=0)
+    else:
+        df_umi = None
+
     df_globin = pd.read_csv(args.globin_report, sep="\t", header=0)
     df_r_rna = pd.read_csv(args.rRNA_report, sep="\t", header=0)
     df_phix = pd.read_csv(args.phix_report, sep="\t", header=0)
@@ -67,18 +76,17 @@ def main():
     print("Success creating data frames")
 
     # %trimmed_bases
-    percent_trimmed_bases = df_raw[
-        "Cutadapt_mqc-generalstats-cutadapt-percent_trimmed"
-    ][0].round(3)
+    percent_trimmed_bases = df_raw["Cutadapt_mqc-generalstats-cutadapt-percent_trimmed"][0].round(3)
 
-    # %Adapter detected
-    pct_adapter_detected = df_cutadapt["pct_adapter_detected"][0]
+    if df_cutadapt is not None:
+        # %Adapter detected
+        pct_adapter_detected = df_cutadapt["pct_adapter_detected"][0]
 
     # get mean raw read count
     reads_raw = (
-                    df_raw["FastQC_mqc-generalstats-fastqc-total_sequences"][1]
-                    + df_raw["FastQC_mqc-generalstats-fastqc-total_sequences"][2]
-                ) / 2
+        df_raw["FastQC_mqc-generalstats-fastqc-total_sequences"][1]
+        + df_raw["FastQC_mqc-generalstats-fastqc-total_sequences"][2]
+    ) / 2
 
     # Below expression extracts the sample_name by splitting the first value in the
     # Sample column by _R1.fastq.gz or _R2.fastq.gz
@@ -86,15 +94,15 @@ def main():
 
     # get read counts after trimming (reads)
     reads_trim = (
-                     df_raw["FastQC_mqc-generalstats-fastqc-total_sequences"][3]
-                     + df_raw["FastQC_mqc-generalstats-fastqc-total_sequences"][4]
-                 ) / 2
+        df_raw["FastQC_mqc-generalstats-fastqc-total_sequences"][3]
+        + df_raw["FastQC_mqc-generalstats-fastqc-total_sequences"][4]
+    ) / 2
 
     # get GC content of the trimmed reads (%GC)
     gc = (
-             df_raw["FastQC_mqc-generalstats-fastqc-percent_gc"][3]
-             + df_raw["FastQC_mqc-generalstats-fastqc-percent_gc"][4]
-         ) / 2
+        df_raw["FastQC_mqc-generalstats-fastqc-percent_gc"][3]
+        + df_raw["FastQC_mqc-generalstats-fastqc-percent_gc"][4]
+    ) / 2
 
     # %dup_sequence
     dup_seq = (
@@ -122,8 +130,9 @@ def main():
         (df_pa["Picard_mqc-generalstats-picard-PERCENT_DUPLICATION"][0]) * 100
     ).round(3)
 
-    # UMI dup percent
-    pct_umi_dup = df_umi["pct_umi_dup"][0]
+    if df_umi is not None:
+        # UMI dup percent
+        pct_umi_dup = df_umi["pct_umi_dup"][0]
 
     # % chimeric reads
     d = df_star_log.to_dict()
@@ -134,7 +143,6 @@ def main():
     data1 = {
         "Sample": [sample_name],
         "reads_raw": [reads_raw],
-        "pct_adapter_detected": [pct_adapter_detected],
         "pct_trimmed": [perc_trimmed],
         "pct_trimmed_bases": [percent_trimmed_bases],
         "reads": [reads_trim],
@@ -144,8 +152,13 @@ def main():
         "pct_globin": [perc_globin],
         "pct_phix": [perc_phix],
         "pct_picard_dup": [perc_picard_dup],
-        "pct_umi_dup": [pct_umi_dup],
     }
+
+    if df_cutadapt is not None:
+        data1["pct_adapter_detected"] = [pct_adapter_detected]
+
+    if df_umi is not None:
+        data1["pct_umi_dup"] = [pct_umi_dup]
 
     df1 = pd.DataFrame(data1)
     df1["Sample"] = df1.Sample.astype("str")
@@ -209,17 +222,17 @@ def main():
 
     # Modifying rnaseqmetrics data frame column names
     df_rna_metrics = df_rna_metrics.loc[
-                     :,
-                     [
-                         "Sample",
-                         "PCT_CODING_BASES",
-                         "PCT_MRNA_BASES",
-                         "PCT_INTRONIC_BASES",
-                         "MEDIAN_5PRIME_TO_3PRIME_BIAS",
-                         "PCT_INTERGENIC_BASES",
-                         "PCT_UTR_BASES",
-                     ],
-                     ]
+        :,
+        [
+            "Sample",
+            "PCT_CODING_BASES",
+            "PCT_MRNA_BASES",
+            "PCT_INTRONIC_BASES",
+            "MEDIAN_5PRIME_TO_3PRIME_BIAS",
+            "PCT_INTERGENIC_BASES",
+            "PCT_UTR_BASES",
+        ],
+    ]
     df_rna_metrics = df_rna_metrics.reindex(
         [
             "Sample",
@@ -232,11 +245,8 @@ def main():
         ],
         axis=1,
     )
-    df_rna_metrics.columns = [x.strip().replace("_BASES", "") for x in
-                              df_rna_metrics.columns]
-    df_rna_metrics.rename(
-        columns={"MEDIAN_5PRIME_TO_3PRIME_BIAS": "median_5_3_bias"}, inplace=True
-        )
+    df_rna_metrics.columns = [x.strip().replace("_BASES", "") for x in df_rna_metrics.columns]
+    df_rna_metrics.rename(columns={"MEDIAN_5PRIME_TO_3PRIME_BIAS": "median_5_3_bias"}, inplace=True)
     df_rna_metrics.columns = df_rna_metrics.columns.str.lower()
     print(df_rna_metrics)
 
@@ -254,8 +264,8 @@ def main():
     dfs = [df1, df_star, df_mapped, df_rna_metrics]
 
     def rename_sample_df(df: pd.DataFrame):
-        df['sample'] = df['sample'].astype(str)
-        df['sample'] = df['sample'].apply(lambda x: re.sub(r"(_R[1,2])$", "", x))
+        df["sample"] = df["sample"].astype(str)
+        df["sample"] = df["sample"].apply(lambda x: re.sub(r"(_R[1,2])$", "", x))
         return df
 
     new_dfs = map(lambda x: rename_sample_df(x), dfs)
