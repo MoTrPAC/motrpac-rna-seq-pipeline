@@ -23,12 +23,12 @@ def make_args():
     parser.add_argument("--multiqc_prealign", help="path to MultiQC prealign directory")
     parser.add_argument("--multiqc_postalign", help="path to MultiQC postalign directory")
     parser.add_argument("--mapped_report", help="Alignment report")
+    parser.add_argument("--cutadapt_report", help="Cutadapt report file")
     parser.add_argument("--rRNA_report", help="rRNA alignment report")
     parser.add_argument("--globin_report", help="globin alignment report")
     parser.add_argument("--phix_report", help="phix alignment report")
     parser.add_argument("--star_log", help="STAR log file")
     parser.add_argument("--umi_report", help="UMI duplication report", required=False)
-    parser.add_argument("--cutadapt_report", help="Cutadapt report file", required=False)
     return parser.parse_args()
 
 
@@ -54,11 +54,7 @@ def main():
     df_pa = pd.read_csv(mqc_gen, sep="\t", header=0)
     df_star_log = pd.read_csv(args.star_log, index_col=0, sep="\t")
     df_rna_metrics = pd.read_csv(mqc_rna_metrics, sep="\t", header=0)
-
-    if args.cutadapt_report:
-        df_cutadapt = pd.read_csv(args.cutadapt_report, sep="\t", header=0)
-    else:
-        df_cutadapt = None
+    df_cutadapt = pd.read_csv(args.cutadapt_report, sep="\t", header=0)
 
     if args.umi_report:
         df_umi = pd.read_csv(args.umi_report, sep="\t", header=0)
@@ -78,9 +74,8 @@ def main():
     # %trimmed_bases
     percent_trimmed_bases = df_raw["Cutadapt_mqc-generalstats-cutadapt-percent_trimmed"][0].round(3)
 
-    if df_cutadapt is not None:
-        # %Adapter detected
-        pct_adapter_detected = df_cutadapt["pct_adapter_detected"][0]
+    # %Adapter detected
+    pct_adapter_detected = df_cutadapt["pct_adapter_detected"][0]
 
     # get mean raw read count
     reads_raw = (
@@ -143,6 +138,7 @@ def main():
     data1 = {
         "Sample": [sample_name],
         "reads_raw": [reads_raw],
+        "pct_adapter_detected": [pct_adapter_detected],
         "pct_trimmed": [perc_trimmed],
         "pct_trimmed_bases": [percent_trimmed_bases],
         "reads": [reads_trim],
@@ -153,9 +149,6 @@ def main():
         "pct_phix": [perc_phix],
         "pct_picard_dup": [perc_picard_dup],
     }
-
-    if df_cutadapt is not None:
-        data1["pct_adapter_detected"] = [pct_adapter_detected]
 
     if df_umi is not None:
         data1["pct_umi_dup"] = [pct_umi_dup]

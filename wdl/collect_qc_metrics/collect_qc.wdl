@@ -9,13 +9,13 @@ task rnaseqQC {
 
         String docker
 
+        File trim_summary
         File mapped_report
         File rRNA_report
         File globin_report
         File phix_report
-        File? trim_summary
-        File? umi_report
         File star_log
+        File? umi_report
         String SID
     }
 
@@ -33,13 +33,13 @@ task rnaseqQC {
             --sample ~{SID} \
             --multiqc_prealign multiQC_prealign_report \
             --multiqc_postalign multiQC_postalign_report \
+            --cutadapt_report ~{trim_summary} \
             --mapped_report ~{mapped_report} \
             --rRNA_report ~{rRNA_report} \
             --globin_report ~{globin_report} \
             --phix_report ~{phix_report} \
             --star_log ~{star_log} \
-            ~{"--umi_report " + umi_report} \
-            ~{"--cutadapt_report " + trim_summary}
+            ~{"--umi_report " + umi_report}
 
         touch ~{SID}_qc_info.csv
 
