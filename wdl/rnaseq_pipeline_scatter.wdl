@@ -222,6 +222,8 @@ workflow rnaseq_pipeline {
         String merge_results_docker
     }
 
+    Boolean has_fastq_index = defined(fastq_index) || length(select_first([fastq_index, []])) > 0
+
     scatter (i in range(length(fastq1))) {
         call fastqc.fastQC as pretrim_fastqc {
             input:
@@ -237,14 +239,14 @@ workflow rnaseq_pipeline {
                 docker=fastqc_docker
         }
 
-        if (defined(fastq_index)) {
+        if (has_fastq_index) {
             call attach_umi.attachUMI as aumi {
                 input:
                 # Inputs
                     SID=sample_prefix[i],
                     fastqr1=fastq1[i],
                     fastqr2=fastq2[i],
-                    fastqi1=fastq_index[i],
+                    fastqi1=select_first([fastq_index])[i],
                 # Runtime Parameters
                     ncpu=attach_umi_ncpu,
                     memory=attach_umi_ramGB,
@@ -271,7 +273,7 @@ workflow rnaseq_pipeline {
             }
         }
 
-        if (!defined(fastq_index)) {
+        if (!has_fastq_index) {
             call ca.Cutadapt as cutadapt_noumi {
                 input:
                 # Inputs
@@ -290,10 +292,10 @@ workflow rnaseq_pipeline {
             }
         }
 
-        File cutadapt_fastq_trimmed_R1 = if (defined(fastq_index)) then select_first([cutadapt_umi.fastq_trimmed_R1]) else select_first([cutadapt_noumi.fastq_trimmed_R1])
-        File cutadapt_fastq_trimmed_R2 = if (defined(fastq_index)) then select_first([cutadapt_umi.fastq_trimmed_R2]) else select_first([cutadapt_noumi.fastq_trimmed_R2])
-        File cutadapt_report = if (defined(fastq_index)) then select_first([cutadapt_umi.report]) else select_first([cutadapt_noumi.report])
-        File cutadapt_summary = if (defined(fastq_index)) then select_first([cutadapt_umi.summary]) else select_first([cutadapt_noumi.summary])
+        File cutadapt_fastq_trimmed_R1 = if (has_fastq_index) then select_first([cutadapt_umi.fastq_trimmed_R1]) else select_first([cutadapt_noumi.fastq_trimmed_R1])
+        File cutadapt_fastq_trimmed_R2 = if (has_fastq_index) then select_first([cutadapt_umi.fastq_trimmed_R2]) else select_first([cutadapt_noumi.fastq_trimmed_R2])
+        File cutadapt_report = if (has_fastq_index) then select_first([cutadapt_umi.report]) else select_first([cutadapt_noumi.report])
+        File cutadapt_summary = if (has_fastq_index) then select_first([cutadapt_umi.summary]) else select_first([cutadapt_noumi.summary])
 
         call fastqc.fastQC as posttrim_fastqc {
             input:
@@ -441,7 +443,7 @@ workflow rnaseq_pipeline {
                 docker=picard_docker
         }
 
-        if (defined(fastq_index)) {
+        if (has_fastq_index) {
             call umi_dup.UMI_dup as udup {
                 input:
                 # Inputs
