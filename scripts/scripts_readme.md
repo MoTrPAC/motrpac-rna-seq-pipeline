@@ -4,8 +4,8 @@
 
 Generates the input configuration file required to run the rna-seq pipeline.
 
-- Requires Python `>3.6.9`  
-- `gcsfs``
+- Requires Python `>3.6.9`
+- Install required packages by running pip3 install -r scripts/requirements.txt
 
 ```
 usage: make_json_rnaseq.py [-h] [-g GCP_PATH] [-o OUTPUT_PATH]
