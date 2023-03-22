@@ -93,11 +93,8 @@ def make_json_dict(
             "rnaseq_pipeline.star_index": "gs://rna-seq_araja/references/rn/v96/star_2.7.0d_04-20-19/sorted/Rnor6_v96_star_index.tar.gz",
             "rnaseq_pipeline.gtf_file": "gs://rna-seq_araja/references/rn/v96/sorted/Rattus_norvegicus.Rnor_6.0.96.gtf",
             "rnaseq_pipeline.rsem_reference": "gs://rna-seq_araja/references/rn/v96/rsem/sorted/rn6_rsem_reference.tar.gz",
-            "rnaseq_pipeline.globin_genome_dir": "rn_globin",
             "rnaseq_pipeline.globin_genome_dir_tar": "gs://rna-seq_araja/references/rn/bowtie2_index/rn_globin.tar.gz",
-            "rnaseq_pipeline.rrna_genome_dir": "rn_rRNA",
             "rnaseq_pipeline.rrna_genome_dir_tar": "gs://rna-seq_araja/references/rn/bowtie2_index/rn_rRNA.tar.gz",
-            "rnaseq_pipeline.phix_genome_dir": "phix",
             "rnaseq_pipeline.phix_genome_dir_tar": "gs://rna-seq_araja/references/rn/bowtie2_index/phix.tar.gz",
             "rnaseq_pipeline.ref_flat": "gs://rna-seq_araja/references/rn/v96/sorted/refFlat_rn6_v96.txt",
         }
@@ -106,11 +103,8 @@ def make_json_dict(
             "rnaseq_pipeline.star_index": "gs://motrpac-data-processed-get-cas/references/human/v39/star_index/hg38_v39_star_index.tar.gz",
             "rnaseq_pipeline.gtf_file": "gs://motrpac-data-processed-get-cas/references/human/v39/GRCh38.v39.primary_assembly.annotation.gtf",
             "rnaseq_pipeline.rsem_reference": "gs://motrpac-data-processed-get-cas/references/human/v39/rsem/hg38_rsem_reference.tar.gz",
-            "rnaseq_pipeline.globin_genome_dir": "hs_globin",
             "rnaseq_pipeline.globin_genome_dir_tar": "gs://motrpac-data-processed-get-cas/references/human/bowtie2_index/hs_globin.tar.gz",
-            "rnaseq_pipeline.rrna_genome_dir": "hs_rRNA",
             "rnaseq_pipeline.rrna_genome_dir_tar": "gs://motrpac-data-processed-get-cas/references/human/bowtie2_index/hs_rRNA.tar.gz",
-            "rnaseq_pipeline.phix_genome_dir": "phix",
             "rnaseq_pipeline.phix_genome_dir_tar": "gs://motrpac-data-processed-get-cas/references/human/bowtie2_index/phix.tar.gz",
             "rnaseq_pipeline.ref_flat": "gs://motrpac-data-processed-get-cas/references/human/v39/refFlat_hg38_v39.txt",
         }
