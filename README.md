@@ -3,7 +3,7 @@ MoTrPAC RNA-SEQ Pipeline
 Overview
 -------------------------------------------------
 
-This repo contains the rna-seq data processing pipeline implemented in Workflow Description Language (WDL) based on harmonized [RNA-SEQ MOP](https://docs.google.com/document/d/e/2PACX-1vRFurZraZfxfMd5BWfIQEnETlalDNjQPyMjS7TCTgc3MMlMtB_-tmJfEK7lmRV7GD30I7R9-ISX3kuM/pub). This pipeline uses caper, a wrapper python package for the workflow management system Cromwell. All the data was processed on the Google Cloud Platform (GCP). The pipeline uses STAR aligner, RSEM and featureCounts read quantification tools. The pipeline also generates a qc metrics file, useful for outlier detection and covariate adjustment during differential analysis.
+This repo contains the rna-seq data processing pipeline implemented in Workflow Description Language (WDL) based on harmonized [RNA-SEQ MOP](https://docs.google.com/document/d/e/2PACX-1vRFurZraZfxfMd5BWfIQEnETlalDNjQPyMjS7TCTgc3MMlMtB_-tmJfEK7lmRV7GD30I7R9-ISX3kuM/pub). This pipeline uses [caper](https://github.com/ENCODE-DCC/caper), a wrapper python package for the workflow management system [Cromwell](https://cromwell.readthedocs.io/en/stable/). All the data was processed on the Google Cloud Platform (GCP). The pipeline uses [STAR aligner](https://github.com/alexdobin/STAR), [RSEM](https://github.com/deweylab/RSEM) and [featureCounts](https://subread.sourceforge.net/) read quantification tools. The pipeline also generates a qc metrics file, useful for outlier detection and covariate adjustment during differential analysis.
 
 ## Details
 
@@ -39,7 +39,7 @@ Several tools are required to run the rna-seq pipeline. All of them are pre-inst
 
 An input configuration file (in JSON format) is required to process the data through the pipeline. This configuration file contains several key-value pairs that specify the inputs and outputs of the workflow, the location of the input files, default pipeline paramenters, docker containers, the execution environment, and other parameters needed for execution.
 
-The optimal way to generate the configuration files is to run the `make_json_rnaseq.py` script. script. [Check this help guide to find out more](scripts/scripts_readme.md).
+The optimal way to generate the configuration files is to run the `make_json_rnaseq.py` script. [Check this help guide to find out more](scripts/scripts_readme.md).
   
 ### Run the pipeline
 
@@ -49,7 +49,7 @@ Connect to the VM and submit the job using the below command
 `caper submit rnaseq_pipeline_scatter.wdl -i input_json/set1_rnaseq.json`
     
 Check the status of workflows and make sure they have succeeded by
-typing `caper list` on the VM instance that's running the job and look for `Succeeded`
+typing `caper list` on the VM instance that's running the job and look for `Succeeded`.
 
 
 
