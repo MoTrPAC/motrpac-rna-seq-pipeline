@@ -1,7 +1,7 @@
 {
   "disk_space": "100",
   "prefix": "phix",
-  "reference_fasta": "gs://rna-seq_araja/references/human/bowtie2_index/phix.fa",
+  "reference_fasta": "gs://my-bucket/references/human/bowtie2_index/phix.fa",
   "ncpu": "4",
   "memory": "60"
 }

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #Create a VM to run the pipeline and submit jobs
-gcloud beta compute --project=motrpac-portal instances create ubuntu1904-nopreempt-rnaseq-n1-standard-8 \
+gcloud beta compute --project=my-project instances create ubuntu1904-nopreempt-rnaseq-n1-standard-8 \
   --zone=us-west1-b \
   --machine-type=n1-standard-8 \
   --subnet=default \
@@ -17,7 +17,7 @@ gcloud beta compute --project=motrpac-portal instances create ubuntu1904-nopreem
   --labels=pipelines=rna-seq \
   --reservation-affinity=any
 
-gcloud beta ssh --zone=us-west1-b ubuntu1904-nopreempt-rnaseq-n1-standard-8 --project=motrpac-portal
+gcloud beta ssh --zone=us-west1-b ubuntu1904-nopreempt-rnaseq-n1-standard-8 --project=my-project
 #INSTALL DOCKER
 sudo snap install docker
 
