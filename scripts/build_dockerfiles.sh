@@ -14,6 +14,6 @@ for dockerfile in dockerfiles/*.Dockerfile; do
   edited_fn="${wo_dir%.*}"
   echo "Building $edited_fn"
   docker build -t "$edited_fn" -f "$dockerfile" .
-  echo "Tagging $dockerfile as gcr.io/***REMOVED***/motrpac-rna-seq-pipeline/$edited_fn:latest"
-  docker tag "${dockerfile%.*}" "gcr.io/***REMOVED***/motrpac-rna-seq-pipeline/$edited_fn:latest"
+  echo "Tagging $dockerfile as gcr.io/motrpac-portal/motrpac-rna-seq-pipeline/$edited_fn:latest"
+  docker tag "${dockerfile%.*}" "gcr.io/motrpac-portal/motrpac-rna-seq-pipeline/$edited_fn:latest"
 done

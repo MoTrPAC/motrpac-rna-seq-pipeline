@@ -10,7 +10,7 @@ Generates the input configuration file required to run the rna-seq pipeline.
 ```
 usage: make_json_rnaseq.py [-h] [-g GCP_PATH] [-o OUTPUT_PATH]
                            [-r OUTPUT_REPORT_NAME] [-u] [-a {rat,human}]
-                           [-n NUM_CHUNKS] [-d DOCKER_REPO]
+                           [-n NUM_CHUNKS] [-d DOCKER_REPO] [-p PROJECT]
 
 This script is used to generate input json files from the fastq_raw dir on gcp
 for running rna-seq pipeline on GCP
@@ -37,6 +37,9 @@ optional arguments:
   -d DOCKER_REPO, --docker_repo DOCKER_REPO
                         Docker repository prefix containing the images used in
                         the workflow
+  -p PROJECT, --project PROJECT
+                        Project name on the google cloud platform
+
 ```
 
 Example
@@ -47,5 +50,5 @@ python3 make_json_rnaseq.py -g gs://motrpac/rna-seq/test \
 -r rna-seq-test \
 -a rat \
 -n 1 \
--d gcr.io/***REMOVED***/motrpac-rna-seq-pipeline
+-d gcr.io/motrpac-portal/motrpac-rna-seq-pipeline
 ```

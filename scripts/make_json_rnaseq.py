@@ -1,4 +1,5 @@
-# Usage example : python3 make_json_rnaseq.py -g gs://xyz/rna-seq/human/batch7_20220316/fastq_raw -o `pwd` -r batch7_qc_metrics.csv -a human -n 1 -d gcr.io/***REMOVED***/motrpac-rna-seq-pipeline/
+# Usage example : python3 make_json_rnaseq.py -g gs://my-bucket/rna-seq/human/batch7_20220316/fastq_raw -o `pwd` -r batch7_qc_metrics.csv -a human -n 1 -d gcr.io/motrpac-portal/motrpac-rna-seq-pipeline/ -p my-project
+
 import argparse
 import json
 import os
@@ -9,7 +10,7 @@ import numpy as np
 
 
 def main(command_args: argparse.Namespace):
-    fs = gcsfs.GCSFileSystem(project="***REMOVED***")
+    fs = gcsfs.GCSFileSystem(args.project)
     batch_num = 0
     gcp_path = command_args.gcp_path + "/*_R1.fastq.gz"
     gcp_prefix = "gs://"
@@ -90,23 +91,23 @@ def make_json_dict(
 
     if organism == "rat":
         organism_references = {
-            "rnaseq_pipeline.star_index": "gs://***REMOVED***/references/rn/v96/star_2.7.0d_04-20-19/sorted/Rnor6_v96_star_index.tar.gz",
-            "rnaseq_pipeline.gtf_file": "gs://***REMOVED***/references/rn/v96/sorted/Rattus_norvegicus.Rnor_6.0.96.gtf",
-            "rnaseq_pipeline.rsem_reference": "gs://***REMOVED***/references/rn/v96/rsem/sorted/rn6_rsem_reference.tar.gz",
-            "rnaseq_pipeline.globin_genome_dir_tar": "gs://***REMOVED***/references/rn/bowtie2_index/rn_globin.tar.gz",
-            "rnaseq_pipeline.rrna_genome_dir_tar": "gs://***REMOVED***/references/rn/bowtie2_index/rn_rRNA.tar.gz",
-            "rnaseq_pipeline.phix_genome_dir_tar": "gs://***REMOVED***/references/rn/bowtie2_index/phix.tar.gz",
-            "rnaseq_pipeline.ref_flat": "gs://***REMOVED***/references/rn/v96/sorted/refFlat_rn6_v96.txt",
+            "rnaseq_pipeline.star_index": "gs://omicspipelines/rnaseq/references/rat/Rnor6_v96_star_index.tar.gz",
+            "rnaseq_pipeline.gtf_file": "gs://omicspipelines/rnaseq/references/rat/Rattus_norvegicus.Rnor_6.0.96.gtf",
+            "rnaseq_pipeline.rsem_reference": "gs://omicspipelines/rnaseq/references/rat/rn6_rsem_reference.tar.gz",
+            "rnaseq_pipeline.globin_genome_dir_tar": "gs://omicspipelines/rnaseq/references/rat/rn_globin.tar.gz",
+            "rnaseq_pipeline.rrna_genome_dir_tar": "gs://omicspipelines/rnaseq/references/rat/rn_rRNA.tar.gz",
+            "rnaseq_pipeline.phix_genome_dir_tar": "gs://omicspipelines/rnaseq/references/rat/phix.tar.gz",
+            "rnaseq_pipeline.ref_flat": "gs://omicspipelines/rnaseq/references/rat/refFlat_rn6_v96.txt",
         }
     elif organism == "human":
         organism_references = {
-            "rnaseq_pipeline.star_index": "gs://motrpac-data-processed-get-cas/references/human/v39/star_index/hg38_v39_star_index.tar.gz",
-            "rnaseq_pipeline.gtf_file": "gs://motrpac-data-processed-get-cas/references/human/v39/GRCh38.v39.primary_assembly.annotation.gtf",
-            "rnaseq_pipeline.rsem_reference": "gs://motrpac-data-processed-get-cas/references/human/v39/rsem/hg38_rsem_reference.tar.gz",
-            "rnaseq_pipeline.globin_genome_dir_tar": "gs://motrpac-data-processed-get-cas/references/human/bowtie2_index/hs_globin.tar.gz",
-            "rnaseq_pipeline.rrna_genome_dir_tar": "gs://motrpac-data-processed-get-cas/references/human/bowtie2_index/hs_rRNA.tar.gz",
-            "rnaseq_pipeline.phix_genome_dir_tar": "gs://motrpac-data-processed-get-cas/references/human/bowtie2_index/phix.tar.gz",
-            "rnaseq_pipeline.ref_flat": "gs://motrpac-data-processed-get-cas/references/human/v39/refFlat_hg38_v39.txt",
+            "rnaseq_pipeline.star_index": "gs://omicspipelines/rnaseq/references/human/hg38_v39_star_index.tar.gz",
+            "rnaseq_pipeline.gtf_file": "gs://omicspipelines/rnaseq/references/human/GRCh38.v39.primary_assembly.annotation.gtf",
+            "rnaseq_pipeline.rsem_reference": "gs://omicspipelines/rnaseq/references/human/hg38_rsem_reference.tar.gz",
+            "rnaseq_pipeline.globin_genome_dir_tar": "gs://omicspipelines/rnaseq/references/human/hs_globin.tar.gz",
+            "rnaseq_pipeline.rrna_genome_dir_tar": "gs://omicspipelines/rnaseq/references/human/hs_rRNA.tar.gz",
+            "rnaseq_pipeline.phix_genome_dir_tar": "gs://omicspipelines/rnaseq/references/human/phix.tar.gz",
+            "rnaseq_pipeline.ref_flat": "gs://omicspipelines/rnaseq/references/human/refFlat_hg38_v39.txt",
         }
     else:
         print("Invalid organism")
@@ -247,7 +248,13 @@ if __name__ == "__main__":
         "--docker_repo",
         help="Docker repository prefix containing the images used in the workflow",
         type=str,
-        default="gcr.io/***REMOVED***/motrpac-rna-seq-pipeline",
+        default="us-docker.pkg.dev/motrpac-portal/rnaseq",
+    )
+    parser.add_argument(
+    "-p",
+    "--project",
+    help="Project name on the google cloud platform",
+    type=str
     )
     args = parser.parse_args()
     main(args)

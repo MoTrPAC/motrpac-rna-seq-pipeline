@@ -22,7 +22,7 @@
   "rnaseq_pipeline.num_preempt": "0",
   "rnaseq_pipeline.memory": "20",
   "rnaseq_pipeline.cpus": "1",
-  "rnaseq_pipeline.docker": "gcr.io/***REMOVED***-dev/motrpac_rnaseq:v0.1_03_08_19",
+  "rnaseq_pipeline.docker": "gcr.io/motrpac-portal-dev/motrpac_rnaseq:v0.1_03_08_19",
   "rnaseq_pipeline.disk_space": "30"
 }
 

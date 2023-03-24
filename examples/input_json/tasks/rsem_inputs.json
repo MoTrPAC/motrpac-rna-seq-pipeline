@@ -5,5 +5,5 @@
   "rsem_workflow.rsem.disk_space": "150",
   "rsem_workflow.rsem.rsem_reference": "gs://archanaraja/rnaseq/references/rat/rsem_reference/rn6_rsem_reference.tar.gz",
   "rsem_workflow.rsem.ncpu": "10",
-  "rsem_workflow.rsem.docker": "gcr.io/***REMOVED***-dev/motrpac_rnaseq:v0.1_03_08_19"
+  "rsem_workflow.rsem.docker": "gcr.io/motrpac-portal-dev/motrpac_rnaseq:v0.1_03_08_19"
 }

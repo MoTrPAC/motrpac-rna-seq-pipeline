@@ -12,5 +12,5 @@ cd ../ || (echo "Could not find dockerfiles directory" && exit 1)
 for dockerfile in dockerfiles/*.Dockerfile; do
   wo_dir="${dockerfile##*/}"
   edited_fn="${wo_dir%.*}"
-  docker push "gcr.io/***REMOVED***/motrpac-rna-seq-pipeline/$edited_fn:latest"
+  docker push "gcr.io/motrpac-portal/motrpac-rna-seq-pipeline/$edited_fn:latest"
 done

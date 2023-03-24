@@ -73,7 +73,7 @@ task gather_checksums {
     }
 
     runtime {
-        docker: "gcr.io/***REMOVED***/motrpac_rnaseq:v0.1_04_20_19"
+        docker: "gcr.io/motrpac-portal/motrpac_rnaseq:v0.1_04_20_19"
         memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${ncpu}"
