@@ -1,4 +1,4 @@
-# Usage example : python3 make_json_rnaseq.py -g gs://my-bucket/rna-seq/human/batch7_20220316/fastq_raw -o `pwd` -r batch7_qc_metrics.csv -a human -n 1 -d gcr.io/***REMOVED***/motrpac-rna-seq-pipeline/ -p my-project
+# Usage example : python3 make_json_rnaseq.py -g gs://my-bucket/rna-seq/human/batch7_20220316/fastq_raw -o `pwd` -r batch7_qc_metrics.csv -a human -n 1 -d gcr.io/motrpac-portal/motrpac-rna-seq-pipeline/ -p my-project
 
 import argparse
 import json
@@ -248,7 +248,7 @@ if __name__ == "__main__":
         "--docker_repo",
         help="Docker repository prefix containing the images used in the workflow",
         type=str,
-        default="gcr.io/***REMOVED***/motrpac-rna-seq-pipeline",
+        default="us-docker.pkg.dev/motrpac-portal/rnaseq",
     )
     parser.add_argument(
     "-p",

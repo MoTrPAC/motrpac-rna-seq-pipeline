@@ -50,5 +50,5 @@ python3 make_json_rnaseq.py -g gs://motrpac/rna-seq/test \
 -r rna-seq-test \
 -a rat \
 -n 1 \
--d gcr.io/***REMOVED***/motrpac-rna-seq-pipeline
+-d gcr.io/motrpac-portal/motrpac-rna-seq-pipeline
 ```

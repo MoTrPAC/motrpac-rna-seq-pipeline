@@ -20,7 +20,7 @@ def main():
             "checksum_workflow.checksum.memory": "20",
             "checksum_workflow.checksum.disk_space": "30",
             "checksum_workflow.checksum.ncpu": "4",
-            "checksum_workflow.checksum.docker": "gcr.io/***REMOVED***/motrpac_rnaseq:v0.1_04_20_19",
+            "checksum_workflow.checksum.docker": "gcr.io/motrpac-portal/motrpac_rnaseq:v0.1_04_20_19",
             "checksum_workflow.sample_files": my_list,
         }
 
