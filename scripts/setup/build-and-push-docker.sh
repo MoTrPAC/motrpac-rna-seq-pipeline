@@ -4,7 +4,7 @@ LATEST_TAG="latest"
 GIT_COMMIT_HASH=$(git rev-parse --short HEAD)
 
 TAG=$LATEST_TAG
-REGISTRY="gcr.io/motrpac-portal-dev"
+REGISTRY="us-docker.pkg.dev/motrpac-portal/rnaseq"
 
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)"
 RNA_SEQ_DIR="$(cd "$SCRIPT_DIR" && cd ../../ && pwd)"

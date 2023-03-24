@@ -248,7 +248,7 @@ if __name__ == "__main__":
         "--docker_repo",
         help="Docker repository prefix containing the images used in the workflow",
         type=str,
-        default="gcr.io/motrpac-portal/motrpac-rna-seq-pipeline",
+        default="us-docker.pkg.dev/motrpac-portal/rnaseq",
     )
     parser.add_argument(
     "-p",

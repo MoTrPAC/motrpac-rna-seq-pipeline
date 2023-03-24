@@ -29,7 +29,7 @@ task star_index {
     }
 
     runtime {
-        docker: "gcr.io/motrpac-portal/motrpac-rna-seq-pipeline/star:latest"
+        docker: "us-docker.pkg.dev/motrpac-portal/rnaseq/star:latest"
         memory: "${memory}GB"
         disks: "local-disk ${disk_space} HDD"
         cpu: "${ncpu}"
