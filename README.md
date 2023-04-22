@@ -1,5 +1,8 @@
 MoTrPAC RNA-SEQ Pipeline
 =================================================
+
+[![DOI](https://zenodo.org/badge/144631622.svg)](https://zenodo.org/badge/latestdoi/144631622)
+
 Overview
 -------------------------------------------------
 
