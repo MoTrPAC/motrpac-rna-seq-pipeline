@@ -1,0 +1,97 @@
+---
+title: "rna-seq_qc"
+output: html_document
+date: "2023-07-13"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(data.table)
+library(ggplot2)
+library(ggpubr)
+```
+
+
+```{r}
+setwd('/Users/araja7/work/motrpac/rnaseq_pipeline_qc/')
+
+bic1 <- fread('rna-seq_sinai_human_batch1_20230123.csv',sep=',',header=T)
+sm1 <- fread('qc_info_all.csv',sep=',',header=T)
+names(sm1)[names(sm1) == 'V1'] <- 'vial_label'
+bic1[,sample := as.character(sample)]
+names(bic1)[names(bic1) == 'sample'] <- 'vial_label'
+
+bic <- melt(bic1, id.var='vial_label')
+sm <- melt(sm1, id.var='vial_label')
+colnames(sm) <- c('vial_label','variable','value')
+
+m <- merge(bic, sm, by=c('vial_label','variable'), suffixes=c('_bic','_sinai'), all.y=T)
+unique(m[!complete.cases(m),vial_label]) # only undetermined samples
+m <- m[complete.cases(m)]
+
+#original plotting code using ggplot
+#pdf('compare_bic_snakemake_pipelines.pdf',width=12,height=12)
+#sp=ggplot(m, aes(x=value_sinai, y=value_bic)) +
+#  geom_abline(linetype='dashed') +
+#  geom_point() +
+#  facet_wrap(~variable, scales='free')
+#sp + stat_cor(aes(label = ..r.label..), label.x = 1)
+#dev.off()
+# Add correlation coefficient
+#sp + stat_cor(method = "pearson", label.x = 3, label.y = 30)
+
+#Using ggpubr package and regression line
+pdf('compare_bic_snakemake_pipelines.pdf',width=24,height=12)
+sp <- ggscatter(m, x = "value_sinai", y = "value_bic",
+   add = "reg.line",  # Add regression line
+   add.params = list(color = "blue", fill = "lightgray"), # Customize reg. line
+   conf.int = TRUE # Add confidence interval
+   ) + facet_wrap(~variable, scales='free')
+#display r value 
+sp + stat_cor(aes(label = ..r.label..), label.y = 4)
+dev.off()
+
+
+
+```
+
+```{r}
+#compute pearson correlation pearson for pct_chrY
+jointdataset <- merge(bic1, sm1, by = 'vial_label')
+res <- cor.test(jointdataset$pct_chrY.x, jointdataset$pct_chrY.y, 
+                    method = "pearson")
+print("Pearson coefficient")
+print(res)
+
+#compute pearson correlation for pct_chrx
+res <- cor.test(jointdataset$pct_chrX.x, jointdataset$pct_chrX.y, 
+                    method = "pearson")
+print("Pearson coefficient for pct_chrX")
+print(res)
+
+#compute pearson correlation for pct_intergenic
+res <- cor.test(jointdataset$pct_intergenic.x, jointdataset$pct_intergenic.y, 
+                    method = "pearson")
+print("Pearson coefficient for pct_intergenic")
+print(res)
+
+#compute pearson correlation for pct_multimapped_toomany
+res <- cor.test(jointdataset$pct_multimapped_toomany.x, jointdataset$pct_multimapped_toomany.y, 
+                    method = "pearson")
+print("Pearson coefficient for pct_intergenic")
+print(res)
+
+#compute pearson correlation for pct_coding
+res <- cor.test(jointdataset$pct_coding.x, jointdataset$pct_coding.y, 
+                    method = "pearson")
+print("Pearson coefficient for pct_coding")
+print(res)
+
+#compute pearson correlation for median 5'-3' bias
+res <- cor.test(jointdataset$median_5_3_bias.x, jointdataset$median_5_3_bias.y, 
+                    method = "pearson")
+print("Pearson coefficient for median_5_3_bias")
+print(res)
+```
+
+
