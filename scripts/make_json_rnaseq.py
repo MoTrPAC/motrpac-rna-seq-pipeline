@@ -42,12 +42,16 @@ def main(command_args: argparse.Namespace):
         split_r2 = [
             [sub.replace("_R1.fastq.gz", "_R2.fastq.gz") for sub in l] for l in split_r1
         ]
-        split_i1 = [
-            [sub.replace("_R1.fastq.gz", "_I1.fastq.gz") for sub in l] for l in split_r1
-        ]
+        if args.index:
+            split_i1 = [
+                [sub.replace("_R1.fastq.gz", "_I1.fastq.gz") for sub in l]
+                for l in split_r1
+            ]
+        else:
+            split_i1 = [None] * len(split_r1)
         docker_repo = command_args.docker_repo.rstrip("/").strip()
 
-        for (r1, r2, i1, prefix_list) in zip(split_r1, split_r2, split_i1, s_name):
+        for r1, r2, i1, prefix_list in zip(split_r1, split_r2, split_i1, s_name):
             json_dict = make_json_dict(
                 command_args.organism,
                 docker_repo,
@@ -83,8 +87,6 @@ def make_json_dict(
         r1 = []
     if r2 is None:
         r2 = []
-    if i1 is None:
-        i1 = []
     if prefix_list is None:
         prefix_list = []
 
@@ -223,8 +225,8 @@ if __name__ == "__main__":
         "-u",
         "--undetermined",
         help="Adding this flag will process undetermined FastQ files if they exist. "
-        "These are fastq files with prefix \"Undetermined_\". If this flag isn't "
-        "passed, items with prefix \"Undetermined_\" will be removed",
+        'These are fastq files with prefix "Undetermined_". If this flag isn\'t '
+        'passed, items with prefix "Undetermined_" will be removed',
         default=False,
         action="store_true",
     )
@@ -250,10 +252,14 @@ if __name__ == "__main__":
         default="us-docker.pkg.dev/motrpac-portal/rnaseq",
     )
     parser.add_argument(
-    "-p",
-    "--project",
-    help="Project name on the google cloud platform",
-    type=str
+        "-i",
+        "--index",
+        help="Adding this flag will add index files to the input JSON",
+        default=False,
+        action="store_true",
+    )
+    parser.add_argument(
+        "-p", "--project", help="Project name on the google cloud platform", type=str
     )
     args = parser.parse_args()
     main(args)
