@@ -1,4 +1,5 @@
-# Usage example : python3 make_json_rnaseq.py -g gs://xyz/rna-seq/human/batch7_20220316/fastq_raw -o `pwd` -r batch7_qc_metrics.csv -a human -n 1 -d gcr.io/motrpac-portal/motrpac-rna-seq-pipeline/
+# Usage example : python3 make_json_rnaseq.py -g gs://my-bucket/rna-seq/human/batch7_20220316/fastq_raw -o `pwd` -r batch7_qc_metrics.csv -a human -n 1 -d gcr.io/motrpac-portal/motrpac-rna-seq-pipeline/ -p my-project
+
 import argparse
 import json
 import os
@@ -42,19 +43,15 @@ def main(command_args: argparse.Namespace):
         split_r2 = [
             [sub.replace("_R1.fastq.gz", "_R2.fastq.gz") for sub in l] for l in split_r1
         ]
-        if args.index:
-            split_i1 = [
-                [sub.replace("_R1.fastq.gz", "_I1.fastq.gz") for sub in l]
-                for l in split_r1
-            ]
-        else:
-            split_i1 = [None] * len(split_r1)
+        split_i1 = [
+            [sub.replace("_R1.fastq.gz", "_I1.fastq.gz") for sub in l] for l in split_r1
+        ]
         docker_repo = command_args.docker_repo.rstrip("/").strip()
 
-        for r1, r2, i1, prefix_list in zip(split_r1, split_r2, split_i1, s_name):
+        for (r1, r2, i1, prefix_list) in zip(split_r1, split_r2, split_i1, s_name):
             json_dict = make_json_dict(
                 command_args.organism,
-		command_args.version,
+                command_args.version,
                 docker_repo,
                 args.output_report_name,
                 r1,
@@ -89,10 +86,12 @@ def make_json_dict(
         r1 = []
     if r2 is None:
         r2 = []
+    if i1 is None:
+        i1 = []
     if prefix_list is None:
         prefix_list = []
 
-    if organism == "rat" and version == "rn6":
+    if organism == "rat" and version == "rn6" :
         organism_references = {
             "rnaseq_pipeline.star_index": "gs://omicspipelines/rnaseq/references/rat/Rnor6_v96_star_index.tar.gz",
             "rnaseq_pipeline.gtf_file": "gs://omicspipelines/rnaseq/references/rat/Rattus_norvegicus.Rnor_6.0.96.gtf",
@@ -115,7 +114,8 @@ def make_json_dict(
             "rnaseq_pipeline.phix_genome_dir_tar": "gs://rna-seq_araja/references/rn/bowtie2_index/phix.tar.gz",
             "rnaseq_pipeline.ref_flat": "gs://rna-seq_araja/references/rn/mRatBN7.2/v108/refFlat_mRatBN7.2_v108.txt",
         }
-    elif organism == "human" and version == "gencode_v39" :
+
+    elif organism == "human" and version == "gencode_v39":
         organism_references = {
             "rnaseq_pipeline.star_index": "gs://omicspipelines/rnaseq/references/human/hg38_v39_star_index.tar.gz",
             "rnaseq_pipeline.gtf_file": "gs://omicspipelines/rnaseq/references/human/GRCh38.v39.primary_assembly.annotation.gtf",
@@ -240,8 +240,8 @@ if __name__ == "__main__":
         "-u",
         "--undetermined",
         help="Adding this flag will process undetermined FastQ files if they exist. "
-        'These are fastq files with prefix "Undetermined_". If this flag isn\'t '
-        'passed, items with prefix "Undetermined_" will be removed',
+        "These are fastq files with prefix \"Undetermined_\". If this flag isn't "
+        "passed, items with prefix \"Undetermined_\" will be removed",
         default=False,
         action="store_true",
     )
@@ -274,17 +274,10 @@ if __name__ == "__main__":
         default="us-docker.pkg.dev/motrpac-portal/rnaseq",
     )
     parser.add_argument(
-        "-i",
-        "--index",
-        help="Adding this flag will add index files to the input JSON",
-        default=True,
-        action="store_true",
-    )
-    parser.add_argument(
-        "-p", 
-	"--project", 
-	help="Project name on the google cloud platform", 
-	type=str
+    "-p",
+    "--project",
+    help="Project name on the google cloud platform",
+    type=str
     )
     args = parser.parse_args()
     main(args)
