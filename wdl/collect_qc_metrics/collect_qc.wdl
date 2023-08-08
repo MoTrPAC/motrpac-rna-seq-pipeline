@@ -14,8 +14,8 @@ task rnaseqQC {
         File rRNA_report
         File globin_report
         File phix_report
-        File umi_report
         File star_log
+        File? umi_report
         String SID
     }
 
@@ -38,8 +38,8 @@ task rnaseqQC {
             --rRNA_report ~{rRNA_report} \
             --globin_report ~{globin_report} \
             --phix_report ~{phix_report} \
-            --umi_report ~{umi_report} \
-            --star_log ~{star_log}
+            --star_log ~{star_log} \
+            ~{"--umi_report " + umi_report}
 
         touch ~{SID}_qc_info.csv
 

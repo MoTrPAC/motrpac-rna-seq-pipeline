@@ -5,7 +5,7 @@ version 1.0
 task multiQC_postalign {
     input {
         Array[File] fastQCReport
-        File trim_report
+        File? trim_report
         File rsem_report
         File star_report
         File fc_report
