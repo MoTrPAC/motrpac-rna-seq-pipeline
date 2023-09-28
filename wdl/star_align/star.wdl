@@ -31,7 +31,7 @@ task star {
         # extract index
         echo "--- $(date "+[%b %d %H:%M:%S]") Extracting STAR index ---"
         mkdir star_index
-        tar -xvvf ~{star_index} -C star_index --strip-components=1
+        tar -xvf ~{star_index} -C star_index --strip-components=1
         echo "--- $(date "+[%b %d %H:%M:%S]")" Done extracting index
 
         mkdir star_out
