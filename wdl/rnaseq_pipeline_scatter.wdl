@@ -28,7 +28,11 @@ workflow rnaseq_pipeline {
                 task_name: "Pre-Trim FASTQC",
                 description: "Run FASTQC on raw reads before adapter trimming to assess how the sequencing quality changes with the actual run cycle number"
             },
-            cutadapt: {
+            cutadapt_umi: {
+                task_name: "Cutadapt (with UMI index files)",
+                description: "Adapter trimming of index_adapter and index2_adapter and eliminating post-trimmed reads that are too short or have too many Ns"
+            },
+            cutadapt_noumi: {
                 task_name: "Cutadapt",
                 description: "Adapter trimming of index_adapter and index2_adapter and eliminating post-trimmed reads that are too short or have too many Ns"
             },
