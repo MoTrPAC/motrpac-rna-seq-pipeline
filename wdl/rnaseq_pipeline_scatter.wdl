@@ -222,7 +222,7 @@ workflow rnaseq_pipeline {
         String merge_results_docker
     }
 
-    Boolean has_fastq_index = defined(fastq_index) || length(select_first([fastq_index, []])) > 0
+    Boolean has_fastq_index = defined(fastq_index) && length(select_first([fastq_index, []])) > 0
 
     scatter (i in range(length(fastq1))) {
         call fastqc.fastQC as pretrim_fastqc {
