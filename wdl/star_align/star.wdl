@@ -41,6 +41,7 @@ task star {
             --outFileNamePrefix star_out/~{prefix}. \
             --readFilesCommand zcat \
             --outSAMattributes ~{outSAMattributes} \
+            --outSAMattrRGline ID:~{prefix} SM:~{prefix} PL:ILLUMINA \
             --outFilterType ~{outFilterType} \
             --runThreadN ~{ncpu} \
             --outSAMtype ~{outSAMtype} \
