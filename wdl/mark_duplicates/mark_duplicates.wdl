@@ -24,22 +24,16 @@ task markduplicates {
         echo "--- $(date "+[%b %d %H:%M:%S]") Done with ulimit, running markduplicates ---"
         java -Xmx~{memory}g -jar /usr/local/bin/picard.jar  MarkDuplicates \
             I=~{input_bam} \
-            O= ~{output_bam} \
-            CREATE_INDEX=true \
+            O=~{output_bam} \
             VALIDATION_STRINGENCY=SILENT \
             ASSUME_SORT_ORDER=coordinate \
             M=~{SID}.marked_dup_metrics.txt \
             REMOVE_DUPLICATES=false
 
-        echo "--- $(date "+[%b %d %H:%M:%S]") Done with markduplicates, running samtools index ---"
-        samtools index ~{output_bam}
-
-        echo "--- $(date "+[%b %d %H:%M:%S]") Done with samtools index, finished task ---"
+        echo "--- $(date "+[%b %d %H:%M:%S]") Done with markduplicates, finished task ---"
     >>>
 
     output {
-        File bam_file = "${output_bam}"
-        File bam_index = "${output_bam}.bai"
         File metrics = "${SID}.marked_dup_metrics.txt"
     }
 
